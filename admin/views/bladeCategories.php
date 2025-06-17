@@ -28,6 +28,7 @@ if( isset($_POST["arTitle"]) ){
 	$id = $_POST["update"];
 	unset($_POST["update"]);
 	if ( $id == 0 ){
+		/*
 		if (is_uploaded_file($_FILES['imageurl']['tmp_name'])) {
 			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name']);
 		} else {
@@ -39,7 +40,7 @@ if( isset($_POST["arTitle"]) ){
 		} else {
 			$_POST["header"] = "";
 		}
-		
+		*/
 		
 		if( insertDB("categories", $_POST) ){
 			header("LOCATION: ?v=Categories");
@@ -51,6 +52,7 @@ if( isset($_POST["arTitle"]) ){
 		<?php
 		}
 	}else{
+		/*
 		if (is_uploaded_file($_FILES['imageurl']['tmp_name'])) {
 			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name']);
 		} else {
@@ -64,6 +66,7 @@ if( isset($_POST["arTitle"]) ){
 			$header = selectDB("categories", "`id` = '{$id}'");
 			$_POST["header"] = $header[0]["header"];
 		}
+			*/
 		
 		if( updateDB("categories", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Categories");
@@ -107,7 +110,8 @@ if( isset($_POST["arTitle"]) ){
 				<option value="2">Yes</option>
 			</select>
 			</div>
-			
+			<?php
+			/*
 			<div class="col-md-6">
 			<label><?php echo direction("Logo","الشعار") ?></label>
 			<input type="file" name="imageurl" class="form-control" required>
@@ -117,6 +121,8 @@ if( isset($_POST["arTitle"]) ){
 			<label><?php echo direction("Header","الصورة الكبيرة") ?></label>
 			<input type="file" name="header" class="form-control" required>
 			</div>
+			*/
+			?>
 			
 			<div id="images" style="margin-top: 10px; display:none">
 				<div class="col-md-6">
