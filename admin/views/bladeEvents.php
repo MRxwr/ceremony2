@@ -9,6 +9,11 @@ if( isset($_POST["enTitle"]) ){
 	$id = $_POST["update"];
 	unset($_POST["update"]);
 	if ( $id == 0 ){
+        if (is_uploaded_file($_FILES['background']['tmp_name'])) {
+			$_POST["background"] = uploadImageBannerFreeImageHost($_FILES['background']['tmp_name']);
+		} else {
+			$_POST["background"] = "";
+		}
 		if( insertDB("extras", $_POST) ){
 			header("LOCATION: ?v=Extras");
 		}else{
@@ -19,6 +24,12 @@ if( isset($_POST["enTitle"]) ){
 		<?php
 		}
 	}else{
+        if (is_uploaded_file($_FILES['background']['tmp_name'])) {
+			$_POST["background"] = uploadImageBannerFreeImageHost($_FILES['background']['tmp_name']);
+		} else {
+			$imageurl = selectDB("categories", "`id` = '{$id}'");
+			$_POST["background"] = $imageurl[0]["background"];
+		}
 		if( updateDB("extras", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Extras");
 		}else{
