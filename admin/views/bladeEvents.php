@@ -172,7 +172,7 @@ if( isset($_POST["title"]) ){
 					<label id="video<?php echo $events[$i]["video"]?>" style="display:none"></label>
 					<label id="sound<?php echo $events[$i]["sound"]?>" style="display:none"></label>
 					<label id="background<?php echo $events[$i]["background"]?>" style="display:none"></label>
-					<label id="categoreyId<?php echo $events[$i]["categoreyId"]?>" style="display:none"></label>
+					<label id="categoryId<?php echo $events[$i]["categoryId"]?>" style="display:none"></label>
 					<a id="<?php echo $events[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i>
 					</a>
 					<a href="<?php echo "?v={$_GET["v"]}&delId={$events[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>" onclick="return confirm('Delete entry?')" ><i class="fa fa-close text-danger"></i>
