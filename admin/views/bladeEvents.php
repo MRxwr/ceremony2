@@ -207,6 +207,8 @@ if( isset($_POST["title"]) ){
 		$("input[name=background]").val($("#background"+id).html());
 		$("select[name=categoreyId]").val($("#categoreyId"+id).html());
 		$("input[name=update]").val(id);
+		tinymce.get('details').setContent($("#details"+id).html());
+		tinymce.get('terms').setContent($("#terms"+id).html());
 	})
 </script>
 
