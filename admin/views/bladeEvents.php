@@ -103,16 +103,14 @@ if( isset($_POST["title"]) ){
 			<div class="col-md-4">
 			<label><?php echo direction("Video","الفيديو") ?></label>
 			<input type="text" name="video" class="form-control" required>
-			</div>
-
-            <div class="col-md-12">
+			</div>            <div class="col-md-12">
 			<label><?php echo direction("Details","التفاصيل") ?></label>
-			<textarea name="details" class="tinymce"></textarea>
+			<textarea id="details" name="details" class="tinymce"></textarea>
 			</div>
 
             <div class="col-md-12">
 			<label><?php echo direction("Terms","الشروط") ?></label>
-			<textarea name="terms" class="tinymce"></textarea>
+			<textarea id="terms" name="terms" class="tinymce"></textarea>
 			</div>
 			
 			<div class="col-md-6" style="margin-top:10px">
@@ -196,17 +194,27 @@ if( isset($_POST["title"]) ){
 <script>
 	$(document).on("click",".edit", function(){
 		var id = $(this).attr("id");
-		$("input[name=title]").val($("#title"+id).html());
+		$("input[name=title]").val($("#title"+id).html()).focus();
 		$("input[name=eventDate]").val($("#eventDate"+id).html());
 		$("input[name=eventTime]").val($("#eventTime"+id).html());
 		$("input[name=location]").val($("#location"+id).html());
 		$("input[name=video]").val($("#video"+id).html());
 		$("input[name=sound]").val($("#sound"+id).html());
-		$("input[name=background]").val($("#background"+id).html());
-		$("select[name=categoreyId]").val($("#categoreyId"+id).html());
+		$("input[name=background]").val($("#background"+id).html());		$("select[name=categoreyId]").val($("#categoreyId"+id).html());
 		$("input[name=update]").val(id);
-		tinymce.get('details').setContent($("#details"+id).html());
-		tinymce.get('terms').setContent($("#terms"+id).html());
+		
+		// Set TinyMCE content with a small delay to ensure editors are ready
+		setTimeout(function() {
+			var detailsEditor = tinymce.get('details');
+			var termsEditor = tinymce.get('terms');
+			
+			if (detailsEditor) {
+				detailsEditor.setContent($("#details"+id).html());
+			}
+			if (termsEditor) {
+				termsEditor.setContent($("#terms"+id).html());
+			}
+		}, 100);
 	})
 </script>
 
