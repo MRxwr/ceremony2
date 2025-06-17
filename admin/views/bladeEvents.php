@@ -193,3 +193,9 @@ if( isset($_POST["enTitle"]) ){
 		$("input[name=update]").val(id);
 	})
 </script>
+
+<!-- Tinymce JavaScript -->
+<script src="../vendors/bower_components/tinymce/tinymce.min.js"></script>
+					
+<!-- Tinymce Wysuhtml5 Init JavaScript -->
+<script src="dist/js/tinymce-data.js"></script>
