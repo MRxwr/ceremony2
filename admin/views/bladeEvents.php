@@ -163,10 +163,9 @@ if( isset($_POST["title"]) ){
 				?>
 				<tr>
 				<td><?php echo $counter ?></td>
-				<td><?php echo $events[$i]["enTitle"] ?></td>
-				<td id="title<?php echo $events[$i]["id"]?>" ><?php echo $events[$i]["enTitle"] ?></td>
-				<td id="eventDate<?php echo $events[$i]["id"]?>" ><?php echo $events[$i]["arTitle"] ?></td>
-				<td id="eventTime<?php echo $events[$i]["id"]?>" ><?php echo $events[$i]["price"] ?></td>
+				<td id="title<?php echo $events[$i]["id"]?>" ><?php echo $events[$i]["title"] ?></td>
+				<td id="eventDate<?php echo $events[$i]["id"]?>" ><?php echo $events[$i]["eventDate"] ?></td>
+				<td id="eventTime<?php echo $events[$i]["id"]?>" ><?php echo $events[$i]["eventTime"] ?></td>
 				<td class="text-nowrap">
 					<label id="details<?php echo $events[$i]["details"]?>" style="display:none">
 					<label id="terms<?php echo $events[$i]["terms"]?>" style="display:none">
