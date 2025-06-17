@@ -1,0 +1,195 @@
+<?php 
+if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
+	if( updateDB('extras',array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
+		header("LOCATION: ?v=Extras");
+	}
+}
+
+if( isset($_POST["enTitle"]) ){
+	$id = $_POST["update"];
+	unset($_POST["update"]);
+	if ( $id == 0 ){
+		if( insertDB("extras", $_POST) ){
+			header("LOCATION: ?v=Extras");
+		}else{
+		?>
+		<script>
+			alert("Could not process your request, Please try again.");
+		</script>
+		<?php
+		}
+	}else{
+		if( updateDB("extras", $_POST, "`id` = '{$id}'") ){
+			header("LOCATION: ?v=Extras");
+		}else{
+		?>
+		<script>
+			alert("Could not process your request, Please try again.");
+		</script>
+		<?php
+		}
+	}
+}
+?>
+
+<div class="row">
+<div class="col-sm-12">
+<div class="panel panel-default card-view">
+<div class="panel-heading">
+<div class="pull-left">
+	<h6 class="panel-title txt-dark"><?php echo direction("Invite Details","تفاصيل الدعوه") ?></h6>
+</div>
+	<div class="clearfix"></div>
+</div>
+<div class="panel-wrapper collapse in">
+<div class="panel-body">
+	<form class="" method="POST" action="" enctype="multipart/form-data">
+		<div class="row m-0">
+            <div class="col-md-12">
+			<label><?php echo direction("Type","النوع") ?></label>
+				<select name="type" class="form-control" required>
+					<?php
+                    if( $categories = selectDB("categories","`status` = '0' AND `hidden` = '1'") ){
+                        for( $i = 0; $i < sizeof($categories); $i++ ){
+                            $title = direction($categories[$i]["enTitle"],$categories[$i]["arTitle"]);
+                            echo "<option value='{$categories[$i]["id"]}'>{$title}</option>";
+                        }
+                    }
+                    ?>
+				</select>
+			</div>
+
+			<div class="col-md-12">
+			<label><?php echo direction("Title","العنوان") ?></label>
+			<input type="text" name="title" class="form-control" required>
+			</div>
+
+			<div class="col-md-4">
+			<label><?php echo direction("Date","التاريخ") ?></label>
+			<input type="date" name="date" class="form-control" required>
+			</div>
+
+			<div class="col-md-4">
+			<label><?php echo direction("Time","الوقت") ?></label>
+			<input type="time" name="time" class="form-control" required>
+			</div>
+
+			<div class="col-md-4">
+			<label><?php echo direction("Location","الموقع") ?></label>
+			<input type="text" name="location" class="form-control" required>
+			</div>
+
+            <div class="col-md-4">
+			<label><?php echo direction("Image","صورة") ?></label>
+			<input type="file" name="background" class="form-control" required>
+			</div>
+
+			<div class="col-md-4">
+			<label><?php echo direction("Soundtrack","صوت موسيقي") ?></label>
+			<input type="text" name="sound" class="form-control" required>
+			</div>
+
+			<div class="col-md-4">
+			<label><?php echo direction("Video","الفيديو") ?></label>
+			<input type="text" name="video" class="form-control" required>
+			</div>
+
+            <div class="col-md-12">
+			<label><?php echo direction("Details","التفاصيل") ?></label>
+			<textarea name="details" class="tinymce"></textarea>
+			</div>
+
+            <div class="col-md-12">
+			<label><?php echo direction("Terms","الشروط") ?></label>
+			<textarea name="terms" class="tinymce"></textarea>
+			</div>
+			
+			<div class="col-md-6" style="margin-top:10px">
+			<input type="submit" class="btn btn-primary" value="<?php echo direction("Submit","أرسل") ?>">
+			<input type="hidden" name="update" value="0">
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+</div>
+</div>
+				
+				<!-- Bordered Table -->
+<div class="col-sm-12">
+<div class="panel panel-default card-view">
+<div class="panel-heading">
+<div class="pull-left">
+<h6 class="panel-title txt-dark"><?php echo direction("List of Events","قائمة المناسبات") ?></h6>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="panel-wrapper collapse in">
+<div class="panel-body">
+<div class="table-wrap mt-40">
+<div class="table-responsive">
+	<table class="table display responsive product-overview mb-30" id="myTable">
+		<thead>
+		<tr>
+		<th><?php echo direction("No.","الرقم") ?></th>
+		<th><?php echo direction("Title","العنوان") ?></th>
+		<th><?php echo direction("Event Date","تاريخ المناسبة") ?></th>
+		<th><?php echo direction("Event Time","وقت المناسبة") ?></th>
+		<th class="text-nowrap"><?php echo direction("Actions","الخيارات") ?></th>
+		</tr>
+		</thead>
+		
+		<tbody>
+		<?php 
+		if( $events = selectDB("events","`status` = '0'") ){
+			for( $i = 0; $i < sizeof($events); $i++ ){
+				$counter = $i + 1;
+				?>
+				<tr>
+				<td><?php echo $counter ?></td>
+				<td><?php echo $events[$i]["enTitle"] ?></td>
+				<td id="title<?php echo $events[$i]["id"]?>" ><?php echo $events[$i]["enTitle"] ?></td>
+				<td id="eventDate<?php echo $events[$i]["id"]?>" ><?php echo $events[$i]["arTitle"] ?></td>
+				<td id="eventTime<?php echo $events[$i]["id"]?>" ><?php echo $events[$i]["price"] ?></td>
+				<td class="text-nowrap">
+					<label id="details<?php echo $events[$i]["details"]?>" style="display:none">
+					<label id="terms<?php echo $events[$i]["terms"]?>" style="display:none">
+					<label id="video<?php echo $events[$i]["video"]?>" style="display:none">
+					<label id="sound<?php echo $events[$i]["sound"]?>" style="display:none">
+					<label id="background<?php echo $events[$i]["background"]?>" style="display:none">
+					<a id="<?php echo $events[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i>
+					</a>
+					<a href="<?php echo "?v={$_GET["v"]}&delId={$events[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>" onclick="return confirm('Delete entry?')" ><i class="fa fa-close text-danger"></i>
+					</a>			
+				</td>
+				</tr>
+				<?php
+			}
+		}
+		?>
+		</tbody>
+		
+	</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+	$(document).on("click",".edit", function(){
+		var id = $(this).attr("id");
+		$("input[name=title]").val($("#title"+id).html());
+		$("input[name=details]").val($("#details"+id).html());
+		$("input[name=terms]").val($("#terms"+id).html());
+		$("input[name=eventDate]").val($("#eventDate"+id).html());
+		$("input[name=eventTime]").val($("#eventTime"+id).html());
+		$("input[name=location]").val($("#location"+id).html());
+		$("input[name=video]").val($("#video"+id).html());
+		$("input[name=sound]").val($("#sound"+id).html());
+		$("input[name=background]").val($("#background"+id).html());
+		$("select[name=type]").val($("#type"+id).html());
+		$("input[name=update]").val(id);
+	})
+</script>
