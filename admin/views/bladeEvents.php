@@ -1,7 +1,7 @@
 <?php 
 if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
-	if( updateDB('extras',array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
-		header("LOCATION: ?v=Extras");
+	if( updateDB('events',array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
+		header("LOCATION: ?v=Events");
 	}
 }
 
@@ -14,8 +14,8 @@ if( isset($_POST["title"]) ){
 		} else {
 			$_POST["background"] = "";
 		}
-		if( insertDB("extras", $_POST) ){
-			header("LOCATION: ?v=Extras");
+		if( insertDB("events", $_POST) ){
+			header("LOCATION: ?v=Events");
 		}else{
 		?>
 		<script>
@@ -30,8 +30,8 @@ if( isset($_POST["title"]) ){
 			$imageurl = selectDB("categories", "`id` = '{$id}'");
 			$_POST["background"] = $imageurl[0]["background"];
 		}
-		if( updateDB("extras", $_POST, "`id` = '{$id}'") ){
-			header("LOCATION: ?v=Extras");
+		if( updateDB("events", $_POST, "`id` = '{$id}'") ){
+			header("LOCATION: ?v=Events");
 		}else{
 		?>
 		<script>
