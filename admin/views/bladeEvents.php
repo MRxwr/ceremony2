@@ -58,7 +58,7 @@ if( isset($_POST["enTitle"]) ){
 		<div class="row m-0">
             <div class="col-md-12">
 			<label><?php echo direction("Category","القسم") ?></label>
-				<select name="type" class="form-control" required>
+				<select name="categoryId" class="form-control" required>
 					<?php
                     if( $categories = selectDB("categories","`status` = '0' AND `hidden` = '1'") ){
                         for( $i = 0; $i < sizeof($categories); $i++ ){
