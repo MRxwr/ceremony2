@@ -154,11 +154,10 @@ if( isset($_POST["title"]) ){
 		<?php 
         $joinData = array(
             "select" => ["t.*","t1.enTitle as enTitle","t1.arTitle as arTitle"],
-            "join" => "categories",
+            "join" => ["categories"],
             "on" => "t.categoryId = t1.id"
         );
 		if( $events = selectJoinDB("events",$joinData,"t.status = '0'") ){
-            var_dump($events);
 			for( $i = 0; $i < sizeof($events); $i++ ){
 				$counter = $i + 1;
 				?>
