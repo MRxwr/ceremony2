@@ -155,7 +155,7 @@ if( isset($_POST["title"]) ){
         $joinData = array(
             "select" => ["t.*","t1.enTitle as enTitle","t1.arTitle as arTitle"],
             "join" => ["categories"],
-            "on" => "t.categoryId = t1.id"
+            "on" => ["t.categoryId = t1.id"]
         );
 		if( $events = selectJoinDB("events",$joinData,"t.status = '0'") ){
 			for( $i = 0; $i < sizeof($events); $i++ ){
