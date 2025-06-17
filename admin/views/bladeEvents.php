@@ -158,6 +158,7 @@ if( isset($_POST["title"]) ){
             "on" => "t.categoryId = t1.id"
         );
 		if( $events = selectJoinDB("events",$joinData,"t.status = '0'") ){
+            var_dump($events);
 			for( $i = 0; $i < sizeof($events); $i++ ){
 				$counter = $i + 1;
 				?>
