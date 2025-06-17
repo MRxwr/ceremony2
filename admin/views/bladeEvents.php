@@ -46,7 +46,7 @@ if( isset($_POST["enTitle"]) ){
 	<form class="" method="POST" action="" enctype="multipart/form-data">
 		<div class="row m-0">
             <div class="col-md-12">
-			<label><?php echo direction("Type","النوع") ?></label>
+			<label><?php echo direction("Category","القسم") ?></label>
 				<select name="type" class="form-control" required>
 					<?php
                     if( $categories = selectDB("categories","`status` = '0' AND `hidden` = '1'") ){
@@ -66,12 +66,12 @@ if( isset($_POST["enTitle"]) ){
 
 			<div class="col-md-4">
 			<label><?php echo direction("Date","التاريخ") ?></label>
-			<input type="date" name="date" class="form-control" required>
+			<input type="date" name="eventDate" class="form-control" required>
 			</div>
 
 			<div class="col-md-4">
 			<label><?php echo direction("Time","الوقت") ?></label>
-			<input type="time" name="time" class="form-control" required>
+			<input type="time" name="eventTime" class="form-control" required>
 			</div>
 
 			<div class="col-md-4">
@@ -141,7 +141,12 @@ if( isset($_POST["enTitle"]) ){
 		
 		<tbody>
 		<?php 
-		if( $events = selectDB("events","`status` = '0'") ){
+        $joinData = array(
+            "select" => ["t.*","t1.enTitle as enTitle","t1.arTitle as arTitle"],
+            "join" => "categories",
+            "on" => "t.categoryId = t1.id"
+        );
+		if( $events = selectJoinDB("events",$joinData,"t.status = '0'") ){
 			for( $i = 0; $i < sizeof($events); $i++ ){
 				$counter = $i + 1;
 				?>
@@ -157,6 +162,7 @@ if( isset($_POST["enTitle"]) ){
 					<label id="video<?php echo $events[$i]["video"]?>" style="display:none">
 					<label id="sound<?php echo $events[$i]["sound"]?>" style="display:none">
 					<label id="background<?php echo $events[$i]["background"]?>" style="display:none">
+					<label id="categoreyId<?php echo $events[$i]["categoreyId"]?>" style="display:none">
 					<a id="<?php echo $events[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i>
 					</a>
 					<a href="<?php echo "?v={$_GET["v"]}&delId={$events[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>" onclick="return confirm('Delete entry?')" ><i class="fa fa-close text-danger"></i>
@@ -189,7 +195,7 @@ if( isset($_POST["enTitle"]) ){
 		$("input[name=video]").val($("#video"+id).html());
 		$("input[name=sound]").val($("#sound"+id).html());
 		$("input[name=background]").val($("#background"+id).html());
-		$("select[name=type]").val($("#type"+id).html());
+		$("select[name=categoreyId]").val($("#categoreyId"+id).html());
 		$("input[name=update]").val(id);
 	})
 </script>
