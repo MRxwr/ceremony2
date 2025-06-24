@@ -117,6 +117,7 @@ if( isset($_POST["name"]) ){
         <th><?php echo direction("Attendees","الحضور") ?></th>
         <th><?php echo direction("Country Code","كود الدولة") ?></th>
         <th><?php echo direction("Mobile","الهاتف") ?></th>
+        <th class="text-nowrap"><?php echo direction("Status","الحالة") ?></th>
 		<th class="text-nowrap"><?php echo direction("Actions","الخيارات") ?></th>
 		</tr>
 		</thead>
@@ -126,6 +127,7 @@ if( isset($_POST["name"]) ){
 		if( $invitees = selectDB("invitees","`status` = '0' AND `hidden` = '0' ORDER BY `id` ASC") ){
 			for( $i = 0; $i < sizeof($invitees); $i++ ){
 				$counter = $i + 1;
+                $status = $invitees[$i]["isConfirmed"] == 1 ? direction("Confirmed","مؤكد") : direction("Declined","مرفوض");
 				?>
 				<tr>
 				<td><?php echo $counter ?></td>
@@ -133,10 +135,11 @@ if( isset($_POST["name"]) ){
 				<td id="attendees<?php echo $invitees[$i]["id"]?>" ><?php echo $invitees[$i]["attendees"] ?></td>
 				<td id="countryCode<?php echo $invitees[$i]["id"]?>" ><?php echo $invitees[$i]["countryCode"] ?></td>
 				<td id="mobile<?php echo $invitees[$i]["id"]?>" ><?php echo $invitees[$i]["mobile"] ?></td>
+                <td class="text-nowrap"><?php echo $status ?></td>
 				<td class="text-nowrap">
-                    <a href="<?php echo "?v={$_GET["v"]}&isConfirmed={$invitees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Confirm","تاكيد") ?>" onclick="return confirm('are you sure you want to confirm this invitee?')" ><i class="fa fa-close text-success"></i>
+                    <a href="<?php echo "?v={$_GET["v"]}&isConfirmed={$invitees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Confirm","تاكيد") ?>" onclick="return confirm('are you sure you want to confirm this invitee?')" ><i class="mr-25 fa fa-close text-success"></i>
                     </a>
-                    <a href="<?php echo "?v={$_GET["v"]}&isDeclined={$invitees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Decline","رفض") ?>" onclick="return confirm('are you sure you want to decline this invitee?')" ><i class="fa fa-eye-slash text-warning"></i>
+                    <a href="<?php echo "?v={$_GET["v"]}&isDeclined={$invitees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Decline","رفض") ?>" onclick="return confirm('are you sure you want to decline this invitee?')" ><i class="mr-25 fa fa-eye-slash text-warning"></i>
 					</a>
 					<a id="<?php echo $invitees[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i>
 					</a>
