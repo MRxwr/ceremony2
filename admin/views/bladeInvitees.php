@@ -5,7 +5,7 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 	}
 }
 if( isset($_GET["isDeclined"]) && !empty($_GET["isDeclined"]) ){
-	if( updateDB('invitees',array('isConfirmed'=> '0'),"`id` = '{$_GET["isDeclined"]}'") ){
+	if( updateDB('invitees',array('isConfirmed'=> '2'),"`id` = '{$_GET["isDeclined"]}'") ){
 		header("LOCATION: ?v=Invitees&inviteId={$_GET["isDeclined"]}");
 	}
 }
@@ -127,7 +127,7 @@ if( isset($_POST["name"]) ){
 		if( $invitees = selectDB("invitees","`status` = '0' AND `hidden` = '0' ORDER BY `id` ASC") ){
 			for( $i = 0; $i < sizeof($invitees); $i++ ){
 				$counter = $i + 1;
-                $status = $invitees[$i]["isConfirmed"] == 1 ? direction("Confirmed","مؤكد") : direction("Declined","مرفوض");
+                $status = ( $invitees[$i]["isConfirmed"] == 1 ) ? direction("Confirmed","مؤكد") : ( ($invitees[$i]["isConfirmed"] == 2) ? direction("Declined","مرفوض") : direction("Pending","قيد الانتظار") );
 				?>
 				<tr>
 				<td><?php echo $counter ?></td>
