@@ -72,7 +72,7 @@ if( isset($_POST["name"]) ){
 					<?php
                     if( $countries = selectDB("cities","`status` = '0' GROUP BY `countryCode` ORDER BY `CountryName` ASC") ){
                         for( $i = 0; $i < sizeof($countries); $i++ ){
-                            echo "<option value='{$countries[$i]["areaCode"]}'>{$countries[$i]["CountryName"]}}</option>";
+                            echo "<option value='{$countries[$i]["areaCode"]}'>{$countries[$i]["CountryName"]}</option>";
                         }
                     }
                     ?>
@@ -124,7 +124,7 @@ if( isset($_POST["name"]) ){
 		<tbody>
 		<?php 
 		if( $invitees = selectDB("invitees","`status` = '0' AND `hidden` = '0' ORDER BY `id` ASC") ){
-			for( $i = 0; $i < sizeof($events); $i++ ){
+			for( $i = 0; $i < sizeof($invitees); $i++ ){
 				$counter = $i + 1;
 				?>
 				<tr>
