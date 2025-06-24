@@ -92,7 +92,7 @@ if( isset($_POST["name"]) ){
 			<div class="col-md-6" style="margin-top:10px">
 			<input type="submit" class="btn btn-primary" value="<?php echo direction("Submit","أرسل") ?>">
 			<input type="hidden" name="update" value="0">
-			<input type="hidden" name="inviteId" value="<?php echo isset($_GET["id"]) ? $_GET["id"] : 0; ?>">
+			<input type="hidden" name="inviteId" value="<?php echo isset($_GET["inviteId"]) ? $_GET["inviteId"] : 0; ?>">
 			</div>
 		</div>
 	</form>
