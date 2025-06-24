@@ -166,7 +166,7 @@ if( isset($_POST["name"]) ){
 		var id = $(this).attr("id");
 		$("input[name=name]").val($("#name"+id).html()).focus();
         $("input[name=attendees]").val($("#attendees"+id).html());
-        $("input[name=countryCode]").val($("#countryCode"+id).html());
+        $("select[name=countryCode]").val($("#countryCode"+id).html());
         $("input[name=mobile]").val($("#mobile"+id).html());
         $("input[name=update]").val(id);
         $("input[name=inviteId]").val(id);
