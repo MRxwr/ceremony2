@@ -37,7 +37,6 @@ if (isset($_POST["title"])) {
 	`startDate` = '" . $_POST["startDate"] . "',
 	`amount` = '" . $_POST["amount"] . "',
 	`OgDescription` = '" . $_POST["OgDescription"] . "',
-	`currency` = '" . $_POST["currency"] . "',
 	`language` = '" . $_POST["language"] . "',
 	`country` = '" . $_POST["country"] . "',
 	`version` = '" . $_POST["version"] . "',
@@ -88,7 +87,6 @@ $package = $row["package"];
 $startDate = $row["startDate"];
 $refference = $row["refference"];
 $amount = $row["amount"];
-$defaultCurr = $row["currency"];
 $language = $row["language"];
 $defaultCountry = $row["country"];
 $version = $row["version"];
@@ -116,11 +114,13 @@ $result = $dbconnect->query($sql);
 $row = $result->fetch_assoc();
 $theme = $row["theme"];
 
+/*
 if ($currList = getCurr()) {
-foreach ($currList as $key => $value) {
-updateDB("currency", array("realValue" => (string)$value, "yourValue" => (string)$value), "`short` LIKE '%{$key}%'");
+	foreach ($currList as $key => $value) {
+		updateDB("currency", array("realValue" => (string)$value, "yourValue" => (string)$value), "`short` LIKE '%{$key}%'");
+	}
 }
-}
+*/
 ?>
 <div class="row heading-bg">
 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
