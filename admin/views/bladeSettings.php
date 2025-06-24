@@ -407,7 +407,7 @@ updateDB("currency", array("realValue" => (string)$value, "yourValue" => (string
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> 
 	</div>
 */
 ?>
