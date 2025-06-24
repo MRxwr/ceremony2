@@ -124,7 +124,7 @@ if( isset($_POST["name"]) ){
 		
 		<tbody>
 		<?php 
-		if( $invitees = selectDB("invitees","`status` = '0' AND `hidden` = '0' ORDER BY `id` ASC") ){
+		if( $invitees = selectDB("invitees","`inviteId` = '{$_GET["id"]}' AND `status` = '0' AND `hidden` = '0' ORDER BY `id` ASC") ){
 			for( $i = 0; $i < sizeof($invitees); $i++ ){
 				$counter = $i + 1;
                 $status = ( $invitees[$i]["isConfirmed"] == 1 ) ? direction("Confirmed","مؤكد") : ( ($invitees[$i]["isConfirmed"] == 2) ? direction("Declined","مرفوض") : direction("Pending","قيد الانتظار") );
