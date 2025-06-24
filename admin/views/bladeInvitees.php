@@ -137,13 +137,13 @@ if( isset($_POST["name"]) ){
 				<td id="mobile<?php echo $invitees[$i]["id"]?>" ><?php echo $invitees[$i]["mobile"] ?></td>
                 <td class="text-nowrap"><?php echo $status ?></td>
 				<td class="text-nowrap">
-                    <a href="<?php echo "?v={$_GET["v"]}&isConfirmed={$invitees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Confirm","تاكيد") ?>" onclick="return confirm('are you sure you want to confirm this invitee?')" ><i class="mr-25 fa fa-close text-success"></i>
+                    <a href="<?php echo "?v={$_GET["v"]}&isConfirmed={$invitees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Confirm","تاكيد") ?>" onclick="return confirm('are you sure you want to confirm this invitee?')" ><i class="mr-25 fa fa-check text-success"></i>
                     </a>
-                    <a href="<?php echo "?v={$_GET["v"]}&isDeclined={$invitees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Decline","رفض") ?>" onclick="return confirm('are you sure you want to decline this invitee?')" ><i class="mr-25 fa fa-eye-slash text-warning"></i>
+                    <a href="<?php echo "?v={$_GET["v"]}&isDeclined={$invitees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Decline","رفض") ?>" onclick="return confirm('are you sure you want to decline this invitee?')" ><i class="mr-25 fa fa-close text-warning"></i>
 					</a>
 					<a id="<?php echo $invitees[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i>
 					</a>
-					<a href="<?php echo "?v={$_GET["v"]}&delId={$invitees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>" onclick="return confirm('Delete entry?')" ><i class="fa fa-close text-danger"></i>
+					<a href="<?php echo "?v={$_GET["v"]}&delId={$invitees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>" onclick="return confirm('Delete entry?')" ><i class="fa fa-trash text-danger"></i>
 					</a>			
 				</td>
 				</tr>
