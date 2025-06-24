@@ -171,7 +171,7 @@ if( isset($_POST["title"]) ){
 					<label id="sound<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["sound"]?></label>
 					<label id="background<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["background"]?></label>
 					<label id="categoryId<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["categoryId"]?></label>
-					<a href="<?php echo "?v=Invitees&inviteId={$events[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Invitees","الدعوات") ?>"><i class="fa fa-close text-primary"></i>
+					<a href="<?php echo "?v=Invitees&inviteId={$events[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Invitees","الدعوات") ?>"><i class="mr-25 fa fa-users text-primary"></i>
 					</a>
 					<a id="<?php echo $events[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i>
 					</a>
