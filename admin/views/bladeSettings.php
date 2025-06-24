@@ -140,7 +140,7 @@ updateDB("currency", array("realValue" => (string)$value, "yourValue" => (string
 </div>
 <div class="clearfix"></div>
 </div>
-<div class="panel-wrapper collapse in">
+<div class="panel-wrapper collapse in"> 
 <div class="panel-body">
 
 	<!-- system Title -->
