@@ -14,6 +14,11 @@ if( isset($_GET["isConfirmed"]) && !empty($_GET["isConfirmed"]) ){
 		header("LOCATION: ?v=Invitees&inviteId={$_GET["inviteId"]}");
 	}
 }
+if( isset($_GET["isSent"]) && !empty($_GET["isSent"]) ){
+	if( updateDB('invitees',array('invitationSent'=> '1'),"`id` = '{$_GET["isSent"]}'") ){
+		header("LOCATION: ?v=Invitees&inviteId={$_GET["inviteId"]}");
+	}
+}
 
 if( isset($_POST["name"]) ){
 	$id = $_POST["update"];
@@ -117,7 +122,8 @@ if( isset($_POST["name"]) ){
         <th><?php echo direction("Attendees","الحضور") ?></th>
         <th><?php echo direction("Country Code","كود الدولة") ?></th>
         <th><?php echo direction("Mobile","الهاتف") ?></th>
-        <th class="text-nowrap"><?php echo direction("Status","الحالة") ?></th>
+        <th><?php echo direction("Invitation Status","حالة الدعوة") ?></th>
+        <th class="text-nowrap"><?php echo direction("Invite Status","حالة المدعو") ?></th>
 		<th class="text-nowrap"><?php echo direction("Actions","الخيارات") ?></th>
 		</tr>
 		</thead>
@@ -128,6 +134,7 @@ if( isset($_POST["name"]) ){
 			for( $i = 0; $i < sizeof($invitees); $i++ ){
 				$counter = $i + 1;
                 $status = ( $invitees[$i]["isConfirmed"] == 1 ) ? direction("Confirmed","مؤكد") : ( ($invitees[$i]["isConfirmed"] == 2) ? direction("Declined","مرفوض") : direction("Pending","قيد الانتظار") );
+                $invitationStatus = ( $invitees[$i]["invitationSent"] == 1 ) ? direction("Sent","تم الارسال") : direction("Not Sent","لم يتم الارسال");
 				?>
 				<tr>
 				<td><?php echo $counter ?></td>
@@ -135,8 +142,11 @@ if( isset($_POST["name"]) ){
 				<td id="attendees<?php echo $invitees[$i]["id"]?>" ><?php echo $invitees[$i]["attendees"] ?></td>
 				<td id="countryCode<?php echo $invitees[$i]["id"]?>" ><?php echo $invitees[$i]["countryCode"] ?></td>
 				<td id="mobile<?php echo $invitees[$i]["id"]?>" ><?php echo $invitees[$i]["mobile"] ?></td>
+                <td class="text-nowrap"><?php echo $invitationStatus ?></td>
                 <td class="text-nowrap"><?php echo $status ?></td>
 				<td class="text-nowrap">
+                    <a href="<?php echo "?v={$_GET["v"]}&isSent={$invitees[$i]["id"]}&inviteId={$invitees[$i]["inviteId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Send Invitation","ارسال الدعوة") ?>" onclick="return confirm('are you sure you want to send this invitation?')" ><i class="mr-25 fa fa-send text-primary"></i>
+                    </a>
                     <a href="<?php echo "?v={$_GET["v"]}&isConfirmed={$invitees[$i]["id"]}&inviteId={$invitees[$i]["inviteId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Confirm","تاكيد") ?>" onclick="return confirm('are you sure you want to confirm this invitee?')" ><i class="mr-25 fa fa-check text-success"></i>
                     </a>
                     <a href="<?php echo "?v={$_GET["v"]}&isDeclined={$invitees[$i]["id"]}&inviteId={$invitees[$i]["inviteId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Decline","رفض") ?>" onclick="return confirm('are you sure you want to decline this invitee?')" ><i class="mr-25 fa fa-close text-warning"></i>
