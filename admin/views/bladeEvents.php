@@ -200,7 +200,8 @@ if( isset($_POST["title"]) ){
 		$("input[name=location]").val($("#location"+id).html());
 		$("input[name=video]").val($("#video"+id).html());
 		$("input[name=sound]").val($("#sound"+id).html());
-		$("input[name=background]").val($("#background"+id).html());		$("select[name=categoreyId]").val($("#categoreyId"+id).html());
+		$("input[name=background]").val($("#background"+id).html());
+		$("select[name=categoreyId]").val($("#categoreyId"+id).html());
 		$("input[name=update]").val(id);
 		
 		// Set TinyMCE content with a small delay to ensure editors are ready
