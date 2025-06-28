@@ -1,6 +1,5 @@
 <?php
 if (isset($_GET["i"]) && !empty($_GET["i"]) && $invitee[0]["isConfirmed"] != 1 ){
-    echo $invitee[0]["isConfirmed"];
 ?>
 <div class="content-panel" id="rsvp-panel">
     <h3 class="text-center mb-3"><?php echo direction("RSVP","الدعوه") ?></h3>
@@ -8,16 +7,16 @@ if (isset($_GET["i"]) && !empty($_GET["i"]) && $invitee[0]["isConfirmed"] != 1 )
     
     <form method="POST" id="rsvpForm">
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="<?php echo direction("Full Name","الاسم الكامل") ?>" pattern="[A-Za-z\s]{3,}" <?php echo ( !empty($invitee["name"]) ) ? "value='{$invitee["name"]}' disabled" : "" ?> required>
+            <input type="text" class="form-control" placeholder="<?php echo direction("Full Name","الاسم الكامل") ?>" pattern="[A-Za-z\s]{3,}" <?php echo ( !empty($invitee[0]["name"]) ) ? "value='{$invitee[0]["name"]}' disabled" : "" ?> required>
         </div>
         <div class="form-group">
-            <input type="tel" class="form-control" placeholder="<?php echo direction("Phone Number","رقم الهاتف") ?>" pattern="[0-9]{8,14}" <?php echo (!empty($invitee["mobile"])) ? "value='{$invitee["countryCode"]}{$invitee["mobile"]}' disabled" : "" ?> required>
+            <input type="tel" class="form-control" placeholder="<?php echo direction("Phone Number","رقم الهاتف") ?>" pattern="[0-9]{8,14}" <?php echo (!empty($invitee[0]["mobile"])) ? "value='{$invitee[0]["countryCode"]}{$invitee[0]["mobile"]}' disabled" : "" ?> required>
         </div>
         <div class="form-group">
             <select class="form-select" name="attendees" required>
                 <option value="" selected disabled><?php echo direction("Number of Guests","عدد الحضور") ?></option>
                 <?php 
-                for ($i = 1; $i <= $invitee["attendees"]; $i++) {
+                for ($i = 1; $i <= $invitee[0]["attendees"]; $i++) {
                     echo "<option value='{$i}'>{$i} " . direction("Guest", "ضيف") . ($i > 1 ? "s" : "") . "</option>";
                 }
                 ?>
