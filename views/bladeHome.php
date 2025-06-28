@@ -28,8 +28,8 @@
                 <!-- Home Panel -->
                 <?php require_once("templates/theme1/home.php"); ?>
                 
-                <!-- Our Story Panel -->
-                <?php require_once("templates/theme1/our-story.php"); ?>
+                <!-- about Panel -->
+                <?php require_once("templates/theme1/about.php"); ?>
                 
                 <!-- Event Panel -->
                 <?php require_once("templates/theme1/event.php"); ?>
