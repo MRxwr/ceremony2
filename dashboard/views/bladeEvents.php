@@ -219,8 +219,8 @@ if( isset($_POST["title"]) ){
 		$("input[name=sound]").val($("#sound"+id).html());
 		$("input[name=background]").val($("#background"+id).html());
 		// make upload not required
-		$("input[name=background]").removeAttr("required");
-		$("select[name=categoreyId]").val($("#categoreyId"+id).html());
+		$("input[name=background]").prop("required", false);
+		$("select[name=categoryId]").val($("#categoryId"+id).html());
 		$("input[name=update]").val(id);
 		
 		// Set TinyMCE content with a small delay to ensure editors are ready
