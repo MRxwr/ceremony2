@@ -1,5 +1,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // Set eventDateISO from PHP
+    var eventDateISO = "<?php echo date('c', strtotime($event['eventDate'] . ' ' . $event['eventTime'])); ?>";
+    
     // Hide loader
     window.addEventListener('load', function() {
         setTimeout(function() {
@@ -40,7 +43,7 @@
     
     // Countdown Timer
     function updateCountdown() {
-        const eventDate = new Date('{{EventDateISO}}').getTime();
+        const eventDate = new Date(eventDateISO).getTime();
         const now = new Date().getTime();
         const distance = eventDate - now;
         
