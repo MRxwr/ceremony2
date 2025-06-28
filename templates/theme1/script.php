@@ -6,7 +6,8 @@
     // Hide loader
     window.addEventListener('load', function() {
         setTimeout(function() {
-            document.getElementById('loader').classList.add('hidden');
+            var loader = document.getElementById('loader');
+            if (loader) loader.classList.add('hidden');
         }, 1000);
     });
     
@@ -29,13 +30,16 @@
             const currentPanelEl = document.getElementById(`${currentPanel}-panel`);
             const targetPanelEl = document.getElementById(`${targetPanel}-panel`);
             
-            currentPanelEl.classList.add('prev');
-            currentPanelEl.classList.remove('active');
-            
-            setTimeout(() => {
-                currentPanelEl.classList.remove('prev');
-                targetPanelEl.classList.add('active');
-            }, 50);
+            if (currentPanelEl) {
+                currentPanelEl.classList.add('prev');
+                currentPanelEl.classList.remove('active');
+            }
+            if (targetPanelEl) {
+                setTimeout(() => {
+                    if (currentPanelEl) currentPanelEl.classList.remove('prev');
+                    targetPanelEl.classList.add('active');
+                }, 50);
+            }
             
             currentPanel = targetPanel;
         });
@@ -53,12 +57,17 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
             
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            var daysEl = document.getElementById('days');
+            var hoursEl = document.getElementById('hours');
+            var minutesEl = document.getElementById('minutes');
+            var secondsEl = document.getElementById('seconds');
+            if (daysEl) daysEl.textContent = days.toString().padStart(2, '0');
+            if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
+            if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, '0');
+            if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, '0');
         } else {
-            document.getElementById('countdown').innerHTML = '<h4 class="text-center">The Wedding Day is Here!</h4>';
+            var countdownEl = document.getElementById('countdown');
+            if (countdownEl) countdownEl.innerHTML = '<h4 class="text-center">The Wedding Day is Here!</h4>';
         }
     }
     
@@ -66,34 +75,38 @@
     updateCountdown();
     
     // Form Validation
-    document.getElementById('rsvpForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        const fullName = formData.get('fullName').trim();
-        const email = formData.get('email').trim();
-        const guests = formData.get('guests');
-        const attendance = formData.get('attendance');
-        
-        if (!fullName || !email || !guests || !attendance) {
-            alert('Please fill in all required fields');
-            return;
-        }
-        
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert('Please enter a valid email address');
-            return;
-        }
-        
-        // Success message
-        alert('Thank you for your RSVP! We look forward to celebrating with you.');
-        this.reset();
-        
-        // Navigate back to home
-        document.querySelector('[data-panel="home"]').click();
-    });
+    var rsvpForm = document.getElementById('rsvpForm');
+    if (rsvpForm) {
+        rsvpForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const fullName = formData.get('fullName') ? formData.get('fullName').trim() : '';
+            const email = formData.get('email') ? formData.get('email').trim() : '';
+            const guests = formData.get('guests');
+            const attendance = formData.get('attendance');
+            
+            if (!fullName || !email || !guests || !attendance) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            // Success message
+            alert('Thank you for your RSVP! We look forward to celebrating with you.');
+            this.reset();
+            
+            // Navigate back to home
+            var homeTab = document.querySelector('[data-panel="home"]');
+            if (homeTab) homeTab.click();
+        });
+    }
     
     // Gallery lightbox (simple version)
     document.querySelectorAll('.gallery-item').forEach(item => {
@@ -140,7 +153,8 @@
         heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
         heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
         
-        document.querySelector('.floating-hearts').appendChild(heart);
+        var heartsContainer = document.querySelector('.floating-hearts');
+        if (heartsContainer) heartsContainer.appendChild(heart);
         
         // Remove heart after animation
         setTimeout(() => {
@@ -169,14 +183,16 @@
     
     const contentContainer = document.querySelector('.content-container');
     
-    contentContainer.addEventListener('touchstart', function(e) {
-        touchStartX = e.changedTouches[0].screenX;
-    });
-    
-    contentContainer.addEventListener('touchend', function(e) {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    });
+    if (contentContainer) {
+        contentContainer.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        contentContainer.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+    }
     
     function handleSwipe() {
         const swipeThreshold = 50;
@@ -222,7 +238,8 @@
     // Add entrance animation to card
     window.addEventListener('load', function() {
         setTimeout(function() {
-            document.querySelector('.wedding-card').style.animation = 'fadeInUp 0.8s ease-out';
+            var weddingCard = document.querySelector('.wedding-card');
+            if (weddingCard) weddingCard.style.animation = 'fadeInUp 0.8s ease-out';
         }, 500);
     });
     
