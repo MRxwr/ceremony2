@@ -86,7 +86,7 @@
             }
             .navigation {
                 width: 100%;
-                height: 72px;
+                height: 72px; 
                 display: flex;
                 margin: 0;
                 padding: 0;
