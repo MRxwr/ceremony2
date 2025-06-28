@@ -1,6 +1,6 @@
 <?php 
-require_once("dashboard/config.php");
-require_once("dashboard/functions.php");
+require_once("dashboard/includes/config.php");
+require_once("dashboard/includes/functions.php");
 require_once("templates/theme1/header.php");
 
 // get viewed page from pages folder \\
