@@ -1,5 +1,6 @@
 <?php
 if (isset($_GET["i"]) && !empty($_GET["i"]) && $invitee["isConfirmed"] != 1 ){
+    var_dump($invitee);
 ?>
 <div class="content-panel" id="rsvp-panel">
     <h3 class="text-center mb-3"><?php echo direction("RSVP","الدعوه") ?></h3>
@@ -7,7 +8,7 @@ if (isset($_GET["i"]) && !empty($_GET["i"]) && $invitee["isConfirmed"] != 1 ){
     
     <form method="POST" id="rsvpForm">
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="<?php echo direction("Full Name","الاسم الكامل") ?>" pattern="[A-Za-z\s]{3,}" <?php echo $invitee["name"] ? "disabled value='{$invitee["name"]}'" : "" ?> required>
+            <input type="text" class="form-control" placeholder="<?php echo direction("Full Name","الاسم الكامل") ?>" pattern="[A-Za-z\s]{3,}" <?php echo ( !empty($invitee["name"]) ) ? "disabled value='{$invitee["name"]}'" : "" ?> required>
         </div>
         <div class="form-group">
             <input type="tel" class="form-control" placeholder="<?php echo direction("Phone Number","رقم الهاتف") ?>" pattern="[0-9]{8,14}" <?php echo $mobile ? "disabled value='{$invitee["countryCode"]}{$invitee["mobile"]}'" : "" ?> required>
@@ -41,7 +42,7 @@ if (isset($_GET["i"]) && !empty($_GET["i"]) && $invitee["isConfirmed"] != 1 ){
 <div class="content-panel" id="rsvp-panel">
     <h3 class="text-center mb-3"><?php echo direction("RSVP","الدعوه") ?></h3>
     <div class="decorative-divider"></div>
-    
+
     <p class="text-center"><?php echo direction("Thank you for your RSVP! We look forward to celebrating with you.","شكرا لتأكيد حضورك! نتطلع للاحتفال معك.") ?></p>
 
     <p class="text-center"><?php echo direction("If you have any questions, please contact us.","إذا كان لديك أي استفسارات، يرجى الاتصال بنا.") ?></p>
