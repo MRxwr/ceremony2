@@ -9,6 +9,11 @@ if( isset($_POST["title"]) ){
 	$id = $_POST["update"];
 	unset($_POST["update"]);
 	if ( $id == 0 ){
+		generateCode:
+		$_POST["code"] = generateRandomString();
+		if( selectDB("events","`code` = '{$_POST["code"]}'") ){
+			goto generateCode;
+		}
         if (is_uploaded_file($_FILES['background']['tmp_name'])) {
 			$_POST["background"] = uploadImageBannerFreeImageHost($_FILES['background']['tmp_name']);
 		} else {
@@ -22,8 +27,17 @@ if( isset($_POST["title"]) ){
 			alert("Could not process your request, Please try again.");
 		</script>
 		<?php
-		}
+		} 
 	}else{
+		if( $code = selectDB("events","`id` = '{$id}'") ){
+			if( empty($code[0]["code"]) ){
+				generateCodeUpdate:
+				$_POST["code"] = generateRandomString();
+				if( selectDB("events","`code` = '{$_POST["code"]}'") ){
+					goto generateCodeUpdate;
+				}
+			}
+		}
         if (is_uploaded_file($_FILES['background']['tmp_name'])) {
 			$_POST["background"] = uploadImageBannerFreeImageHost($_FILES['background']['tmp_name']);
 		} else {
