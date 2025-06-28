@@ -217,7 +217,6 @@ if( isset($_POST["title"]) ){
 		$("input[name=location]").val($("#location"+id).html());
 		$("input[name=video]").val($("#video"+id).html());
 		$("input[name=sound]").val($("#sound"+id).html());
-		$("input[name=background]").val($("#background"+id).html());
 		// make upload not required
 		$("input[name=background]").prop("required", false);
 		$("select[name=categoryId]").val($("#categoryId"+id).html());
