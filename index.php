@@ -6,7 +6,6 @@ if( isset($_REQUEST["systemCode"]) && !empty($_REQUEST["systemCode"]) && $event 
 	$event = $event[0];
 	$category = selectDB("categories","`id` = '{$event["categoryId"]}'");
 	if( isset($_GET["i"]) && !empty($_GET["i"]) && $invitee = selectDBNew("invitees",[$_GET["i"]],"`code` LIKE ? AND `eventId` = '{$event["id"]}'","") ){
-		$Invitee = $Invitee[0];
 	}else{
 		header("Location: default.php");die();
 	}
