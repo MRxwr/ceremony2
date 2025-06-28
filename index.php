@@ -6,7 +6,7 @@ require_once("templates/theme1/header.php");
 if( isset($_REQUEST["systemCode"]) && !empty($_REQUEST["systemCode"]) && $vendor = selectDBNew("events",[$_REQUEST["systemCode"]],"`code` LIKE ? AND `hidden` = '0' AND `status` = '0'","") ){
 	$systemCode = $_REQUEST["systemCode"];
 }else{
-	header("Location: default");die();
+	header("Location: default.php");die();
 }
 
 // get viewed page from pages folder \\
