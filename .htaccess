@@ -7,4 +7,4 @@ RewriteRule ^([^/]+)/?$ $1.php [L,QSA]
 
 # Rewrite any other requests with a parameter or redirect to default when there is nothing after the domain
 RewriteRule ^$ /default.php [L]
-RewriteRule ^([^/]+)/?$ /?systemTitle=$1 [L,QSA]
+RewriteRule ^([^/]+)/?$ /?systemCode=$1 [L,QSA]
