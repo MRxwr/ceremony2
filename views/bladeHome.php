@@ -42,7 +42,7 @@
             </div>
             
             <!-- Card Footer -->
-            
+            <?php require_once("templates/theme1/footer.php"); ?>
         </div>
     </div>
     
