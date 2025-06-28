@@ -14,12 +14,11 @@
         <p><?php echo $event["venueAddress"] ?></p>
     </div>
     
-    <div class="map-placeholder" style="margin-top: 2rem;">
+    <div class="map-placeholder" style="padding:20px">
         <?php
-        // google maps full embed link get and show the map pinning 
-        $location = $event["location"]; // the url from google maps
+        $location = $event["location"]; 
         if (!empty($location)) {
-            echo "<iframe src='{$location}' width='100%' height='450' style='border:0;' allowfullscreen='' loading='lazy'></iframe>";
+            echo "<iframe src='{$location}' width='100%'  style='border:0; border-radius: 10px;' allowfullscreen='' loading='lazy'></iframe>";
         } else {
             echo "<p class='text-center'>".direction("Map not available","الخريطة غير متوفرة")."</p>";
         }
