@@ -84,7 +84,7 @@ if( isset($_POST["title"]) ){
 				</select>
 			</div>
 
-			<div class="col-md-12">
+			<div class="col-md-4">
 			<label><?php echo direction("Title","العنوان") ?></label>
 			<input type="text" name="title" class="form-control" required>
 			</div>
@@ -102,6 +102,16 @@ if( isset($_POST["title"]) ){
 			<div class="col-md-4">
 			<label><?php echo direction("Location","الموقع") ?></label>
 			<input type="text" name="location" class="form-control" required>
+			</div>
+
+			<div class="col-md-4">
+			<label><?php echo direction("Venue Name","اسم الموقع") ?></label>
+			<input type="text" name="venueName" class="form-control" required>
+			</div>
+
+			<div class="col-md-4">
+			<label><?php echo direction("Venue Address","عنوان الموقع") ?></label>
+			<input type="text" name="venueAddress" class="form-control" required>
 			</div>
 
             <div class="col-md-4">
@@ -186,6 +196,8 @@ if( isset($_POST["title"]) ){
 					<label id="background<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["background"]?></label>
 					<label id="categoryId<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["categoryId"]?></label>
 					<label id="location<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["location"]?></label>
+					<label id="venueName<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["venueName"]?></label>
+					<label id="venueAddress<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["venueAddress"]?></label>
 					<a href="<?php echo "?v=Invitees&inviteId={$events[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Invitees","الدعوات") ?>"><i class="mr-25 fa fa-users text-primary"></i>
 					</a>
 					<a id="<?php echo $events[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i>
@@ -217,7 +229,8 @@ if( isset($_POST["title"]) ){
 		$("input[name=location]").val($("#location"+id).html());
 		$("input[name=video]").val($("#video"+id).html());
 		$("input[name=sound]").val($("#sound"+id).html());
-		// make upload not required
+		$("input[name=venueName]").val($("#venueName"+id).html());
+		$("input[name=venueAddress]").val($("#venueAddress"+id).html());
 		$("input[name=background]").prop("required", false);
 		$("select[name=categoryId]").val($("#categoryId"+id).html());
 		$("input[name=update]").val(id);
