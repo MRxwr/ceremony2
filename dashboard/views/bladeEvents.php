@@ -41,7 +41,7 @@ if( isset($_POST["title"]) ){
         if (is_uploaded_file($_FILES['background']['tmp_name'])) {
 			$_POST["background"] = uploadImageBannerFreeImageHost($_FILES['background']['tmp_name']);
 		} else {
-			$imageurl = selectDB("categories", "`id` = '{$id}'");
+			$imageurl = selectDB("events", "`id` = '{$id}'");
 			$_POST["background"] = $imageurl[0]["background"];
 		}
 		if( updateDB("events", $_POST, "`id` = '{$id}'") ){
@@ -185,6 +185,7 @@ if( isset($_POST["title"]) ){
 					<label id="sound<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["sound"]?></label>
 					<label id="background<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["background"]?></label>
 					<label id="categoryId<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["categoryId"]?></label>
+					<label id="location<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["location"]?></label>
 					<a href="<?php echo "?v=Invitees&inviteId={$events[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Invitees","الدعوات") ?>"><i class="mr-25 fa fa-users text-primary"></i>
 					</a>
 					<a id="<?php echo $events[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i>
@@ -217,6 +218,8 @@ if( isset($_POST["title"]) ){
 		$("input[name=video]").val($("#video"+id).html());
 		$("input[name=sound]").val($("#sound"+id).html());
 		$("input[name=background]").val($("#background"+id).html());
+		// make upload not required
+		$("input[name=background]").removeAttr("required");
 		$("select[name=categoreyId]").val($("#categoreyId"+id).html());
 		$("input[name=update]").val(id);
 		
