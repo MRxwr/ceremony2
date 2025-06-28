@@ -1,6 +1,6 @@
 <?php
-if (isset($_GET["i"]) && !empty($_GET["i"]) && $invitee["isConfirmed"] != 1 ){
-    var_dump($invitee);
+if (isset($_GET["i"]) && !empty($_GET["i"]) && $invitee[0]["isConfirmed"] != 1 ){
+    echo $invitee[0]["isConfirmed"];
 ?>
 <div class="content-panel" id="rsvp-panel">
     <h3 class="text-center mb-3"><?php echo direction("RSVP","الدعوه") ?></h3>
