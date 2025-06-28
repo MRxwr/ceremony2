@@ -14,7 +14,7 @@
         <p><?php echo $event["venueAddress"] ?></p>
     </div>
     
-    <div class="map-placeholder">
+    <div class="map-placeholder" style="margin-top: 2rem;">
         <?php
         // google maps full embed link get and show the map pinning 
         $location = $event["location"]; // the url from google maps
