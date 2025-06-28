@@ -24,6 +24,11 @@ if( isset($_POST["name"]) ){
 	$id = $_POST["update"];
 	unset($_POST["update"]);
 	if ( $id == 0 ){
+		generateCode:
+		$_POST["code"] = generateRandomString();
+		if( selectDB("invitees","`code` = '{$_POST["code"]}'") ){
+			goto generateCode;
+		}
 		if( insertDB("invitees", $_POST) ){
 			header("LOCATION: ?v=Invitees&eventId={$_POST["eventId"]}");
 		}else{
@@ -34,6 +39,15 @@ if( isset($_POST["name"]) ){
 		<?php
 		}
 	}else{
+		if( $code = selectDB("invitees","`id` = '{$id}'") ){
+			if( empty($code[0]["code"]) ){
+				generateCodeUpdate:
+				$_POST["code"] = generateRandomString();
+				if( selectDB("invitees","`code` = '{$_POST["code"]}'") ){
+					goto generateCodeUpdate;
+				}
+			}
+		}
 		if( updateDB("invitees", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Invitees&eventId={$_POST["eventId"]}");
 		}else{
