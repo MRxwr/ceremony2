@@ -137,7 +137,7 @@ if( isset($_POST["name"]) ){
                 $invitationStatus = ( $invitees[$i]["invitationSent"] == 1 ) ? direction("Sent","تم الارسال") : direction("Not Sent","لم يتم الارسال");
 				?>
 				<tr>
-				<td><?php echo $counter ?></td>
+				<td><?php echo str_pad($counter, 3, "0", STR_PAD_LEFT) ?></td>
 				<td id="name<?php echo $invitees[$i]["id"]?>" ><?php echo $invitees[$i]["name"] ?></td>
 				<td id="attendees<?php echo $invitees[$i]["id"]?>" ><?php echo $invitees[$i]["attendees"] ?></td>
 				<td id="countryCode<?php echo $invitees[$i]["id"]?>" ><?php echo $invitees[$i]["countryCode"] ?></td>
