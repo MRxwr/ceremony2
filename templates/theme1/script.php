@@ -81,8 +81,8 @@
             e.preventDefault();
             
             const formData = new FormData(this);
-            const fullName = formData.get('fullName') ? formData.get('fullName').trim() : '';
-            const email = formData.get('email') ? formData.get('email').trim() : '';
+            const fullName = formData.get('name') ? formData.get('name').trim() : '';
+            const mobile1 = formData.get('mobile') ? formData.get('mobile').trim() : '';
             const guests = formData.get('attendees');
             const attendance = formData.get('isConfirmed');
 
@@ -93,14 +93,13 @@
                 attendance: attendance
             });
             
-            if (!fullName || !email || !guests || !attendance) {
+            if (!fullName || !mobile1 || !guests || !attendance) {
                 alert('Please fill in all required fields');
                 return;
             }
 
             // mobile validation all mubers min 8 and most 12
-            const mobile = formData.get('mobile');
-            if (mobile && (mobile.length < 8 || mobile.length > 12 || isNaN(mobile))) {
+            if (mobile1 && (mobile1.length < 8 || mobile1.length > 12 || isNaN(mobile1))) {
                 alert('Please enter a valid phone number');
                 return;
             }
