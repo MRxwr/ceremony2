@@ -1,34 +1,53 @@
+<?php
+if (isset($_GET["i"]) && !empty($_GET["i"]) && $invitee["isConfirmed"] != 1 ){
+?>
 <div class="content-panel" id="rsvp-panel">
-    <h3 class="text-center mb-3">RSVP</h3>
+    <h3 class="text-center mb-3"><?php echo direction("RSVP","الدعوه") ?></h3>
     <div class="decorative-divider"></div>
     
-    <form action="" method="POST" id="rsvpForm">
+    <form method="POST" id="rsvpForm">
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Full Name" name="fullName" required>
+            <input type="text" class="form-control" placeholder="<?php echo direction("Full Name","الاسم الكامل") ?>" pattern="[A-Za-z\s]{3,}" <?php echo $invitee["name"] ? "disabled value='{$invitee["name"]}'" : "" ?> required>
         </div>
         <div class="form-group">
-            <input type="email" class="form-control" placeholder="Email Address" name="email" required>
+            <input type="tel" class="form-control" placeholder="<?php echo direction("Phone Number","رقم الهاتف") ?>" pattern="[0-9]{8,14}" <?php echo $mobile ? "disabled value='{$invitee["countryCode"]}{$invitee["mobile"]}'" : "" ?> required>
         </div>
         <div class="form-group">
-            <select class="form-select" name="guests" required>
-                <option value="">Number of Guests</option>
-                <option value="1">1 Guest</option>
-                <option value="2">2 Guests</option>
-                <option value="3">3 Guests</option>
-                <option value="4">4 Guests</option>
-                <option value="5+">5+ Guests</option>
+            <select class="form-select" name="attendees" required>
+                <option value="" selected disabled><?php echo direction("Number of Guests","عدد الحضور") ?></option>
+                <?php 
+                for ($i = 1; $i <= $invitee["attendees"]; $i++) {
+                    echo "<option value='{$i}'>{$i} " . direction("Guest", "ضيف") . ($i > 1 ? "s" : "") . "</option>";
+                }
+                ?>
             </select>
         </div>
         <div class="form-group">
-            <select class="form-select" name="attendance" required>
-                <option value="">Will you attend?</option>
-                <option value="yes">Joyfully Accept</option>
-                <option value="no">Regretfully Decline</option>
+            <select class="form-select" name="isConfirmed" required>
+                <option value="" selected disabled ><?php echo direction("Will you attend?","؟سوف تحضر") ?></option>
+                <option value="1"><?php echo direction("Yes","نعم") ?></option>
+                <option value="2"><?php echo direction("No","لا") ?></option>
             </select>
         </div>
         <div class="form-group">
-            <textarea class="form-control" rows="3" placeholder="Special message or dietary requirements (optional)" name="message"></textarea>
+            <textarea class="form-control" rows="3" placeholder="<?php echo direction("Special message or dietary requirements (optional)","رسالة خاصة او طلبات غذائية") ?>" name="message"></textarea>
         </div>
-        <button type="submit" class="btn-submit">Send RSVP</button>
+        <button type="submit" class="btn-submit"><?php echo direction("Send RSVP","ارسل الدعوه") ?></button>
     </form>
 </div>
+<?php
+}else{
+?>
+<div class="content-panel" id="rsvp-panel">
+    <h3 class="text-center mb-3"><?php echo direction("RSVP","الدعوه") ?></h3>
+    <div class="decorative-divider"></div>
+    
+    <p class="text-center"><?php echo direction("Thank you for your RSVP! We look forward to celebrating with you.","شكرا لتأكيد حضورك! نتطلع للاحتفال معك.") ?></p>
+
+    <p class="text-center"><?php echo direction("If you have any questions, please contact us.","إذا كان لديك أي استفسارات، يرجى الاتصال بنا.") ?></p>
+    
+    <button class="btn btn-primary" onclick="document.querySelector('[data-panel=\"home\"]').click();"><?php echo direction("Back to Home","العودة للصفحة الرئيسية") ?></button>
+</div>
+<?php
+}
+?>

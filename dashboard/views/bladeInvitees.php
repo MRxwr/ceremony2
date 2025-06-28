@@ -1,22 +1,22 @@
 <?php 
 if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 	if( updateDB('invitees',array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
-		header("LOCATION: ?v=Invitees&inviteId={$_GET["inviteId"]}");
+		header("LOCATION: ?v=Invitees&eventId={$_GET["eventId"]}");
 	}
 }
 if( isset($_GET["isDeclined"]) && !empty($_GET["isDeclined"]) ){
 	if( updateDB('invitees',array('isConfirmed'=> '2'),"`id` = '{$_GET["isDeclined"]}'") ){
-		header("LOCATION: ?v=Invitees&inviteId={$_GET["inviteId"]}");
+		header("LOCATION: ?v=Invitees&eventId={$_GET["eventId"]}");
 	}
 }
 if( isset($_GET["isConfirmed"]) && !empty($_GET["isConfirmed"]) ){
 	if( updateDB('invitees',array('isConfirmed'=> '1'),"`id` = '{$_GET["isConfirmed"]}'") ){
-		header("LOCATION: ?v=Invitees&inviteId={$_GET["inviteId"]}");
+		header("LOCATION: ?v=Invitees&eventId={$_GET["eventId"]}");
 	}
 }
 if( isset($_GET["isSent"]) && !empty($_GET["isSent"]) ){
 	if( updateDB('invitees',array('invitationSent'=> '1'),"`id` = '{$_GET["isSent"]}'") ){
-		header("LOCATION: ?v=Invitees&inviteId={$_GET["inviteId"]}");
+		header("LOCATION: ?v=Invitees&eventId={$_GET["eventId"]}");
 	}
 }
 
@@ -25,7 +25,7 @@ if( isset($_POST["name"]) ){
 	unset($_POST["update"]);
 	if ( $id == 0 ){
 		if( insertDB("invitees", $_POST) ){
-			header("LOCATION: ?v=Invitees&inviteId={$_POST["inviteId"]}");
+			header("LOCATION: ?v=Invitees&eventId={$_POST["eventId"]}");
 		}else{
 		?>
 		<script>
@@ -35,7 +35,7 @@ if( isset($_POST["name"]) ){
 		}
 	}else{
 		if( updateDB("invitees", $_POST, "`id` = '{$id}'") ){
-			header("LOCATION: ?v=Invitees&inviteId={$_POST["inviteId"]}");
+			header("LOCATION: ?v=Invitees&eventId={$_POST["eventId"]}");
 		}else{
 		?>
 		<script>
@@ -92,7 +92,7 @@ if( isset($_POST["name"]) ){
 			<div class="col-md-6" style="margin-top:10px">
 			<input type="submit" class="btn btn-primary" value="<?php echo direction("Submit","أرسل") ?>">
 			<input type="hidden" name="update" value="0">
-			<input type="hidden" name="inviteId" value="<?php echo isset($_GET["inviteId"]) ? $_GET["inviteId"] : 0; ?>">
+			<input type="hidden" name="eventId" value="<?php echo isset($_GET["eventId"]) ? $_GET["eventId"] : 0; ?>">
 			</div>
 		</div>
 	</form>
@@ -130,7 +130,7 @@ if( isset($_POST["name"]) ){
 		
 		<tbody>
 		<?php 
-		if( $invitees = selectDB("invitees","`inviteId` = '{$_GET["inviteId"]}' AND `status` = '0' AND `hidden` = '0' ORDER BY `id` ASC") ){
+		if( $invitees = selectDB("invitees","`eventId` = '{$_GET["eventId"]}' AND `status` = '0' AND `hidden` = '0' ORDER BY `id` ASC") ){
 			for( $i = 0; $i < sizeof($invitees); $i++ ){
 				$counter = $i + 1;
                 $status = ( $invitees[$i]["isConfirmed"] == 1 ) ? direction("Confirmed","مؤكد") : ( ($invitees[$i]["isConfirmed"] == 2) ? direction("Declined","مرفوض") : direction("Pending","قيد الانتظار") );
@@ -145,15 +145,15 @@ if( isset($_POST["name"]) ){
                 <td class="text-nowrap"><?php echo $invitationStatus ?></td>
                 <td class="text-nowrap"><?php echo $status ?></td>
 				<td class="text-nowrap">
-                    <a href="<?php echo "?v={$_GET["v"]}&isSent={$invitees[$i]["id"]}&inviteId={$invitees[$i]["inviteId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Send Invitation","ارسال الدعوة") ?>" onclick="return confirm('are you sure you want to send this invitation?')" ><i class="mr-25 fa fa-send text-primary"></i>
+                    <a href="<?php echo "?v={$_GET["v"]}&isSent={$invitees[$i]["id"]}&eventId={$invitees[$i]["eventId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Send Invitation","ارسال الدعوة") ?>" onclick="return confirm('are you sure you want to send this invitation?')" ><i class="mr-25 fa fa-send text-primary"></i>
                     </a>
-                    <a href="<?php echo "?v={$_GET["v"]}&isConfirmed={$invitees[$i]["id"]}&inviteId={$invitees[$i]["inviteId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Confirm","تاكيد") ?>" onclick="return confirm('are you sure you want to confirm this invitee?')" ><i class="mr-25 fa fa-check text-success"></i>
+                    <a href="<?php echo "?v={$_GET["v"]}&isConfirmed={$invitees[$i]["id"]}&eventId={$invitees[$i]["eventId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Confirm","تاكيد") ?>" onclick="return confirm('are you sure you want to confirm this invitee?')" ><i class="mr-25 fa fa-check text-success"></i>
                     </a>
-                    <a href="<?php echo "?v={$_GET["v"]}&isDeclined={$invitees[$i]["id"]}&inviteId={$invitees[$i]["inviteId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Decline","رفض") ?>" onclick="return confirm('are you sure you want to decline this invitee?')" ><i class="mr-25 fa fa-close text-warning"></i>
+                    <a href="<?php echo "?v={$_GET["v"]}&isDeclined={$invitees[$i]["id"]}&eventId={$invitees[$i]["eventId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Decline","رفض") ?>" onclick="return confirm('are you sure you want to decline this invitee?')" ><i class="mr-25 fa fa-close text-warning"></i>
 					</a>
 					<a id="<?php echo $invitees[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i>
 					</a>
-					<a href="<?php echo "?v={$_GET["v"]}&delId={$invitees[$i]["id"]}&inviteId={$invitees[$i]["inviteId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>" onclick="return confirm('Delete entry?')" ><i class="fa fa-trash text-danger"></i>
+					<a href="<?php echo "?v={$_GET["v"]}&delId={$invitees[$i]["id"]}&eventId={$invitees[$i]["eventId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>" onclick="return confirm('Delete entry?')" ><i class="fa fa-trash text-danger"></i>
 					</a>			
 				</td>
 				</tr>
@@ -179,7 +179,7 @@ if( isset($_POST["name"]) ){
         $("select[name=countryCode]").val($("#countryCode"+id).html());
         $("input[name=mobile]").val($("#mobile"+id).html());
         $("input[name=update]").val(id);
-        $("input[name=inviteId]").val(id);
+        $("input[name=eventId]").val(id);
     });
 </script>
 
