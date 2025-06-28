@@ -83,8 +83,8 @@
             const formData = new FormData(this);
             const fullName = formData.get('fullName') ? formData.get('fullName').trim() : '';
             const email = formData.get('email') ? formData.get('email').trim() : '';
-            const guests = formData.get('guests');
-            const attendance = formData.get('attendance');
+            const guests = formData.get('attendees');
+            const attendance = formData.get('isConfirmed');
 
             console.log('Form Data:', {
                 fullName: fullName,
@@ -97,11 +97,11 @@
                 alert('Please fill in all required fields');
                 return;
             }
-            
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert('Please enter a valid email address');
+
+            // mobile validation all mubers min 8 and most 12
+            const mobile = formData.get('mobile');
+            if (mobile && (mobile.length < 8 || mobile.length > 12 || isNaN(mobile))) {
+                alert('Please enter a valid phone number');
                 return;
             }
             
