@@ -2,7 +2,7 @@
     <h3 class="text-center mb-3">RSVP</h3>
     <div class="decorative-divider"></div>
     
-    <form action="{{RSVPFormAction}}" method="POST" id="rsvpForm">
+    <form action="" method="POST" id="rsvpForm">
         <div class="form-group">
             <input type="text" class="form-control" placeholder="Full Name" name="fullName" required>
         </div>

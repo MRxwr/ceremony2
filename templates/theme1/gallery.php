@@ -5,22 +5,22 @@
     
     <div class="gallery-grid">
         <div class="gallery-item">
-            <img src="{{GalleryImage1}}" alt="Gallery 1">
+            <img src="" alt="Gallery 1">
         </div>
         <div class="gallery-item">
-            <img src="{{GalleryImage2}}" alt="Gallery 2">
+            <img src="" alt="Gallery 2">
         </div>
         <div class="gallery-item">
-            <img src="{{GalleryImage3}}" alt="Gallery 3">
+            <img src="" alt="Gallery 3">
         </div>
         <div class="gallery-item">
-            <img src="{{GalleryImage4}}" alt="Gallery 4">
+            <img src="" alt="Gallery 4">
         </div>
         <div class="gallery-item">
-            <img src="{{GalleryImage5}}" alt="Gallery 5">
+            <img src="" alt="Gallery 5">
         </div>
         <div class="gallery-item">
-            <img src="{{GalleryImage6}}" alt="Gallery 6">
+            <img src="" alt="Gallery 6">
         </div>
     </div>
 </div>
