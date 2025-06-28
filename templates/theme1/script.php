@@ -85,13 +85,6 @@
             const mobile1 = formData.get('mobile') ? formData.get('mobile').trim() : '';
             const guests = formData.get('attendees');
             const attendance = formData.get('isConfirmed');
-
-            console.log('Form Data:', {
-                fullName: fullName,
-                email: email,
-                guests: guests,
-                attendance: attendance
-            });
             
             if (!fullName || !mobile1 || !guests || !attendance) {
                 alert('Please fill in all required fields');
