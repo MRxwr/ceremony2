@@ -11,7 +11,7 @@ if (isset($_GET["i"]) && !empty($_GET["i"]) && $invitee["isConfirmed"] != 1 ){
             <input type="text" class="form-control" placeholder="<?php echo direction("Full Name","الاسم الكامل") ?>" pattern="[A-Za-z\s]{3,}" <?php echo ( !empty($invitee["name"]) ) ? "disabled value='{$invitee["name"]}'" : "" ?> required>
         </div>
         <div class="form-group">
-            <input type="tel" class="form-control" placeholder="<?php echo direction("Phone Number","رقم الهاتف") ?>" pattern="[0-9]{8,14}" <?php echo $mobile ? "disabled value='{$invitee["countryCode"]}{$invitee["mobile"]}'" : "" ?> required>
+            <input type="tel" class="form-control" placeholder="<?php echo direction("Phone Number","رقم الهاتف") ?>" pattern="[0-9]{8,14}" <?php echo (!empty($invitee["mobile"])) ? "disabled value='{$invitee["countryCode"]}{$invitee["mobile"]}'" : "" ?> required>
         </div>
         <div class="form-group">
             <select class="form-select" name="attendees" required>
