@@ -85,6 +85,13 @@
             const email = formData.get('email') ? formData.get('email').trim() : '';
             const guests = formData.get('guests');
             const attendance = formData.get('attendance');
+
+            console.log('Form Data:', {
+                fullName: fullName,
+                email: email,
+                guests: guests,
+                attendance: attendance
+            });
             
             if (!fullName || !email || !guests || !attendance) {
                 alert('Please fill in all required fields');
