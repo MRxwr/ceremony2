@@ -15,8 +15,14 @@
         <i class="bi bi-camera"></i>
         <span class="nav-tab-label"><?php echo direction("Gallery","الصور") ?></span>
     </li>
+    <?php 
+    if ( isset($_GET["i"]) && !empty($_GET["i"]) ) {
+    ?>
     <li class="nav-tab" data-panel="rsvp">
         <i class="bi bi-envelope-heart"></i>
         <span class="nav-tab-label"><?php echo direction("RSVP","الدعوه") ?></span>
     </li>
+    <?php
+    }
+    ?>
 </ul>

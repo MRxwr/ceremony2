@@ -1,5 +1,5 @@
 <?php
-if (isset($_GET["i"]) && !empty($_GET["i"]) && $invitee[0]["isConfirmed"] != 1 ){
+if ( $invitee[0]["isConfirmed"] != 1 ){
 ?>
 <div class="content-panel" id="rsvp-panel">
     <h3 class="text-center mb-3"><?php echo direction("RSVP","الدعوه") ?></h3>

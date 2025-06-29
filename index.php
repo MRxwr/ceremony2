@@ -7,7 +7,7 @@ if( isset($_REQUEST["systemCode"]) && !empty($_REQUEST["systemCode"]) && $event 
 	$category = selectDB("categories","`id` = '{$event["categoryId"]}'");
 	if( isset($_GET["i"]) && !empty($_GET["i"]) && $invitee = selectDBNew("invitees",[$_GET["i"]],"`code` LIKE ? AND `eventId` = '{$event["id"]}'","") ){
 	}else{
-		header("Location: default.php");die();
+		//header("Location: default.php");die();
 	}
 }else{
 	header("Location: default.php");die();
