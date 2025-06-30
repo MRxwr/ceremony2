@@ -114,12 +114,32 @@
             apiFormData.append('message', formData.get('message') || '');
             apiFormData.append('rsvp', attendance === '1' ? 'yes' : 'no');
             
-            // Send to API
-            fetch('requests/views/index.php?a=Rsvp', {
+            // Send to API  
+            fetch('/requests/index.php?a=Rsvp', {
                 method: 'POST',
                 body: apiFormData
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
+                // Check if response is ok and has content
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                // Clone the response so we can read it as text first for debugging
+                return response.clone().text().then(text => {
+                    console.log('Raw response:', text);
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('JSON parse error:', e);
+                        console.error('Response text:', text);
+                        throw new Error('Invalid JSON response: ' + text.substring(0, 100));
+                    }
+                });
+            })
             .then(data => {
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
