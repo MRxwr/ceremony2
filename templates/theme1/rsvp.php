@@ -32,9 +32,9 @@ if ( $invitee[0]["isConfirmed"] != 1 ){
         <div class="form-group">
             <textarea class="form-control" rows="3" placeholder="<?php echo direction("Special message or dietary requirements (optional)","رسالة خاصة او طلبات غذائية") ?>" name="message"></textarea>
         </div>
-        <?php
-            echo "{$invitee[0]["terms"]}";
-        ?>
+        <div class="form-group">
+            <?php echo "{$event["terms"]}"; ?>
+        </div>
         <button type="submit" class="btn-submit"><?php echo direction("Send RSVP","ارسل الدعوه") ?></button>
     </form>
 </div>
