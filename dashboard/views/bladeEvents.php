@@ -91,6 +91,7 @@ if( isset($_POST["title"]) ){
             }
         }
         $_POST["gallery"] = json_encode($existingGallery);
+		var_dump($_POST);die();
 		if( updateDB("events", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Events");
 		}else{
