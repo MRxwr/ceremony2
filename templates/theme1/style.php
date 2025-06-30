@@ -262,12 +262,11 @@
     
     .love-story-text {
         background: var(--cream);
-        padding: 1.5rem;
+        padding: 1.5rem 3.5rem 1.5rem 1.5rem;
         border-radius: 15px;
         font-style: italic;
         position: relative;
         line-height: 1.8;
-        overflow-wrap: break-word;
     }
     
     .love-story-text::before {
