@@ -40,6 +40,8 @@ if ( $invitee[0]["isConfirmed"] != 1 ){
 </div>
 <?php
 }else{
+    // Generate QR code for the confirmed invitee
+    $qrData = generateInviteeQR($_GET["i"]);
 ?>
 <div class="content-panel" id="rsvp-panel">
     <h3 class="text-center mb-3"><?php echo direction("RSVP","الدعوه") ?></h3>
@@ -50,6 +52,16 @@ if ( $invitee[0]["isConfirmed"] != 1 ){
         </div>
         <h4 class="mb-3"><?php echo direction("Thank You!","شكراً لك!") ?></h4>
         <p class="mb-3"><?php echo direction("Thank you for your RSVP! We look forward to celebrating with you.","شكراً لتأكيد حضورك! نتطلع للاحتفال معك.") ?></p>
+        
+        <!-- QR Code Section -->
+        <div class="mb-4">
+            <h5 class="mb-3"><?php echo direction("Your Confirmation Code","رمز التأكيد الخاص بك") ?></h5>
+            <div class="qr-code-container" style="display: inline-block; padding: 15px; background: #f8f9fa; border-radius: 10px; border: 2px solid #e9ecef;">
+                <img src="<?php echo $qrData['qr_url']; ?>" alt="QR Code" style="max-width: 200px; height: auto;">
+            </div>
+            <p class="mt-2 text-muted small"><?php echo direction("Show this QR code at the event entrance","اعرض هذا الرمز عند مدخل الحفل") ?></p>
+        </div>
+        
         <p class="mb-4"><?php echo direction("If you have any questions, please contact us.","إذا كان لديك أي استفسارات، يرجى الاتصال بنا.") ?></p>
         <button type="button" class="btn-submit" onclick="document.querySelector('[data-panel=&quot;home&quot;]').click();">
             <?php echo direction("Back to Home","العودة للصفحة الرئيسية") ?>

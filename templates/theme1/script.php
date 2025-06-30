@@ -148,9 +148,22 @@
                     // Success - show thank you message
                     alert('<?php echo direction("Thank you for your RSVP! We look forward to celebrating with you.","شكراً لتأكيد حضورك! نتطلع للاحتفال معك.") ?>');
                     
-                    // Update the RSVP panel content to show thank you message
+                    // Update the RSVP panel content to show thank you message with QR code
                     const rsvpPanel = document.getElementById('rsvp-panel');
                     if (rsvpPanel) {
+                        let qrCodeSection = '';
+                        if (data.qr_code) {
+                            qrCodeSection = `
+                                <div class="mb-4">
+                                    <h5 class="mb-3"><?php echo direction("Your Confirmation Code","رمز التأكيد الخاص بك") ?></h5>
+                                    <div class="qr-code-container" style="display: inline-block; padding: 15px; background: #f8f9fa; border-radius: 10px; border: 2px solid #e9ecef;">
+                                        <img src="${data.qr_code}" alt="QR Code" style="max-width: 200px; height: auto;">
+                                    </div>
+                                    <p class="mt-2 text-muted small"><?php echo direction("Show this QR code at the event entrance","اعرض هذا الرمز عند مدخل الحفل") ?></p>
+                                </div>
+                            `;
+                        }
+                        
                         rsvpPanel.innerHTML = `
                             <h3 class="text-center mb-3"><?php echo direction("RSVP","الدعوه") ?></h3>
                             <div class="decorative-divider"></div>
@@ -160,6 +173,7 @@
                                 </div>
                                 <h4 class="mb-3"><?php echo direction("Thank You!","شكراً لك!") ?></h4>
                                 <p class="mb-3"><?php echo direction("Thank you for your RSVP! We look forward to celebrating with you.","شكراً لتأكيد حضورك! نتطلع للاحتفال معك.") ?></p>
+                                ${qrCodeSection}
                                 <p class="mb-4"><?php echo direction("If you have any questions, please contact us.","إذا كان لديك أي استفسارات، يرجى الاتصال بنا.") ?></p>
                                 <button type="button" class="btn-submit" onclick="document.querySelector('[data-panel=&quot;home&quot;]').click();">
                                     <?php echo direction("Back to Home","العودة للصفحة الرئيسية") ?>

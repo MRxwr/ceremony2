@@ -33,7 +33,15 @@ if( isset($_POST["systemCode"]) && !empty($_POST["systemCode"]) && $event = sele
             }
             
             if( updateDB("invitees", $updateData, "`id` = '{$invitee["id"]}'") ){
-                echo json_encode(array("status" => "success", "msg" => "RSVP updated successfully."));
+                // Generate QR code data for the response
+                $qrData = generateInviteeQR($_POST["i"]);
+                ob_clean(); // Clear any unexpected output
+                echo json_encode(array(
+                    "status" => "success", 
+                    "msg" => "RSVP updated successfully.",
+                    "qr_code" => $qrData['qr_url'],
+                    "encrypted_data" => $qrData['encrypted']
+                ));
             } else {
                 echo json_encode(array("status" => "error", "msg" => "Failed to update RSVP. Please try again."));
             }

@@ -168,4 +168,23 @@ function decryptData($ciphertext, $key, $iv) {
     return openssl_decrypt(base64_decode($ciphertext), 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
 }
 
+// Generate QR code for encrypted invitee data
+function generateInviteeQR($inviteeCode) {
+    // Use a fixed key and IV for consistency (in production, use more secure methods)
+    $key = 'ceremony2024secretkeyforqrencryption12'; // 32 characters for AES-256
+    $iv = 'ceremony2024iv16'; // 16 characters for CBC mode
+    
+    // Encrypt the invitee code
+    $encryptedData = encryptData($inviteeCode, $key, $iv);
+    
+    // Generate QR code URL using Google Charts API (or you can use a local library)
+    $qrData = urlencode($encryptedData);
+    $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" . $qrData;
+    
+    return array(
+        'encrypted' => $encryptedData,
+        'qr_url' => $qrCodeUrl
+    );
+}
+
 ?>
