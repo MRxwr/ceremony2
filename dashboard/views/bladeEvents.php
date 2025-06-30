@@ -1,19 +1,4 @@
 <?php 
-// Function to directly upload images to local logos folder (as fallback)
-function uploadGalleryImageToLogos($tmpName, $fileName) {
-    // Generate a unique filename
-    $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-    $newFileName = 'gallery_' . uniqid() . '.' . $ext;
-    $targetPath = "../logos/" . $newFileName;
-    
-    // Move the file to the logos directory
-    if (move_uploaded_file($tmpName, $targetPath)) {
-        return $newFileName;
-    }
-    
-    return false;
-}
-
 if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 	if( updateDB('events',array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
 		header("LOCATION: ?v=Events");
@@ -39,49 +24,20 @@ if( isset($_POST["title"]) ){
 		} else {
 			$_POST["whatsappImage"] = "";
 		}
-		
-		// Handle gallery images
-		$galleryImages = array();
-		if (isset($_FILES['gallery']) && !empty($_FILES['gallery']['name'][0])) {
-			// For debugging
-			error_log("Gallery upload detected with " . count($_FILES['gallery']['name']) . " files");
-			
-			foreach ($_FILES['gallery']['tmp_name'] as $key => $tmp_name) {
-				if (is_uploaded_file($tmp_name)) {
-					error_log("Processing file: " . $_FILES['gallery']['name'][$key]);
-					
-					// Try the main upload function first
-					$uploadedImage = uploadImageBannerFreeImageHost($tmp_name);
-					
-					// If main upload fails, try the fallback
-					if (!$uploadedImage) {
-						error_log("Main upload failed, trying fallback");
-						$uploadedImage = uploadGalleryImageToLogos($tmp_name, $_FILES['gallery']['name'][$key]);
-					}
-					
-					error_log("Upload result: " . ($uploadedImage ? $uploadedImage : "failed"));
-					
-					if ($uploadedImage) {
-						$galleryImages[] = $uploadedImage;
-					}
-				}
-			}
-			
-			error_log("Total images processed: " . count($galleryImages));
-		}
-		
-		// If galleryData has content (from edit mode), use that instead
-		if (!empty($_POST['galleryData'])) {
-			$_POST["gallery"] = $_POST['galleryData'];
-			error_log("Using galleryData: " . $_POST['galleryData']);
-		} else {
-			$_POST["gallery"] = !empty($galleryImages) ? json_encode($galleryImages) : "[]";
-			error_log("Using new uploads: " . $_POST["gallery"]);
-		}
-		
-		// Remove the array input from POST
-		unset($_POST['galleryData']);
-		
+        
+        // Handle gallery images
+        $galleryImages = array();
+        if (isset($_FILES['gallery']) && !empty($_FILES['gallery']['tmp_name'][0])) {
+            for ($i = 0; $i < count($_FILES['gallery']['tmp_name']); $i++) {
+                if (is_uploaded_file($_FILES['gallery']['tmp_name'][$i])) {
+                    $uploadedImage = uploadImageBannerFreeImageHost($_FILES['gallery']['tmp_name'][$i]);
+                    if (!empty($uploadedImage)) {
+                        $galleryImages[] = $uploadedImage;
+                    }
+                }
+            }
+        }
+        $_POST["gallery"] = json_encode($galleryImages);
 		if( insertDB("events", $_POST) ){
 			header("LOCATION: ?v=Events");
 		}else{
@@ -113,66 +69,28 @@ if( isset($_POST["title"]) ){
 			$imageurl = selectDB("events", "`id` = '{$id}'");
 			$_POST["whatsappImage"] = $imageurl[0]["whatsappImage"];
 		}
-		
-		// Handle gallery images
-		$existingGallery = array();
-		$currentEvent = selectDB("events", "`id` = '{$id}'");
-		
-		// Parse existing gallery if it exists
-		if (!empty($currentEvent[0]["gallery"])) {
-			$existingGallery = json_decode($currentEvent[0]["gallery"], true);
-			if (!is_array($existingGallery)) {
-				$existingGallery = array();
-			}
-			error_log("Existing gallery has " . count($existingGallery) . " images");
-		}
-		
-		// If galleryData field is set (from edit/delete operations), use that
-		if (!empty($_POST['galleryData'])) {
-			$_POST["gallery"] = $_POST['galleryData'];
-			error_log("Using galleryData in update: " . $_POST['galleryData']);
-		} 
-		// If new files are uploaded, add them to existing gallery
-		else if (isset($_FILES['gallery']) && !empty($_FILES['gallery']['name'][0])) {
-			error_log("Gallery update detected with " . count($_FILES['gallery']['name']) . " files");
-			$newImages = array();
-			foreach ($_FILES['gallery']['tmp_name'] as $key => $tmp_name) {
-				if (is_uploaded_file($tmp_name)) {
-					error_log("Processing update file: " . $_FILES['gallery']['name'][$key]);
-					
-					// Try the main upload function first
-					$uploadedImage = uploadImageBannerFreeImageHost($tmp_name);
-					
-					// If main upload fails, try the fallback
-					if (!$uploadedImage) {
-						error_log("Main upload failed, trying fallback for update");
-						$uploadedImage = uploadGalleryImageToLogos($tmp_name, $_FILES['gallery']['name'][$key]);
-					}
-					
-					error_log("Upload result: " . ($uploadedImage ? $uploadedImage : "failed"));
-					
-					if ($uploadedImage) {
-						$newImages[] = $uploadedImage;
-					}
-				}
-			}
-			
-			error_log("New images count: " . count($newImages));
-			
-			// Merge existing and new images
-			$existingGallery = array_merge($existingGallery, $newImages);
-			$_POST["gallery"] = json_encode($existingGallery);
-			error_log("Merged gallery (update): " . $_POST["gallery"]);
-		} 
-		// Otherwise keep existing gallery
-		else {
-			$_POST["gallery"] = $currentEvent[0]["gallery"];
-			error_log("Keeping existing gallery: " . $_POST["gallery"]);
-		}
-		
-		// Remove the array input from POST
-		unset($_POST['galleryData']);
-		
+        
+        // Handle gallery images for update
+        $existingGallery = array();
+        if (isset($_POST['existing_gallery'])) {
+            $existingGallery = json_decode($_POST['existing_gallery'], true);
+            if (!is_array($existingGallery)) {
+                $existingGallery = array();
+            }
+        }
+        
+        // Add new gallery images
+        if (isset($_FILES['gallery']) && !empty($_FILES['gallery']['tmp_name'][0])) {
+            for ($i = 0; $i < count($_FILES['gallery']['tmp_name']); $i++) {
+                if (is_uploaded_file($_FILES['gallery']['tmp_name'][$i])) {
+                    $uploadedImage = uploadImageBannerFreeImageHost($_FILES['gallery']['tmp_name'][$i]);
+                    if (!empty($uploadedImage)) {
+                        $existingGallery[] = $uploadedImage;
+                    }
+                }
+            }
+        }
+        $_POST["gallery"] = json_encode($existingGallery);
 		if( updateDB("events", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Events");
 		}else{
@@ -279,24 +197,27 @@ if( isset($_POST["title"]) ){
 			<input class="form-control" name="whatsappCaption" placeholder="<?php echo direction("Caption[ for new line use \n]","وصف [ لاستخدام سطر جديد استخدم \n]") ?>">
 			</div>
 
-			<div class="col-md-4">
-			<img src="" style="height:250px; width:250px; border-radius: 10px; margin-top: 10px; display:none" id="whatsappImagePreview" alt="<?php echo direction("WhatsApp Image","صورة الواتساب") ?>">
+			<div class="col-md-12">
+			<label><?php echo direction("Gallery Images","صور المعرض") ?></label>
+			<input class="form-control" type="file" name="gallery[]" multiple accept="image/*" id="galleryInput">
+			<small class="text-muted"><?php echo direction("Select multiple images for the gallery","اختر عدة صور للمعرض") ?></small>
+			</div>
+
+			<div class="col-md-12" id="galleryPreview" style="margin-top: 10px;">
+			<!-- Gallery preview will be inserted here -->
 			</div>
 
 			<div class="col-md-4">
-			<label><?php echo direction("Gallery Images","صور المعرض") ?></label>
-			<input class="form-control" type="file" name="gallery[]" multiple>
-			<input type="hidden" name="galleryData" id="galleryData" value="">
+			<img src="" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px; display:none" id="whatsappImagePreview" alt="<?php echo direction("WhatsApp Image","صورة الواتساب") ?>">
 			</div>
 
 			<div class="col-md-8">
-			<label><?php echo direction("Gallery Preview","معاينة المعرض") ?></label>
-			<div class="row" id="galleryPreview"></div>
 			</div>
 			
 			<div class="col-md-12" style="margin-top:10px">
 			<input type="submit" class="btn btn-primary" value="<?php echo direction("Submit","أرسل") ?>">
 			<input type="hidden" name="update" value="0">
+			<input type="hidden" name="existing_gallery" id="existing_gallery" value="">
 			</div>
 		</div>
 	</form>
@@ -357,7 +278,7 @@ if( isset($_POST["title"]) ){
 					<label id="venueAddress<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["venueAddress"]?></label>
 					<label id="whatsappCaption<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["whatsappCaption"]?></label>
 					<label id="whatsappImage<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["whatsappImage"]?></label>
-					<label id="gallery<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["gallery"]?></label>
+					<label id="gallery<?php echo $events[$i]["id"]?>" style="display:none"><?php echo htmlspecialchars($events[$i]["gallery"])?></label>
 					<a href="<?php echo "/{$events[$i]["code"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("View Event","عرض المناسبة") ?>" target="_blank"><i class="mr-25 fa fa-eye text-black"></i></a>
 					<a href="<?php echo "?v=Invitees&eventId={$events[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Invitees","الدعوات") ?>"><i class="mr-25 fa fa-users text-primary"></i></a>
 					<a id="<?php echo $events[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-gray m-r-10"></i></a>
@@ -378,93 +299,71 @@ if( isset($_POST["title"]) ){
 </div>
 </div>
 <script>
-// Function to display gallery images
-function displayGalleryImages(galleryData) {
-	var galleryPreview = $("#galleryPreview");
-	galleryPreview.empty();
+	var currentGallery = [];
 	
-	console.log("Displaying gallery data:", galleryData);
-	
-	if (galleryData && galleryData.length > 0) {
-		galleryData.forEach(function(image, index) {
-			var imageCol = $('<div class="col-md-2 col-sm-3 mb-3 gallery-item">');
-			var imageContainer = $('<div class="image-container position-relative">');
-			
-			// Create image element with proper path handling
-			var imgSrc = image;
-			// If image doesn't already have a path prefix, add the logos path
-			if (imgSrc.indexOf('http://') !== 0 && imgSrc.indexOf('https://') !== 0 && imgSrc.indexOf('../logos/') !== 0) {
-				imgSrc = '../logos/' + imgSrc;
+	// Function to display gallery preview
+	function displayGalleryPreview() {
+		var previewContainer = $("#galleryPreview");
+		previewContainer.empty();
+		
+		if (currentGallery.length > 0) {
+			var galleryHtml = '<div class="row" style="margin-top: 10px;">';
+			galleryHtml += '<div class="col-md-12"><h6><?php echo direction("Current Gallery Images","صور المعرض الحالية") ?></h6></div>';
+			for (var i = 0; i < currentGallery.length; i++) {
+				galleryHtml += '<div class="col-md-2 gallery-item" data-index="' + i + '" style="margin-bottom: 10px;">';
+				galleryHtml += '<div style="position: relative; border: 2px solid #ddd; border-radius: 5px; padding: 5px;">';
+				galleryHtml += '<img src="../logos/' + currentGallery[i] + '" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">';
+				galleryHtml += '<button type="button" class="btn btn-danger btn-xs remove-gallery-item" style="position: absolute; top: 0px; right: 0px; padding: 2px 6px; font-size: 12px;">';
+				galleryHtml += '<i class="fa fa-times"></i>';
+				galleryHtml += '</button>';
+				galleryHtml += '</div>';
+				galleryHtml += '</div>';
 			}
+			galleryHtml += '</div>';
+			previewContainer.html(galleryHtml);
+		}
+		
+		// Update hidden field
+		$("#existing_gallery").val(JSON.stringify(currentGallery));
+	}
+	
+	// Handle new file selection
+	$("#galleryInput").on("change", function() {
+		var files = this.files;
+		if (files.length > 0) {
+			$("#newGalleryPreview").remove(); // Remove previous preview
+			var previewHtml = '<div class="row" id="newGalleryPreview" style="margin-top: 10px;">';
+			previewHtml += '<div class="col-md-12"><h6><?php echo direction("New Images to Upload","الصور الجديدة للرفع") ?></h6></div>';
 			
-			var img = $('<img>')
-				.attr('src', imgSrc)
-				.attr('alt', 'Gallery Image')
-				.css({
-					'width': '100%',
-					'height': '100px',
-					'object-fit': 'cover',
-					'border-radius': '5px'
-				});
-			
-			// Create delete button
-			var deleteBtn = $('<button>')
-				.attr('type', 'button')
-				.addClass('btn btn-sm btn-danger delete-gallery-img')
-				.attr('data-index', index)
-				.css({
-					'position': 'absolute',
-					'top': '5px',
-					'right': '5px',
-					'padding': '2px 6px',
-					'opacity': '0.8'
-				})
-				.html('<i class="fa fa-times"></i>');
-			
-			// Append elements
-			imageContainer.append(img);
-			imageContainer.append(deleteBtn);
-			imageCol.append(imageContainer);
-			galleryPreview.append(imageCol);
-		});
-	}
+			var filesLoaded = 0;
+			for (var i = 0; i < files.length; i++) {
+				(function(index) {
+					var reader = new FileReader();
+					reader.onload = function(e) {
+						previewHtml += '<div class="col-md-2" style="margin-bottom: 10px;">';
+						previewHtml += '<div style="border: 2px solid #5cb85c; border-radius: 5px; padding: 5px;">';
+						previewHtml += '<img src="' + e.target.result + '" style="width: 100%; height: 120px; object-fit: cover; border-radius: 5px;">';
+						previewHtml += '</div>';
+						previewHtml += '</div>';
+						
+						filesLoaded++;
+						if (filesLoaded === files.length) {
+							previewHtml += '</div>';
+							$("#galleryPreview").append(previewHtml);
+						}
+					};
+					reader.readAsDataURL(files[index]);
+				})(i);
+			}
+		}
+	});
 	
-	// Update hidden input with current gallery data
-	$("#galleryData").val(JSON.stringify(galleryData));
-	console.log("Updated galleryData input:", $("#galleryData").val());
-}
-
-// Handle deletion of gallery images
-$(document).on('click', '.delete-gallery-img', function(e) {
-	e.preventDefault();
-	var index = $(this).data('index');
-	var galleryData = [];
-	
-	// Get current gallery data
-	try {
-		galleryData = JSON.parse($("#galleryData").val() || '[]');
-	} catch (error) {
-		galleryData = [];
-	}
-	
-	// Remove the image at the specified index
-	if (galleryData.length > index) {
-		galleryData.splice(index, 1);
-	}
-	
-	// Update display and hidden input
-	displayGalleryImages(galleryData);
-});
-
-// Handle file selection for gallery
-$('input[name="gallery[]"]').change(function() {
-	// This just shows a message about upload readiness
-	if (this.files.length > 0) {
-		var count = this.files.length;
-		var message = count + ' ' + (count == 1 ? '<?php echo direction("image", "صورة") ?>' : '<?php echo direction("images", "صور") ?>') + ' <?php echo direction("ready to upload", "جاهزة للرفع") ?>';
-		alert(message);
-	}
-});
+	// Handle gallery item removal
+	$(document).on("click", ".remove-gallery-item", function() {
+		var index = $(this).closest('.gallery-item').data('index');
+		currentGallery.splice(index, 1);
+		displayGalleryPreview();
+	});
 
 	$(document).on("click",".edit", function(){
 		var id = $(this).attr("id");
@@ -481,45 +380,35 @@ $('input[name="gallery[]"]').change(function() {
 		$("select[name=categoryId]").val($("#categoryId"+id).html());
 		$("input[name=whatsappCaption]").val($("#whatsappCaption"+id).html());
 		$("input[name=whatsappImage]").prop("required", false);
+		
+		// Clear gallery input and preview
+		$("#galleryInput").val('');
+		$("#newGalleryPreview").remove();
+		
+		// Load existing gallery
+		var galleryData = $("#gallery"+id).html();
+		if (galleryData && galleryData !== 'null' && galleryData !== '' && galleryData !== '[]') {
+			try {
+				currentGallery = JSON.parse(galleryData);
+				if (!Array.isArray(currentGallery)) {
+					currentGallery = [];
+				}
+			} catch (e) {
+				currentGallery = [];
+			}
+		} else {
+			currentGallery = [];
+		}
+		displayGalleryPreview();
+		
 		// Show WhatsApp image preview if available
 		var whatsappImage = $("#whatsappImage"+id).html();
 		if (whatsappImage != "") {
 			$("#whatsappImagePreview").attr("src", "../logos/"+whatsappImage);
 			$("#whatsappImagePreview").attr("style", "height:250px; width:250px; border-radius: 10px; margin-top: 10px; display:block");
+		} else {
+			$("#whatsappImagePreview").attr("style", "display:none");
 		}
-		
-		// Load gallery images
-		var galleryData = [];
-		try {
-			var galleryJson = $("#gallery"+id).html();
-			console.log("Raw gallery JSON:", galleryJson);
-			
-			if (galleryJson && galleryJson.trim() !== '') {
-				// Try to parse as JSON
-				try {
-					galleryData = JSON.parse(galleryJson);
-				} catch (jsonError) {
-					console.error("JSON parse error:", jsonError);
-					// If it's not valid JSON but contains filenames, try to extract them
-					if (galleryJson.indexOf(',') > -1) {
-						galleryData = galleryJson.split(',').map(function(item) {
-							return item.trim().replace(/['"]/g, '');
-						});
-					} else if (galleryJson.trim() !== '[]') {
-						// Single filename
-						galleryData = [galleryJson.trim().replace(/['"]/g, '')];
-					}
-				}
-			}
-		} catch (error) {
-			console.error("Error processing gallery data:", error);
-			galleryData = [];
-		}
-		
-		console.log("Processed gallery data:", galleryData);
-		
-		// Display gallery images
-		displayGalleryImages(galleryData);
 
 		// Set TinyMCE content with a small delay to ensure editors are ready
 		setTimeout(function() {
@@ -534,6 +423,29 @@ $('input[name="gallery[]"]').change(function() {
 			}
 		}, 100);
 	})
+	
+	// Reset form when creating new event
+	function resetForm() {
+		currentGallery = [];
+		$("#galleryPreview").empty();
+		$("#existing_gallery").val('');
+		$("#galleryInput").val('');
+		$("#newGalleryPreview").remove();
+		$("#whatsappImagePreview").attr("style", "display:none");
+		$("input[name=update]").val(0);
+	}
+	
+	// Add reset functionality to form
+	$('form').on('reset', function() {
+		setTimeout(resetForm, 10);
+	});
+	
+	// Clear form when page loads for new entries
+	$(document).ready(function() {
+		if ($("input[name=update]").val() == 0) {
+			resetForm();
+		}
+	});
 </script>
 
 <!-- Tinymce JavaScript -->
@@ -541,27 +453,3 @@ $('input[name="gallery[]"]').change(function() {
 					
 <!-- Tinymce Wysuhtml5 Init JavaScript -->
 <script src="dist/js/tinymce-data.js"></script>
-<script>
-// Add form submission event handler
-$('form').on('submit', function(e) {
-    // Ensure galleryData is populated if there are images in the preview
-    if ($('#galleryPreview').children().length > 0 && !$('#galleryData').val()) {
-        // Collect visible gallery images if galleryData is empty
-        var visibleGallery = [];
-        $('.gallery-item img').each(function() {
-            var src = $(this).attr('src');
-            // Extract just the filename from the path
-            var filename = src.split('/').pop();
-            visibleGallery.push(filename);
-        });
-        
-        if (visibleGallery.length > 0) {
-            $('#galleryData').val(JSON.stringify(visibleGallery));
-            console.log("Auto-populated galleryData:", $('#galleryData').val());
-        }
-    }
-    
-    // For debugging
-    console.log("Form submitted with galleryData:", $('#galleryData').val());
-});
-</script>

@@ -1,26 +1,22 @@
 <div class="content-panel" id="gallery-panel">
-    <h3 class="text-center mb-3">Our Memories</h3>
+    <h3 class="text-center mb-3"><?php echo direction("Our Memories","ذكرياتنا") ?></h3>
     <div class="decorative-divider"></div>
-    <p class="text-center text-muted mb-3">Moments we've shared together</p>
+    <p class="text-center text-muted mb-3"><?php echo direction("Moments we've shared together","اللحظات التي تشاركناها معاً") ?></p>
     
     <div class="gallery-grid">
-        <div class="gallery-item">
-            <img src="" alt="Gallery 1">
-        </div>
-        <div class="gallery-item">
-            <img src="" alt="Gallery 2">
-        </div>
-        <div class="gallery-item">
-            <img src="" alt="Gallery 3">
-        </div>
-        <div class="gallery-item">
-            <img src="" alt="Gallery 4">
-        </div>
-        <div class="gallery-item">
-            <img src="" alt="Gallery 5">
-        </div>
-        <div class="gallery-item">
-            <img src="" alt="Gallery 6">
-        </div>
+        <?php 
+        if( !empty($event["gallery"]) ){
+            $galleryImages = json_decode($event["gallery"], true);
+            if( is_array($galleryImages) && count($galleryImages) > 0 ){
+                foreach($galleryImages as $index => $image){
+                    if(!empty($image)){
+                        echo '<div class="gallery-item">';
+                        echo '<img src="logos/' . htmlspecialchars($image) . '" alt="Gallery ' . ($index + 1) . '">';
+                        echo '</div>';
+                    }
+                }
+            }
+        }
+        ?>
     </div>
 </div>

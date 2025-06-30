@@ -35,7 +35,7 @@
                 <?php require_once("templates/theme1/event.php"); ?>
                 
                 <!-- Gallery Panel -->
-                <?php //require_once("templates/theme1/gallery.php"); ?>
+                <?php require_once("templates/theme1/gallery.php"); ?>
                 
                 <!-- RSVP Panel -->
                 <?php require_once("templates/theme1/rsvp.php"); ?>
