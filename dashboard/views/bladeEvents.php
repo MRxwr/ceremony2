@@ -19,6 +19,11 @@ if( isset($_POST["title"]) ){
 		} else {
 			$_POST["background"] = "";
 		}
+        if (is_uploaded_file($_FILES['whatsappImage']['tmp_name'])) {
+			$_POST["whatsappImage"] = uploadImageBannerFreeImageHost($_FILES['whatsappImage']['tmp_name']);
+		} else {
+			$_POST["whatsappImage"] = "";
+		}
 		if( insertDB("events", $_POST) ){
 			header("LOCATION: ?v=Events");
 		}else{
@@ -40,9 +45,15 @@ if( isset($_POST["title"]) ){
 		}
         if (is_uploaded_file($_FILES['background']['tmp_name'])) {
 			$_POST["background"] = uploadImageBannerFreeImageHost($_FILES['background']['tmp_name']);
-		} else {
+		}else{
 			$imageurl = selectDB("events", "`id` = '{$id}'");
 			$_POST["background"] = $imageurl[0]["background"];
+		}
+        if (is_uploaded_file($_FILES['whatsappImage']['tmp_name'])) {
+			$_POST["whatsappImage"] = uploadImageBannerFreeImageHost($_FILES['whatsappImage']['tmp_name']);
+		}else{
+			$imageurl = selectDB("events", "`id` = '{$id}'");
+			$_POST["whatsappImage"] = $imageurl[0]["whatsappImage"];
 		}
 		if( updateDB("events", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Events");
@@ -127,7 +138,9 @@ if( isset($_POST["title"]) ){
 			<div class="col-md-4">
 			<label><?php echo direction("Video","الفيديو") ?></label>
 			<input type="text" name="video" class="form-control" required>
-			</div>            <div class="col-md-12">
+			</div>
+
+			<div class="col-md-12">
 			<label><?php echo direction("Details","التفاصيل") ?></label>
 			<textarea id="details" name="details" class="tinymce"></textarea>
 			</div>
@@ -135,6 +148,19 @@ if( isset($_POST["title"]) ){
             <div class="col-md-12">
 			<label><?php echo direction("Terms","الشروط") ?></label>
 			<textarea id="terms" name="terms" class="tinymce"></textarea>
+			</div>
+
+			<div class="col-md-4">
+			<div class="file">
+			<input class="form-control" type="file" name="whatsappImage" >
+			<img src="" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px; display:none" id="whatsappImagePreview" alt="<?php echo direction("WhatsApp Image","صورة الواتساب") ?>">
+			</div>
+			</div>
+
+			<div class="col-md-4">
+			<div class="text">
+			<input class="form-control" name="whatsappCaption" placeholder="<?php echo direction("Caption[ for new line use \n]","وصف [ لاستخدام سطر جديد استخدم \n]") ?>">
+			</div>
 			</div>
 			
 			<div class="col-md-6" style="margin-top:10px">
@@ -198,6 +224,8 @@ if( isset($_POST["title"]) ){
 					<label id="location<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["location"]?></label>
 					<label id="venueName<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["venueName"]?></label>
 					<label id="venueAddress<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["venueAddress"]?></label>
+					<label id="whatsappCaption<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["whatsappCaption"]?></label>
+					<label id="whatsappImage<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["whatsappImage"]?></label>
 					<a href="<?php echo "/{$events[$i]["code"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("View Event","عرض المناسبة") ?>" target="_blank"><i class="mr-25 fa fa-eye text-black"></i></a>
 					<a href="<?php echo "?v=Invitees&eventId={$events[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Invitees","الدعوات") ?>"><i class="mr-25 fa fa-users text-primary"></i></a>
 					<a id="<?php echo $events[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-gray m-r-10"></i></a>
@@ -230,8 +258,14 @@ if( isset($_POST["title"]) ){
 		$("input[name=venueAddress]").val($("#venueAddress"+id).html());
 		$("input[name=background]").prop("required", false);
 		$("select[name=categoryId]").val($("#categoryId"+id).html());
-		$("input[name=update]").val(id);
-		
+		$("input[name=whatsappCaption]").val($("#whatsappCaption"+id).html());
+		$("input[name=whatsappImage]").prop("required", false);
+		// Show WhatsApp image preview if available
+		var whatsappImage = $("#whatsappImage"+id).html();
+		if (whatsappImage != "") {
+			$("#whatsappImagePreview").attr("src", "../logos/"+whatsappImage);
+		}
+
 		// Set TinyMCE content with a small delay to ensure editors are ready
 		setTimeout(function() {
 			var detailsEditor = tinymce.get('details');

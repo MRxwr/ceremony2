@@ -757,7 +757,7 @@ if ($currList = getCurr()) {
 
 						<div class="col-md-4">
 						<div class="text">
-							<input class="form-control" name="whatsappNoti[caption]" value="<?php echo $wSelected = isset($whatsappNoti["caption"]) ? "{$whatsappNoti["caption"]}" : "" ?>" placeholder="<?php echo direction("Caption","الوصف") ?>">
+							<input class="form-control" name="whatsappNoti[caption]" value="<?php echo $wSelected = isset($whatsappNoti["caption"]) ? "{$whatsappNoti["caption"]}" : "" ?>" placeholder="<?php echo direction("Caption[ for new line use \n]","وصف [ لاستخدام سطر جديد استخدم \n]") ?>">
 						</div>
 						</div>
 					</div>
