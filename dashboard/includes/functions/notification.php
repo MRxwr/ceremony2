@@ -285,6 +285,7 @@ function whatsappUltraMsg($order){
 function whatsappUltraMsgImage($to,$eventId){
 	if( $whatsappNoti = selectDB("settings","`id` = '1'") ){
 		$messageDetails = json_decode($whatsappNoti[0]["whatsappNoti"],true);
+		var_dump($messageDetails);die();
 		if( $messageDetails["status"] != 1 ){
 			$data = array();
 		}else{
@@ -292,14 +293,13 @@ function whatsappUltraMsgImage($to,$eventId){
 				$messageDetails["caption"] = "{$event[0]["whatsappCaption"]}";
 				$messageDetails["image"] = "https://ceremony.createkuwait.com/logos/{$event[0]["whatsappImage"]}";
 			}
-			var_dump($messageDetails);die();
+			
 			$data = array(
 				'token' => "{$whatsappNoti[0]["whatsappToken"]}",
 				'to' => "{$to}",
 				'image' => "{$messageDetails["image"]}",
 				'caption' => "{$messageDetails["caption"]}",
 			);
-			var_dump($data . "\n {$messageDetails["InstanceId"]}");die();
 			$curl = curl_init();
 			curl_setopt_array($curl, array(
 				CURLOPT_URL => "https://api.ultramsg.com/{$messageDetails["InstanceId"]}/messages/image",
