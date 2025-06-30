@@ -521,4 +521,9 @@
             opacity: 0;
         }
     }
+    
+    [dir="rtl"] .form-select {
+        background-position: left 1rem center;
+        text-align: right;
+    }
 </style>
