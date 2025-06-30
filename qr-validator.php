@@ -118,7 +118,8 @@ require_once("dashboard/includes/functions.php");
                                                         <strong>Event:</strong> <?php echo htmlspecialchars($eventData['title']); ?><br>
                                                         <strong>Date:</strong> <?php echo date('F j, Y', strtotime($eventData['eventDate'])); ?><br>
                                                         <strong>Time:</strong> <?php echo date('g:i A', strtotime($eventData['eventTime'])); ?><br>
-                                                        <strong>Location:</strong> <?php echo htmlspecialchars($eventData['location']); ?>
+                                                        <strong>Venue:</strong> <?php echo htmlspecialchars($eventData['venueName'] ?? 'N/A'); ?><br>
+                                                        <strong>Address:</strong> <?php echo htmlspecialchars($eventData['venueAddress'] ?? $eventData['location'] ?? 'N/A'); ?>
                                                     </div>
                                                 </div>
                                                 <?php if (!empty($inviteeData['message'])): ?>
