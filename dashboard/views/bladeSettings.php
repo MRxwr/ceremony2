@@ -737,12 +737,6 @@ if ($currList = getCurr()) {
 						</div>
 
 						<div class="col-md-4">
-						<div class="file">
-						<input class="form-control" type="file" name="whatsappImage" >
-						</div>
-						</div>
-
-						<div class="col-md-4">
 						<div class="text">
 						<input class="form-control" name="whatsappNoti[InstanceId]" value="<?php echo $wSelected = isset($whatsappNoti["InstanceId"]) ? "{$whatsappNoti["InstanceId"]}" : "" ?>" placeholder="<?php echo direction("Instance Id","معرف الموقع") ?>">
 						</div>
@@ -754,10 +748,16 @@ if ($currList = getCurr()) {
 						</div>
 						</div>
 
-						<div class="col-md-12">
+						<div class="col-md-4">
+							<div class="file">
+								<input class="form-control" type="file" name="whatsappImage" >
+								<img src="<?php echo $whatsappNoti["image"] ?>" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px;">
+							</div>
+						</div>
+
+						<div class="col-md-4">
 						<div class="text">
-						<textarea id="caption" name="whatsappNoti[caption]" class="tinymce"></textarea>
-						<img src="<?php echo $whatsappNoti["image"] ?>" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px;">
+							<input class="form-control" name="whatsappNoti[caption]" value="<?php echo $wSelected = isset($whatsappNoti["caption"]) ? "{$whatsappNoti["caption"]}" : "" ?>" placeholder="<?php echo direction("Caption","الوصف") ?>">
 						</div>
 						</div>
 					</div>
@@ -1024,18 +1024,3 @@ if ($currList = getCurr()) {
 
 </div>
 </form>
-
-<script>
-setTimeout(function() {
-	var detailsEditor = tinymce.get('details');
-	if (detailsEditor) {
-		detailsEditor.setContent($("#details"+id).html());
-	}
-}, 100);
-</script>
-
-<!-- Tinymce JavaScript -->
-<script src="../vendors/bower_components/tinymce/tinymce.min.js"></script>
-					
-<!-- Tinymce Wysuhtml5 Init JavaScript -->
-<script src="dist/js/tinymce-data.js"></script>
