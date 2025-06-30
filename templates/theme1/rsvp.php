@@ -17,7 +17,7 @@ if ( $invitee[0]["isConfirmed"] != 1 ){
                 <option value="" selected disabled><?php echo direction("Number of Guests","عدد الحضور") ?></option>
                 <?php 
                 for ($i = 1; $i <= $invitee[0]["attendees"]; $i++) {
-                    echo "<option value='{$i}'>{$i} " . direction("Guest" . ($i > 1 ? "s" : ""), ($i > 1 ? "ضيف" : "ضيوف")) . "</option>";
+                    echo "<option value='{$i}'>{$i} " . direction("Guest" . ($i > 1 ? "s" : ""), ($i > 1 ? "ضيوف" : "ضيف")) . "</option>";
                 }
                 ?>
             </select>
