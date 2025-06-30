@@ -74,7 +74,7 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
     
-    // Form Validation
+    // Form Validation and Submission
     var rsvpForm = document.getElementById('rsvpForm');
     if (rsvpForm) {
         rsvpForm.addEventListener('submit', function(e) {
@@ -87,23 +87,82 @@
             const attendance = formData.get('isConfirmed');
             
             if (!fullName || !mobile1 || !guests || !attendance) {
-                alert('Please fill in all required fields');
+                alert('<?php echo direction("Please fill in all required fields","يرجى ملء جميع الحقول المطلوبة") ?>');
                 return;
             }
 
-            // mobile validation all mubers min 8 and most 12
+            // mobile validation all numbers min 8 and max 12
             if (mobile1 && (mobile1.length < 8 || mobile1.length > 12 || isNaN(mobile1))) {
-                alert('Please enter a valid phone number');
+                alert('<?php echo direction("Please enter a valid phone number","يرجى إدخال رقم هاتف صحيح") ?>');
                 return;
             }
             
-            // Success message
-            alert('Thank you for your RSVP! We look forward to celebrating with you.');
-            this.reset();
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = '<?php echo direction("Sending...","جاري الإرسال...") ?>';
             
-            // Navigate back to home
-            var homeTab = document.querySelector('[data-panel="home"]');
-            if (homeTab) homeTab.click();
+            // Prepare form data for API
+            const apiFormData = new FormData();
+            apiFormData.append('systemCode', '<?php echo $event["code"]; ?>');
+            apiFormData.append('i', '<?php echo $_GET["i"] ?? ""; ?>');
+            apiFormData.append('name', fullName);
+            apiFormData.append('mobile', mobile1);
+            apiFormData.append('attendees', guests);
+            apiFormData.append('isConfirmed', attendance);
+            apiFormData.append('message', formData.get('message') || '');
+            apiFormData.append('rsvp', attendance === '1' ? 'yes' : 'no');
+            
+            // Send to API
+            fetch('requests/views/apiRsvp.php', {
+                method: 'POST',
+                body: apiFormData
+            })
+            .then(response => response.json())
+            .then(data => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                
+                if (data.status === 'success' || data.msg === 'RSVP updated successfully.') {
+                    // Success - show thank you message
+                    alert('<?php echo direction("Thank you for your RSVP! We look forward to celebrating with you.","شكراً لتأكيد حضورك! نتطلع للاحتفال معك.") ?>');
+                    
+                    // Update the RSVP panel content to show thank you message
+                    const rsvpPanel = document.getElementById('rsvp-panel');
+                    if (rsvpPanel) {
+                        rsvpPanel.innerHTML = `
+                            <h3 class="text-center mb-3"><?php echo direction("RSVP","الدعوه") ?></h3>
+                            <div class="decorative-divider"></div>
+                            <div class="text-center">
+                                <div class="mb-4">
+                                    <i class="bi bi-check-circle-fill" style="font-size: 4rem; color: #28a745;"></i>
+                                </div>
+                                <h4 class="mb-3"><?php echo direction("Thank You!","شكراً لك!") ?></h4>
+                                <p class="mb-3"><?php echo direction("Thank you for your RSVP! We look forward to celebrating with you.","شكراً لتأكيد حضورك! نتطلع للاحتفال معك.") ?></p>
+                                <p class="mb-4"><?php echo direction("If you have any questions, please contact us.","إذا كان لديك أي استفسارات، يرجى الاتصال بنا.") ?></p>
+                                <button type="button" class="btn-submit" onclick="document.querySelector('[data-panel=\\"home\\"]').click();">
+                                    <?php echo direction("Back to Home","العودة للصفحة الرئيسية") ?>
+                                </button>
+                            </div>
+                        `;
+                    }
+                    
+                    // Optional: Add confetti effect
+                    createConfetti();
+                    
+                } else {
+                    // Error - show error message
+                    const errorMsg = data.msg || '<?php echo direction("An error occurred. Please try again.","حدث خطأ. يرجى المحاولة مرة أخرى.") ?>';
+                    alert(errorMsg);
+                }
+            })
+            .catch(error => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                console.error('Error:', error);
+                alert('<?php echo direction("Network error. Please check your connection and try again.","خطأ في الشبكة. يرجى التحقق من الاتصال والمحاولة مرة أخرى.") ?>');
+            });
         });
     }
     
@@ -487,28 +546,56 @@
         }, 500);
     });
     
-    // Optional: Add confetti effect on RSVP submission
+    // Enhanced confetti effect for RSVP success
     function createConfetti() {
-        const colors = ['#D4AF37', '#F8D7DA', '#FDE2E4', '#FADCD9'];
-        const confettiCount = 50;
+        const colors = ['#D4AF37', '#F8D7DA', '#FDE2E4', '#FADCD9', '#FFD700', '#FF69B4', '#98FB98'];
+        const confettiCount = 100;
         
         for (let i = 0; i < confettiCount; i++) {
             const confetti = document.createElement('div');
             confetti.style.cssText = `
                 position: fixed;
-                width: 10px;
-                height: 10px;
+                width: ${Math.random() * 15 + 5}px;
+                height: ${Math.random() * 15 + 5}px;
                 background: ${colors[Math.floor(Math.random() * colors.length)]};
                 left: ${Math.random() * 100}%;
-                top: -10px;
+                top: -20px;
                 opacity: 1;
                 transform: rotate(${Math.random() * 360}deg);
-                animation: fall ${Math.random() * 3 + 2}s linear;
-                z-index: 9999;
+                animation: fall ${Math.random() * 4 + 3}s linear;
+                z-index: 10000;
+                border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
             `;
             document.body.appendChild(confetti);
             
-            setTimeout(() => confetti.remove(), 5000);
+            setTimeout(() => {
+                if (confetti.parentNode) {
+                    confetti.remove();
+                }
+            }, 7000);
+        }
+        
+        // Add some heart confetti too
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '💖';
+            heart.style.cssText = `
+                position: fixed;
+                font-size: ${Math.random() * 20 + 15}px;
+                left: ${Math.random() * 100}%;
+                top: -30px;
+                opacity: 1;
+                animation: fall ${Math.random() * 4 + 3}s linear;
+                z-index: 10000;
+                pointer-events: none;
+            `;
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                if (heart.parentNode) {
+                    heart.remove();
+                }
+            }, 7000);
         }
     }
     
