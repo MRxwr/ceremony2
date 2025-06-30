@@ -158,4 +158,14 @@ function str_lreplace($search, $replace, $subject){
     return $subject;
 }
 
+// Encryption function
+function encryptData($plaintext, $key, $iv) {
+    return base64_encode(openssl_encrypt($plaintext, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv));
+}
+
+// Decryption function
+function decryptData($ciphertext, $key, $iv) {
+    return openssl_decrypt(base64_decode($ciphertext), 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
+}
+
 ?>
