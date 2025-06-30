@@ -159,6 +159,7 @@ if( isset($_POST["name"]) ){
                 <td class="text-nowrap"><?php echo $invitationStatus ?></td>
                 <td class="text-nowrap"><?php echo $status ?></td>
 				<td class="text-nowrap">
+					<a href="<?php echo "/{$events[$i]["code"]}?i={$invitees[$i]["code"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("View RSVP","عرض الرسائل") ?>" target="_blank"><i class="mr-25 fa fa-eye text-black"></i></a>
                     <a href="<?php echo "?v={$_GET["v"]}&isSent={$invitees[$i]["id"]}&eventId={$invitees[$i]["eventId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Send Invitation","ارسال الدعوة") ?>" onclick="return confirm('are you sure you want to send this invitation?')" ><i class="mr-25 fa fa-send text-primary"></i>
                     </a>
                     <a href="<?php echo "?v={$_GET["v"]}&isConfirmed={$invitees[$i]["id"]}&eventId={$invitees[$i]["eventId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Confirm","تاكيد") ?>" onclick="return confirm('are you sure you want to confirm this invitee?')" ><i class="mr-25 fa fa-check text-success"></i>
