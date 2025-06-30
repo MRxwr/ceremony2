@@ -118,7 +118,15 @@ if( isset($_POST["title"]) ){
 <div class="panel-body">
 	<form class="" method="POST" action="" enctype="multipart/form-data">
 		<div class="row m-0">
-            <div class="col-md-12">
+            <div class="col-md-6">
+			<label><?php echo direction("Language","اللغة") ?></label>
+				<select name="language" class="form-control" required>
+					<option value="ltr" <?php echo (isset($_POST["language"]) && $_POST["language"] == "en") ? "selected" : "" ?>>English</option>
+					<option value="rtl" <?php echo (isset($_POST["language"]) && $_POST["language"] == "ar") ? "selected" : "" ?>>العربية</option>
+				</select>
+			</div>
+
+			<div class="col-md-6">
 			<label><?php echo direction("Category","القسم") ?></label>
 				<select name="categoryId" class="form-control" required>
 					<?php
@@ -279,6 +287,7 @@ if( isset($_POST["title"]) ){
 					<label id="venueAddress<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["venueAddress"]?></label>
 					<label id="whatsappCaption<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["whatsappCaption"]?></label>
 					<label id="whatsappImage<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["whatsappImage"]?></label>
+					<label id="language<?php echo $events[$i]["id"]?>" style="display:none"><?php echo $events[$i]["language"]?></label>
 					<label id="gallery<?php echo $events[$i]["id"]?>" style="display:none"><?php echo htmlspecialchars($events[$i]["gallery"])?></label>
 					<a href="<?php echo "/{$events[$i]["code"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("View Event","عرض المناسبة") ?>" target="_blank"><i class="mr-25 fa fa-eye text-black"></i></a>
 					<a href="<?php echo "?v=Invitees&eventId={$events[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Invitees","الدعوات") ?>"><i class="mr-25 fa fa-users text-primary"></i></a>
@@ -379,6 +388,7 @@ if( isset($_POST["title"]) ){
 		$("input[name=venueAddress]").val($("#venueAddress"+id).html());
 		$("input[name=background]").prop("required", false);
 		$("select[name=categoryId]").val($("#categoryId"+id).html());
+		$("select[name=language]").val($("#language"+id).html());
 		$("input[name=whatsappCaption]").val($("#whatsappCaption"+id).html());
 		$("input[name=whatsappImage]").prop("required", false);
 		

@@ -108,11 +108,33 @@
     }
     
     // Gallery lightbox (enhanced version)
+    let galleryInitialized = false;
+    
     function initializeGallery() {
-        document.querySelectorAll('.gallery-item').forEach((item, index) => {
-            item.addEventListener('click', function() {
+        // Prevent multiple initializations
+        if (galleryInitialized) {
+            return;
+        }
+        
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        if (galleryItems.length === 0) {
+            return; // No gallery items found, try again later
+        }
+        
+        galleryInitialized = true;
+        
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
                 const img = this.querySelector('img');
                 if (!img) return;
+                
+                // Check if modal already exists to prevent duplicates
+                if (document.querySelector('.gallery-modal')) {
+                    return;
+                }
                 
                 // Create modal overlay
                 const modal = document.createElement('div');
@@ -179,7 +201,6 @@
                 `;
                 
                 // Add navigation if there are multiple images
-                const galleryItems = document.querySelectorAll('.gallery-item');
                 let currentIndex = Array.from(galleryItems).indexOf(item);
                 
                 if (galleryItems.length > 1) {
@@ -249,13 +270,13 @@
                         } else if (e.key === 'ArrowRight') {
                             nextBtn.click();
                         } else if (e.key === 'Escape') {
-                            modal.click();
+                            closeModal();
                         }
                     }
                     
                     document.addEventListener('keydown', handleKeyPress);
                     
-                    // Cleanup function
+                    // Cleanup function for keyboard listener
                     modal.addEventListener('click', function() {
                         document.removeEventListener('keydown', handleKeyPress);
                     });
@@ -301,7 +322,10 @@
                     }
                 });
                 
-                closeBtn.addEventListener('click', closeModal);
+                closeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    closeModal();
+                });
                 
                 // Prevent image click from closing modal
                 modalImg.addEventListener('click', function(e) {
@@ -312,13 +336,20 @@
     }
     
     // Initialize gallery when DOM is ready
-    document.addEventListener('DOMContentLoaded', initializeGallery);
+    document.addEventListener('DOMContentLoaded', function() {
+        // Try to initialize immediately, or wait for gallery tab
+        setTimeout(initializeGallery, 500);
+    });
     
-    // Re-initialize gallery when switching to gallery tab (in case images load dynamically)
+    // Try to initialize when switching to gallery tab if not already initialized
     tabs.forEach(tab => {
         if (tab.getAttribute('data-panel') === 'gallery') {
             tab.addEventListener('click', function() {
-                setTimeout(initializeGallery, 100);
+                setTimeout(function() {
+                    if (!galleryInitialized) {
+                        initializeGallery();
+                    }
+                }, 100);
             });
         }
     });

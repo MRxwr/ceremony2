@@ -12,13 +12,28 @@
         <span class="nav-tab-label"><?php echo direction("Date","الموعد") ?></span>
     </li>
     <?php 
+    // Only show gallery tab if there are actual images
     if( !empty($event["gallery"]) ){
-        ?>
-        <li class="nav-tab" data-panel="gallery">
-        <i class="bi bi-camera"></i>
-        <span class="nav-tab-label"><?php echo direction("Gallery","الصور") ?></span>
-    </li>
-    <?php
+        $galleryImages = json_decode($event["gallery"], true);
+        if( is_array($galleryImages) && count($galleryImages) > 0 ){
+            // Check if there's at least one non-empty image
+            $hasImages = false;
+            foreach($galleryImages as $image){
+                if(!empty($image)){
+                    $hasImages = true;
+                    break;
+                }
+            }
+            
+            if($hasImages){
+                ?>
+                <li class="nav-tab" data-panel="gallery">
+                <i class="bi bi-camera"></i>
+                <span class="nav-tab-label"><?php echo direction("Gallery","الصور") ?></span>
+            </li>
+            <?php
+            }
+        }
     }
     if ( isset($_GET["i"]) && !empty($_GET["i"]) ) {
     ?>
