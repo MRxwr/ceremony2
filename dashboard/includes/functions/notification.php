@@ -297,6 +297,7 @@ function whatsappUltraMsgImage($to,$eventId){
 				'image' => "{$messageDetails["image"]}",
 				'caption' => "{$messageDetails["caption"]}",
 			);
+			var_dump($data);die();
 			$curl = curl_init();
 			curl_setopt_array($curl, array(
 				CURLOPT_URL => "https://api.ultramsg.com/{$messageDetails["InstanceId"]}/messages/image",
