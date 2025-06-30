@@ -161,7 +161,7 @@
                                 <h4 class="mb-3"><?php echo direction("Thank You!","شكراً لك!") ?></h4>
                                 <p class="mb-3"><?php echo direction("Thank you for your RSVP! We look forward to celebrating with you.","شكراً لتأكيد حضورك! نتطلع للاحتفال معك.") ?></p>
                                 <p class="mb-4"><?php echo direction("If you have any questions, please contact us.","إذا كان لديك أي استفسارات، يرجى الاتصال بنا.") ?></p>
-                                <button type="button" class="btn-submit" onclick="document.querySelector('[data-panel=\\"home\\"]').click();">
+                                <button type="button" class="btn-submit" onclick="document.querySelector('[data-panel=&quot;home&quot;]').click();">
                                     <?php echo direction("Back to Home","العودة للصفحة الرئيسية") ?>
                                 </button>
                             </div>

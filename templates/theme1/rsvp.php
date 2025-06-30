@@ -44,12 +44,17 @@ if ( $invitee[0]["isConfirmed"] != 1 ){
 <div class="content-panel" id="rsvp-panel">
     <h3 class="text-center mb-3"><?php echo direction("RSVP","الدعوه") ?></h3>
     <div class="decorative-divider"></div>
-
-    <p class="text-center"><?php echo direction("Thank you for your RSVP! We look forward to celebrating with you.","شكرا لتأكيد حضورك! نتطلع للاحتفال معك.") ?></p>
-
-    <p class="text-center"><?php echo direction("If you have any questions, please contact us.","إذا كان لديك أي استفسارات، يرجى الاتصال بنا.") ?></p>
-    
-    <button class="btn btn-primary" onclick="document.querySelector('[data-panel=\"home\"]').click();"><?php echo direction("Back to Home","العودة للصفحة الرئيسية") ?></button>
+    <div class="text-center">
+        <div class="mb-4">
+            <i class="bi bi-check-circle-fill" style="font-size: 4rem; color: #28a745;"></i>
+        </div>
+        <h4 class="mb-3"><?php echo direction("Thank You!","شكراً لك!") ?></h4>
+        <p class="mb-3"><?php echo direction("Thank you for your RSVP! We look forward to celebrating with you.","شكراً لتأكيد حضورك! نتطلع للاحتفال معك.") ?></p>
+        <p class="mb-4"><?php echo direction("If you have any questions, please contact us.","إذا كان لديك أي استفسارات، يرجى الاتصال بنا.") ?></p>
+        <button type="button" class="btn-submit" onclick="document.querySelector('[data-panel=&quot;home&quot;]').click();">
+            <?php echo direction("Back to Home","العودة للصفحة الرئيسية") ?>
+        </button>
+    </div>
 </div>
 <?php
 }
