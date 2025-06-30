@@ -209,7 +209,6 @@ if( isset($_POST["title"]) ){
 		}
 		?>
 		</tbody>
-		
 	</table>
 </div>
 </div>

@@ -15,9 +15,22 @@ if( isset($_GET["isConfirmed"]) && !empty($_GET["isConfirmed"]) ){
 	}
 }
 if( isset($_GET["isSent"]) && !empty($_GET["isSent"]) ){
-	if( updateDB('invitees',array('invitationSent'=> '1'),"`id` = '{$_GET["isSent"]}'") ){
-		header("LOCATION: ?v=Invitees&eventId={$_GET["eventId"]}");
+	if( $to = selectDB("invitees","`id` = '{$_GET["isSent"]}'") ){
+		$to = $to[0]["countryCode"] . $to[0]["mobile"];
+		whatsappUltraMsgImage($to);
+		if( updateDB('invitees',array('invitationSent'=> '1'),"`id` = '{$_GET["isSent"]}'") ){
+			header("LOCATION: ?v=Invitees&eventId={$_GET["eventId"]}");
+		}
+	}else{
+		?>
+		<script>
+			alert("Could not find the invitee to send the invitation.");
+			window.location.href = "?v=Invitees&eventId=<?php echo $_GET["eventId"] ?>";
+		</script>
+		<?php
+		return;
 	}
+	
 }
 
 if( isset($_POST["name"]) ){
