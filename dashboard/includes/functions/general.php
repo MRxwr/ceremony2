@@ -17,6 +17,7 @@ function direction($valEn,$valAr){
 	GLOBAL $_GET;
 	$event = selectDB("events","`code` = '{$_GET["systemCode"]}'");
 	$directionHTML = $event[0]["langauge"]; ;
+	var_dump($directionHTML);
 	if ( $directionHTML == "rtl" ){
 		$response = $valAr;
 	}else{
