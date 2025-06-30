@@ -208,9 +208,9 @@
                              getComputedStyle(document.documentElement).direction === 'rtl';
                 
                 if (galleryItems.length > 1) {
-                    // Previous button (left arrow for LTR, right arrow for RTL)
+                    // Previous button - positioned according to reading direction
                     const prevBtn = document.createElement('div');
-                    prevBtn.innerHTML = isRTL ? '&#10095;' : '&#10094;';
+                    prevBtn.innerHTML = '&#10094;'; // Always left arrow for "previous"
                     prevBtn.style.cssText = `
                         position: absolute;
                         ${isRTL ? 'right' : 'left'}: 20px;
@@ -227,9 +227,9 @@
                         transition: background 0.3s ease;
                     `;
                     
-                    // Next button (right arrow for LTR, left arrow for RTL)
+                    // Next button - positioned according to reading direction
                     const nextBtn = document.createElement('div');
-                    nextBtn.innerHTML = isRTL ? '&#10094;' : '&#10095;';
+                    nextBtn.innerHTML = '&#10095;'; // Always right arrow for "next"
                     nextBtn.style.cssText = `
                         position: absolute;
                         ${isRTL ? 'left' : 'right'}: 20px;
@@ -255,28 +255,18 @@
                         currentIndex = index;
                     }
                     
-                    // Previous/Next logic adjusted for RTL
+                    // Previous/Next logic - same for both RTL and LTR
                     prevBtn.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        if (isRTL) {
-                            // In RTL, "previous" means go to next image
-                            currentIndex = currentIndex < galleryItems.length - 1 ? currentIndex + 1 : 0;
-                        } else {
-                            // In LTR, "previous" means go to previous image
-                            currentIndex = currentIndex > 0 ? currentIndex - 1 : galleryItems.length - 1;
-                        }
+                        // Previous always goes backward in sequence
+                        currentIndex = currentIndex > 0 ? currentIndex - 1 : galleryItems.length - 1;
                         showImage(currentIndex);
                     });
                     
                     nextBtn.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        if (isRTL) {
-                            // In RTL, "next" means go to previous image
-                            currentIndex = currentIndex > 0 ? currentIndex - 1 : galleryItems.length - 1;
-                        } else {
-                            // In LTR, "next" means go to next image
-                            currentIndex = currentIndex < galleryItems.length - 1 ? currentIndex + 1 : 0;
-                        }
+                        // Next always goes forward in sequence
+                        currentIndex = currentIndex < galleryItems.length - 1 ? currentIndex + 1 : 0;
                         showImage(currentIndex);
                     });
                     
@@ -284,15 +274,15 @@
                     function handleKeyPress(e) {
                         if (e.key === 'ArrowLeft') {
                             if (isRTL) {
-                                nextBtn.click(); // In RTL, left arrow should go "next"
+                                nextBtn.click(); // In RTL, left arrow should go "next" (right side button)
                             } else {
-                                prevBtn.click(); // In LTR, left arrow should go "previous"
+                                prevBtn.click(); // In LTR, left arrow should go "previous" (left side button)
                             }
                         } else if (e.key === 'ArrowRight') {
                             if (isRTL) {
-                                prevBtn.click(); // In RTL, right arrow should go "previous"
+                                prevBtn.click(); // In RTL, right arrow should go "previous" (right side button)
                             } else {
-                                nextBtn.click(); // In LTR, right arrow should go "next"
+                                nextBtn.click(); // In LTR, right arrow should go "next" (right side button)
                             }
                         } else if (e.key === 'Escape') {
                             closeModal();
