@@ -16,6 +16,11 @@ if (isset($_POST["title"])) {
 	$bill = str_replace($color[0]["headerButton"], $_POST["headerButton"], $bill);
 	file_put_contents('../templates/bill.php', $bill);
 	
+	if (is_uploaded_file($_FILES['whatsappImage']['tmp_name'])) {
+		$filenewname = uploadImageBannerFreeImageHost($_FILES['whatsappImage']['tmp_name']);
+		$_POST["whatsappNoti"]["image"] = $filenewname;
+	}
+
 	// update db \\
 	$sql = "UPDATE `s_media` 
 	SET
@@ -733,7 +738,7 @@ if ($currList = getCurr()) {
 
 						<div class="col-md-4">
 						<div class="file">
-						<input class="form-control" type="file" name="whatsappNoti[image]" >
+						<input class="form-control" type="file" name="whatsappImage" >
 						</div>
 						</div>
 
