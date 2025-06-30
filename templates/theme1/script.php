@@ -211,34 +211,46 @@
         }
     }
     
-    // Preload images for smooth transitions
+    // Gallery images array from PHP
+    var galleryImages = [];
     <?php
     if (isset($event['gallery']) && !empty($event['gallery'])) {
-        ?>
-        function preloadImages() {
-            const imageUrls = [
-                '{{BridePhoto}}',
-                '{{GroomPhoto}}',
-                '{{GalleryImage1}}',
-                '{{GalleryImage2}}',
-                '{{GalleryImage3}}',
-                '{{GalleryImage4}}',
-                '{{GalleryImage5}}',
-                '{{GalleryImage6}}',
-                '{{HeroBackgroundImage}}'
-            ];
-            
-            imageUrls.forEach(url => {
-                const img = new Image();
-                img.src = url;
-            });
+        $galleryImages = json_decode($event['gallery'], true);
+        if (is_array($galleryImages) && count($galleryImages) > 0) {
+            echo "galleryImages = [";
+            foreach($galleryImages as $index => $image) {
+                if (!empty($image)) {
+                    echo "'logos/" . addslashes($image) . "'";
+                    if ($index < count($galleryImages) - 1) echo ",";
+                }
+            }
+            echo "];";
         }
-        
-        // Call preload when page loads
-        preloadImages();
-        <?php
     }
     ?>
+    
+    // Preload images for smooth transitions
+    function preloadImages() {
+        const imageUrls = [
+            <?php if (!empty($event['background'])) echo "'logos/" . addslashes($event['background']) . "',"; ?>
+            <?php if (!empty($event['whatsappImage'])) echo "'logos/" . addslashes($event['whatsappImage']) . "',"; ?>
+        ];
+        
+        // Add gallery images to preload list
+        if (galleryImages.length > 0) {
+            imageUrls.push(...galleryImages);
+        }
+        
+        imageUrls.forEach(url => {
+            if (url && url !== '') {
+                const img = new Image();
+                img.src = url;
+            }
+        });
+    }
+    
+    // Call preload when page loads
+    preloadImages();
     
     
     // Add entrance animation to card
