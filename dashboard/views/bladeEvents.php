@@ -156,7 +156,7 @@ if( isset($_POST["title"]) ){
 			</div>
 			</div>
 
-			<div class="col-md-6">
+			<div class="col-md-8">
 			<div class="text">
 			<input class="form-control" name="whatsappCaption" placeholder="<?php echo direction("Caption[ for new line use \n]","وصف [ لاستخدام سطر جديد استخدم \n]") ?>">
 			</div>
@@ -168,7 +168,7 @@ if( isset($_POST["title"]) ){
 			</div>
 			</div>
 
-			<div class="col-md-6">
+			<div class="col-md-8">
 			<div class="text">
 			</div>
 			</div>
