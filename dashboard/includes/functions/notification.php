@@ -285,11 +285,11 @@ function whatsappUltraMsg($order){
 function whatsappUltraMsgImage($to,$eventId){
 	if( $whatsappNoti = selectDB("settings","`id` = '1'") ){
 		$messageDetails = json_decode($whatsappNoti[0]["whatsappNoti"],true);
-		var_dump($messageDetails);die();
 		if( $messageDetails["status"] != 1 ){
 			$data = array();
 		}else{
 			if( $event = selectDB("events","`id` = '{$eventId}'") ){
+				var_dump($event);die();
 				$messageDetails["caption"] = "{$event[0]["whatsappCaption"]}";
 				$messageDetails["image"] = "https://ceremony.createkuwait.com/logos/{$event[0]["whatsappImage"]}";
 			}
