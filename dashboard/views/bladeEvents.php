@@ -265,6 +265,7 @@ if( isset($_POST["title"]) ){
 		var whatsappImage = $("#whatsappImage"+id).html();
 		if (whatsappImage != "") {
 			$("#whatsappImagePreview").attr("src", "../logos/"+whatsappImage);
+			$("#whatsappImagePreview").attr("style", "height:250px; width:250px; border-radius: 10px; margin-top: 10px; display:block");
 		}
 
 		// Set TinyMCE content with a small delay to ensure editors are ready
