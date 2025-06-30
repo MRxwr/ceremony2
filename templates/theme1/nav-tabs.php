@@ -11,11 +11,15 @@
         <i class="bi bi-calendar-heart"></i>
         <span class="nav-tab-label"><?php echo direction("Date","الموعد") ?></span>
     </li>
-    <li class="nav-tab" data-panel="gallery">
+    <?php 
+    if( empty($event["gallery"]) ){
+        ?>
+        <li class="nav-tab" data-panel="gallery">
         <i class="bi bi-camera"></i>
         <span class="nav-tab-label"><?php echo direction("Gallery","الصور") ?></span>
     </li>
-    <?php 
+    <?php
+    }
     if ( isset($_GET["i"]) && !empty($_GET["i"]) ) {
     ?>
     <li class="nav-tab" data-panel="rsvp">
