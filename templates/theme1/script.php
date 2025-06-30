@@ -107,40 +107,220 @@
         });
     }
     
-    // Gallery lightbox (simple version)
-    document.querySelectorAll('.gallery-item').forEach(item => {
-        item.addEventListener('click', function() {
-            const img = this.querySelector('img');
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.9);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 9999;
-                cursor: pointer;
-            `;
-            
-            const modalImg = document.createElement('img');
-            modalImg.src = img.src;
-            modalImg.style.cssText = `
-                max-width: 90%;
-                max-height: 90%;
-                border-radius: 10px;
-            `;
-            
-            modal.appendChild(modalImg);
-            document.body.appendChild(modal);
-            
-            modal.addEventListener('click', function() {
-                document.body.removeChild(modal);
+    // Gallery lightbox (enhanced version)
+    function initializeGallery() {
+        document.querySelectorAll('.gallery-item').forEach((item, index) => {
+            item.addEventListener('click', function() {
+                const img = this.querySelector('img');
+                if (!img) return;
+                
+                // Create modal overlay
+                const modal = document.createElement('div');
+                modal.className = 'gallery-modal';
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.9);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    cursor: pointer;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                `;
+                
+                // Create image container
+                const imageContainer = document.createElement('div');
+                imageContainer.style.cssText = `
+                    position: relative;
+                    max-width: 90%;
+                    max-height: 90%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                `;
+                
+                // Create modal image
+                const modalImg = document.createElement('img');
+                modalImg.src = img.src;
+                modalImg.alt = img.alt;
+                modalImg.style.cssText = `
+                    max-width: 100%;
+                    max-height: 100%;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+                    transform: scale(0.8);
+                    transition: transform 0.3s ease;
+                `;
+                
+                // Create close button
+                const closeBtn = document.createElement('div');
+                closeBtn.innerHTML = '&times;';
+                closeBtn.style.cssText = `
+                    position: absolute;
+                    top: -40px;
+                    right: -10px;
+                    color: white;
+                    font-size: 40px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    background: rgba(0,0,0,0.5);
+                    transition: background 0.3s ease;
+                `;
+                
+                // Add navigation if there are multiple images
+                const galleryItems = document.querySelectorAll('.gallery-item');
+                let currentIndex = Array.from(galleryItems).indexOf(item);
+                
+                if (galleryItems.length > 1) {
+                    // Previous button
+                    const prevBtn = document.createElement('div');
+                    prevBtn.innerHTML = '&#10094;';
+                    prevBtn.style.cssText = `
+                        position: absolute;
+                        left: 20px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: white;
+                        font-size: 30px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        padding: 10px;
+                        border-radius: 50%;
+                        background: rgba(0,0,0,0.5);
+                        user-select: none;
+                        transition: background 0.3s ease;
+                    `;
+                    
+                    // Next button
+                    const nextBtn = document.createElement('div');
+                    nextBtn.innerHTML = '&#10095;';
+                    nextBtn.style.cssText = `
+                        position: absolute;
+                        right: 20px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: white;
+                        font-size: 30px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        padding: 10px;
+                        border-radius: 50%;
+                        background: rgba(0,0,0,0.5);
+                        user-select: none;
+                        transition: background 0.3s ease;
+                    `;
+                    
+                    // Navigation functions
+                    function showImage(index) {
+                        const targetItem = galleryItems[index];
+                        const targetImg = targetItem.querySelector('img');
+                        modalImg.src = targetImg.src;
+                        modalImg.alt = targetImg.alt;
+                        currentIndex = index;
+                    }
+                    
+                    prevBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        currentIndex = currentIndex > 0 ? currentIndex - 1 : galleryItems.length - 1;
+                        showImage(currentIndex);
+                    });
+                    
+                    nextBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        currentIndex = currentIndex < galleryItems.length - 1 ? currentIndex + 1 : 0;
+                        showImage(currentIndex);
+                    });
+                    
+                    // Keyboard navigation
+                    function handleKeyPress(e) {
+                        if (e.key === 'ArrowLeft') {
+                            prevBtn.click();
+                        } else if (e.key === 'ArrowRight') {
+                            nextBtn.click();
+                        } else if (e.key === 'Escape') {
+                            modal.click();
+                        }
+                    }
+                    
+                    document.addEventListener('keydown', handleKeyPress);
+                    
+                    // Cleanup function
+                    modal.addEventListener('click', function() {
+                        document.removeEventListener('keydown', handleKeyPress);
+                    });
+                    
+                    modal.appendChild(prevBtn);
+                    modal.appendChild(nextBtn);
+                }
+                
+                // Hover effects
+                closeBtn.addEventListener('mouseenter', function() {
+                    this.style.background = 'rgba(255,255,255,0.2)';
+                });
+                closeBtn.addEventListener('mouseleave', function() {
+                    this.style.background = 'rgba(0,0,0,0.5)';
+                });
+                
+                // Assemble modal
+                imageContainer.appendChild(modalImg);
+                imageContainer.appendChild(closeBtn);
+                modal.appendChild(imageContainer);
+                document.body.appendChild(modal);
+                
+                // Animate in
+                setTimeout(() => {
+                    modal.style.opacity = '1';
+                    modalImg.style.transform = 'scale(1)';
+                }, 10);
+                
+                // Close handlers
+                function closeModal() {
+                    modal.style.opacity = '0';
+                    modalImg.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        if (document.body.contains(modal)) {
+                            document.body.removeChild(modal);
+                        }
+                    }, 300);
+                }
+                
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal || e.target === closeBtn) {
+                        closeModal();
+                    }
+                });
+                
+                closeBtn.addEventListener('click', closeModal);
+                
+                // Prevent image click from closing modal
+                modalImg.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
             });
         });
+    }
+    
+    // Initialize gallery when DOM is ready
+    document.addEventListener('DOMContentLoaded', initializeGallery);
+    
+    // Re-initialize gallery when switching to gallery tab (in case images load dynamically)
+    tabs.forEach(tab => {
+        if (tab.getAttribute('data-panel') === 'gallery') {
+            tab.addEventListener('click', function() {
+                setTimeout(initializeGallery, 100);
+            });
+        }
     });
     
     // Add floating hearts dynamically
