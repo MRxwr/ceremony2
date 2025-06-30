@@ -212,27 +212,34 @@
     }
     
     // Preload images for smooth transitions
-    function preloadImages() {
-        const imageUrls = [
-            '{{BridePhoto}}',
-            '{{GroomPhoto}}',
-            '{{GalleryImage1}}',
-            '{{GalleryImage2}}',
-            '{{GalleryImage3}}',
-            '{{GalleryImage4}}',
-            '{{GalleryImage5}}',
-            '{{GalleryImage6}}',
-            '{{HeroBackgroundImage}}'
-        ];
+    <?php
+    if (isset($event['gallery']) && !empty($event['gallery'])) {
+        ?>
+        function preloadImages() {
+            const imageUrls = [
+                '{{BridePhoto}}',
+                '{{GroomPhoto}}',
+                '{{GalleryImage1}}',
+                '{{GalleryImage2}}',
+                '{{GalleryImage3}}',
+                '{{GalleryImage4}}',
+                '{{GalleryImage5}}',
+                '{{GalleryImage6}}',
+                '{{HeroBackgroundImage}}'
+            ];
+            
+            imageUrls.forEach(url => {
+                const img = new Image();
+                img.src = url;
+            });
+        }
         
-        imageUrls.forEach(url => {
-            const img = new Image();
-            img.src = url;
-        });
+        // Call preload when page loads
+        preloadImages();
+        <?php
     }
+    ?>
     
-    // Call preload when page loads
-    preloadImages();
     
     // Add entrance animation to card
     window.addEventListener('load', function() {
