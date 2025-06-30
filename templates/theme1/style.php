@@ -1,4 +1,6 @@
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap');
+    
     :root {
         --rose: #F8D7DA;
         --blush: #FDE2E4;
@@ -22,6 +24,10 @@
         background: linear-gradient(135deg, var(--cream) 0%, var(--blush) 100%);
         min-height: 100vh;
         overflow-x: hidden;
+    }
+    
+    [dir="rtl"] body {
+        font-family: 'Fustat', sans-serif;
     }
     
     h1, h2, h3, h4, h5, h6 {
