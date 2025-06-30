@@ -9,7 +9,7 @@
     <meta property="og:description" content="Join us as we celebrate our special day">
     <meta property="og:image" content="{{OGImage}}">
     
-    <title>{{BrideName}} & {{GroomName}} - Wedding</title>
+    <title><?php echo $event["title"] ?> - Eventee</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="">
