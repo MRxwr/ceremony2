@@ -151,14 +151,14 @@ if( isset($_POST["title"]) ){
 			</div>
 
 			<div class="col-md-4">
-			<div class="file">
+			<label><?php echo direction("WhatsApp Image","صورة الواتساب") ?></label>
 			<input class="form-control" type="file" name="whatsappImage" >
 			<img src="" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px; display:none" id="whatsappImagePreview" alt="<?php echo direction("WhatsApp Image","صورة الواتساب") ?>">
 			</div>
 			</div>
 
 			<div class="col-md-8">
-			<div class="text">
+			<label><?php echo direction("WhatsApp Caption","وصف الواتساب") ?></label>
 			<input class="form-control" name="whatsappCaption" placeholder="<?php echo direction("Caption[ for new line use \n]","وصف [ لاستخدام سطر جديد استخدم \n]") ?>">
 			</div>
 			</div>
