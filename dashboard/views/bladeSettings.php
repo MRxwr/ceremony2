@@ -740,7 +740,7 @@ if ($currList = getCurr()) {
 
 						<div class="col-md-4">
 						<div class="text">
-						<input class="form-control" name="whatsappNoti[InstanceId]" value="<?php echo $wSelected = isset($whatsappNoti["InstanceId"]) ? "{$whatsappNoti["InstanceId"]}" : "" ?>" placeholder="<?php echo direction("Orders Phone","هاتف الطلبات") ?>">
+						<input class="form-control" name="whatsappNoti[InstanceId]" value="<?php echo $wSelected = isset($whatsappNoti["InstanceId"]) ? "{$whatsappNoti["InstanceId"]}" : "" ?>" placeholder="<?php echo direction("Instance Id","معرف الموقع") ?>">
 						</div>
 						</div>
 
@@ -752,7 +752,7 @@ if ($currList = getCurr()) {
 
 						<div class="col-md-12">
 						<div class="text">
-						<textarea id="whatsappCaption" class="form-control" name="whatsappNoti[caption]"><?php echo $wSelected = isset($whatsappNoti["caption"]) ? htmlspecialchars($whatsappNoti["caption"]) : "" ?></textarea>
+						<textarea id="caption" name="whatsappNoti[caption]" class="tinymce"></textarea>
 						</div>
 						</div>
 					</div>
@@ -1020,19 +1020,17 @@ if ($currList = getCurr()) {
 </div>
 </form>
 
-<!-- TinyMCE Scripts -->
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-    tinymce.init({
-        selector: '#whatsappCaption',
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-        height: 300,
-        directionality: 'auto',
-        setup: function(editor) {
-            editor.on('change', function() {
-                tinymce.triggerSave();
-            });
-        }
-    });
+setTimeout(function() {
+	var detailsEditor = tinymce.get('details');
+	if (detailsEditor) {
+		detailsEditor.setContent($("#details"+id).html());
+	}
+}, 100);
 </script>
+
+<!-- Tinymce JavaScript -->
+<script src="../vendors/bower_components/tinymce/tinymce.min.js"></script>
+					
+<!-- Tinymce Wysuhtml5 Init JavaScript -->
+<script src="dist/js/tinymce-data.js"></script>
