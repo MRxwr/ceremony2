@@ -91,7 +91,7 @@ if( isset($_POST["title"]) ){
             }
         }
         $_POST["gallery"] = json_encode($existingGallery);
-		var_dump(updateDB("events", $_POST, "`id` = '{$id}'"));die();
+		unset($_POST["existing_gallery"]); // Remove this field as it's not needed in the database
 		if( updateDB("events", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Events");
 		}else{
