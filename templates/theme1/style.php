@@ -267,6 +267,7 @@
         font-style: italic;
         position: relative;
         line-height: 1.8;
+        overflow-wrap: break-word;
     }
     
     .love-story-text::before {
