@@ -24,7 +24,7 @@ if ( $invitee[0]["isConfirmed"] != 1 ){
         </div>
         <div class="form-group">
             <select class="form-select" name="isConfirmed" required>
-                <option value="" selected disabled ><?php echo direction("Will you attend?","؟سوف تحضر") ?></option>
+                <option value="" selected disabled ><?php echo direction("Will you attend?","سوف تحضر ؟") ?></option>
                 <option value="1"><?php echo direction("Yes","نعم") ?></option>
                 <option value="2"><?php echo direction("No","لا") ?></option>
             </select>
