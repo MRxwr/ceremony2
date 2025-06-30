@@ -193,7 +193,7 @@ if( isset($_POST["name"]) ){
         $("select[name=countryCode]").val($("#countryCode"+id).html());
         $("input[name=mobile]").val($("#mobile"+id).html());
         $("input[name=update]").val(id);
-        $("input[name=eventId]").val(id);
+        $("input[name=eventId]").val(<?php echo isset($_GET["eventId"]) ? $_GET["eventId"] : 0; ?>);
     });
 </script>
 
