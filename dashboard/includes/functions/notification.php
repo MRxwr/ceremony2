@@ -283,6 +283,7 @@ function whatsappUltraMsg($order){
 }
 
 function whatsappUltraMsgImage($to,$eventId){
+	var_dump( $to, $eventId );die();
 	if( $whatsappNoti = selectDB("settings","`id` = '1'") ){
 		$messageDetails = json_decode($whatsappNoti[0]["whatsappNoti"],true);
 		if( $messageDetails["status"] != 1 ){
