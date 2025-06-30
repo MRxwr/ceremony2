@@ -292,7 +292,7 @@ function whatsappUltraMsgImage($to){
 			$data = array(
 				'token' => "{$whatsappNoti[0]["whatsappToken"]}",
 				'to' => "{$to}",
-				'image' => "{$messageDetails["image"]}",
+				'image' => "https://ceremony.createkuwait.com/logos/{$messageDetails["image"]}",
 				'caption' => "{$messageDetails["caption"]}",
 			);
 			$curl = curl_init();
