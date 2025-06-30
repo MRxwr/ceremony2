@@ -140,21 +140,14 @@ if( isset($_POST["title"]) ){
 			<input type="text" name="video" class="form-control" required>
 			</div>
 
-			<div class="col-md-12">
+			<div class="col-md-6">
 			<label><?php echo direction("Details","التفاصيل") ?></label>
 			<textarea id="details" name="details" class="tinymce"></textarea>
 			</div>
 
-            <div class="col-md-12">
+            <div class="col-md-6">
 			<label><?php echo direction("Terms","الشروط") ?></label>
 			<textarea id="terms" name="terms" class="tinymce"></textarea>
-			</div>
-
-			<div class="col-md-4">
-			<div class="file">
-			<input class="form-control" type="file" name="whatsappImage" >
-			<img src="" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px; display:none" id="whatsappImagePreview" alt="<?php echo direction("WhatsApp Image","صورة الواتساب") ?>">
-			</div>
 			</div>
 
 			<div class="col-md-4">
@@ -162,8 +155,25 @@ if( isset($_POST["title"]) ){
 			<input class="form-control" name="whatsappCaption" placeholder="<?php echo direction("Caption[ for new line use \n]","وصف [ لاستخدام سطر جديد استخدم \n]") ?>">
 			</div>
 			</div>
+
+			<div class="col-md-6">
+			<div class="text">
+			<input class="form-control" name="whatsappCaption" placeholder="<?php echo direction("Caption[ for new line use \n]","وصف [ لاستخدام سطر جديد استخدم \n]") ?>">
+			</div>
+			</div>
+
+			<div class="col-md-4">
+			<div class="file">
+			<img src="" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px; display:none" id="whatsappImagePreview" alt="<?php echo direction("WhatsApp Image","صورة الواتساب") ?>">
+			</div>
+			</div>
+
+			<div class="col-md-6">
+			<div class="text">
+			</div>
+			</div>
 			
-			<div class="col-md-6" style="margin-top:10px">
+			<div class="col-md-12" style="margin-top:10px">
 			<input type="submit" class="btn btn-primary" value="<?php echo direction("Submit","أرسل") ?>">
 			<input type="hidden" name="update" value="0">
 			</div>
