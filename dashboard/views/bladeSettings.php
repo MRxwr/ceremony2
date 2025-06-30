@@ -734,7 +734,6 @@ if ($currList = getCurr()) {
 						<div class="col-md-4">
 						<div class="file">
 						<input class="form-control" type="file" name="whatsappNoti[image]" >
-						<img src="<?php echo $whatsappNoti["image"] ?>" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px;">
 						</div>
 						</div>
 
@@ -753,6 +752,7 @@ if ($currList = getCurr()) {
 						<div class="col-md-12">
 						<div class="text">
 						<textarea id="caption" name="whatsappNoti[caption]" class="tinymce"></textarea>
+						<img src="<?php echo $whatsappNoti["image"] ?>" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px;">
 						</div>
 						</div>
 					</div>
