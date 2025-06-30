@@ -14,7 +14,9 @@ function searchFile($path, $fileName) {
 }
 // general \\
 function direction($valEn,$valAr){
-	GLOBAL $directionHTML;
+	GLOBAL $_GET;
+	$event = selectDB("events","`code` = '{$_GET["systemCode"]}'");
+	$directionHTML = $event[0]["langauge"]; ;
 	if ( $directionHTML == "rtl" ){
 		$response = $valAr;
 	}else{
