@@ -289,11 +289,31 @@ function whatsappUltraMsgImage($to){
 		if( $messageDetails["status"] != 1 ){
 			$data = array();
 		}else{
+			// Convert HTML to WhatsApp formatting
+			$caption = $messageDetails["caption"];
+			
+			// Replace common HTML line breaks with newline characters before stripping tags
+			$caption = str_replace(['<br>', '<br/>', '<br />', '</p><p>'], "\n", $caption);
+			$caption = preg_replace('/<\/p>\s*<p>/i', "\n\n", $caption);
+			
+			// Strip HTML tags but preserve formatting
+			$caption = strip_tags($caption);
+			
+			// Replace multiple spaces with single space
+			$caption = preg_replace('/\s+/', ' ', $caption);
+			
+			// Keep line breaks intact
+			$caption = str_replace(" \n ", "\n", $caption);
+			$caption = preg_replace('/\n\s+/', "\n", $caption);
+			
+			// Decode HTML entities
+			$caption = html_entity_decode($caption);
+			
 			$data = array(
 				'token' => "{$whatsappNoti[0]["whatsappToken"]}",
 				'to' => "{$to}",
 				'image' => "https://ceremony.createkuwait.com/logos/{$messageDetails["image"]}",
-				'caption' => "{$messageDetails["caption"]}",
+				'caption' => $caption,
 			);
 			$curl = curl_init();
 			curl_setopt_array($curl, array(
