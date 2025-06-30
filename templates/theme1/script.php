@@ -115,7 +115,7 @@
             apiFormData.append('rsvp', attendance === '1' ? 'yes' : 'no');
             
             // Send to API
-            fetch('requests/views/apiRsvp.php', {
+            fetch('requests/views/index.php?a=Rsvp', {
                 method: 'POST',
                 body: apiFormData
             })
