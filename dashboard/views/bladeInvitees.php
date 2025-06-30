@@ -151,6 +151,7 @@ if( isset($_POST["name"]) ){
         <th><?php echo direction("Mobile","الهاتف") ?></th>
         <th><?php echo direction("Invitation Status","حالة الدعوة") ?></th>
         <th class="text-nowrap"><?php echo direction("Invite Status","حالة المدعو") ?></th>
+		<th class="text-nowrap"><?php echo direction("Message","الرسالة") ?></th>
 		<th class="text-nowrap"><?php echo direction("Actions","الخيارات") ?></th>
 		</tr>
 		</thead>
@@ -171,6 +172,7 @@ if( isset($_POST["name"]) ){
 				<td id="mobile<?php echo $invitees[$i]["id"]?>" ><?php echo $invitees[$i]["mobile"] ?></td>
                 <td class="text-nowrap"><?php echo $invitationStatus ?></td>
                 <td class="text-nowrap"><?php echo $status ?></td>
+                <td class="text-nowrap"><?php echo $invitees[$i]["message"] ?></td>
 				<td class="text-nowrap">
 					<a href="<?php echo "/{$events[$i]["code"]}?i={$invitees[$i]["code"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("View RSVP","عرض الرسائل") ?>" target="_blank"><i class="mr-25 fa fa-eye text-black"></i></a>
                     <a href="<?php echo "?v={$_GET["v"]}&isSent={$invitees[$i]["id"]}&eventId={$invitees[$i]["eventId"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Send Invitation","ارسال الدعوة") ?>" onclick="return confirm('are you sure you want to send this invitation?')" ><i class="mr-25 fa fa-send text-primary"></i>
