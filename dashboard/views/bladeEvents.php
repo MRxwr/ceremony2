@@ -1,4 +1,19 @@
 <?php 
+// Function to directly upload images to local logos folder (as fallback)
+function uploadGalleryImageToLogos($tmpName, $fileName) {
+    // Generate a unique filename
+    $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+    $newFileName = 'gallery_' . uniqid() . '.' . $ext;
+    $targetPath = "../logos/" . $newFileName;
+    
+    // Move the file to the logos directory
+    if (move_uploaded_file($tmpName, $targetPath)) {
+        return $newFileName;
+    }
+    
+    return false;
+}
+
 if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 	if( updateDB('events',array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
 		header("LOCATION: ?v=Events");
@@ -28,21 +43,40 @@ if( isset($_POST["title"]) ){
 		// Handle gallery images
 		$galleryImages = array();
 		if (isset($_FILES['gallery']) && !empty($_FILES['gallery']['name'][0])) {
+			// For debugging
+			error_log("Gallery upload detected with " . count($_FILES['gallery']['name']) . " files");
+			
 			foreach ($_FILES['gallery']['tmp_name'] as $key => $tmp_name) {
 				if (is_uploaded_file($tmp_name)) {
+					error_log("Processing file: " . $_FILES['gallery']['name'][$key]);
+					
+					// Try the main upload function first
 					$uploadedImage = uploadImageBannerFreeImageHost($tmp_name);
+					
+					// If main upload fails, try the fallback
+					if (!$uploadedImage) {
+						error_log("Main upload failed, trying fallback");
+						$uploadedImage = uploadGalleryImageToLogos($tmp_name, $_FILES['gallery']['name'][$key]);
+					}
+					
+					error_log("Upload result: " . ($uploadedImage ? $uploadedImage : "failed"));
+					
 					if ($uploadedImage) {
 						$galleryImages[] = $uploadedImage;
 					}
 				}
 			}
+			
+			error_log("Total images processed: " . count($galleryImages));
 		}
 		
 		// If galleryData has content (from edit mode), use that instead
 		if (!empty($_POST['galleryData'])) {
 			$_POST["gallery"] = $_POST['galleryData'];
+			error_log("Using galleryData: " . $_POST['galleryData']);
 		} else {
 			$_POST["gallery"] = !empty($galleryImages) ? json_encode($galleryImages) : "[]";
+			error_log("Using new uploads: " . $_POST["gallery"]);
 		}
 		
 		// Remove the array input from POST
@@ -90,31 +124,50 @@ if( isset($_POST["title"]) ){
 			if (!is_array($existingGallery)) {
 				$existingGallery = array();
 			}
+			error_log("Existing gallery has " . count($existingGallery) . " images");
 		}
 		
 		// If galleryData field is set (from edit/delete operations), use that
 		if (!empty($_POST['galleryData'])) {
 			$_POST["gallery"] = $_POST['galleryData'];
+			error_log("Using galleryData in update: " . $_POST['galleryData']);
 		} 
 		// If new files are uploaded, add them to existing gallery
 		else if (isset($_FILES['gallery']) && !empty($_FILES['gallery']['name'][0])) {
+			error_log("Gallery update detected with " . count($_FILES['gallery']['name']) . " files");
 			$newImages = array();
 			foreach ($_FILES['gallery']['tmp_name'] as $key => $tmp_name) {
 				if (is_uploaded_file($tmp_name)) {
+					error_log("Processing update file: " . $_FILES['gallery']['name'][$key]);
+					
+					// Try the main upload function first
 					$uploadedImage = uploadImageBannerFreeImageHost($tmp_name);
+					
+					// If main upload fails, try the fallback
+					if (!$uploadedImage) {
+						error_log("Main upload failed, trying fallback for update");
+						$uploadedImage = uploadGalleryImageToLogos($tmp_name, $_FILES['gallery']['name'][$key]);
+					}
+					
+					error_log("Upload result: " . ($uploadedImage ? $uploadedImage : "failed"));
+					
 					if ($uploadedImage) {
 						$newImages[] = $uploadedImage;
 					}
 				}
 			}
 			
+			error_log("New images count: " . count($newImages));
+			
 			// Merge existing and new images
 			$existingGallery = array_merge($existingGallery, $newImages);
 			$_POST["gallery"] = json_encode($existingGallery);
+			error_log("Merged gallery (update): " . $_POST["gallery"]);
 		} 
 		// Otherwise keep existing gallery
 		else {
 			$_POST["gallery"] = $currentEvent[0]["gallery"];
+			error_log("Keeping existing gallery: " . $_POST["gallery"]);
 		}
 		
 		// Remove the array input from POST
@@ -330,14 +383,22 @@ function displayGalleryImages(galleryData) {
 	var galleryPreview = $("#galleryPreview");
 	galleryPreview.empty();
 	
+	console.log("Displaying gallery data:", galleryData);
+	
 	if (galleryData && galleryData.length > 0) {
 		galleryData.forEach(function(image, index) {
 			var imageCol = $('<div class="col-md-2 col-sm-3 mb-3 gallery-item">');
 			var imageContainer = $('<div class="image-container position-relative">');
 			
-			// Create image element
+			// Create image element with proper path handling
+			var imgSrc = image;
+			// If image doesn't already have a path prefix, add the logos path
+			if (imgSrc.indexOf('http://') !== 0 && imgSrc.indexOf('https://') !== 0 && imgSrc.indexOf('../logos/') !== 0) {
+				imgSrc = '../logos/' + imgSrc;
+			}
+			
 			var img = $('<img>')
-				.attr('src', '../logos/' + image)
+				.attr('src', imgSrc)
 				.attr('alt', 'Gallery Image')
 				.css({
 					'width': '100%',
@@ -370,6 +431,7 @@ function displayGalleryImages(galleryData) {
 	
 	// Update hidden input with current gallery data
 	$("#galleryData").val(JSON.stringify(galleryData));
+	console.log("Updated galleryData input:", $("#galleryData").val());
 }
 
 // Handle deletion of gallery images
@@ -430,13 +492,31 @@ $('input[name="gallery[]"]').change(function() {
 		var galleryData = [];
 		try {
 			var galleryJson = $("#gallery"+id).html();
+			console.log("Raw gallery JSON:", galleryJson);
+			
 			if (galleryJson && galleryJson.trim() !== '') {
-				galleryData = JSON.parse(galleryJson);
+				// Try to parse as JSON
+				try {
+					galleryData = JSON.parse(galleryJson);
+				} catch (jsonError) {
+					console.error("JSON parse error:", jsonError);
+					// If it's not valid JSON but contains filenames, try to extract them
+					if (galleryJson.indexOf(',') > -1) {
+						galleryData = galleryJson.split(',').map(function(item) {
+							return item.trim().replace(/['"]/g, '');
+						});
+					} else if (galleryJson.trim() !== '[]') {
+						// Single filename
+						galleryData = [galleryJson.trim().replace(/['"]/g, '')];
+					}
+				}
 			}
 		} catch (error) {
-			console.error("Error parsing gallery JSON:", error);
+			console.error("Error processing gallery data:", error);
 			galleryData = [];
 		}
+		
+		console.log("Processed gallery data:", galleryData);
 		
 		// Display gallery images
 		displayGalleryImages(galleryData);
@@ -461,3 +541,27 @@ $('input[name="gallery[]"]').change(function() {
 					
 <!-- Tinymce Wysuhtml5 Init JavaScript -->
 <script src="dist/js/tinymce-data.js"></script>
+<script>
+// Add form submission event handler
+$('form').on('submit', function(e) {
+    // Ensure galleryData is populated if there are images in the preview
+    if ($('#galleryPreview').children().length > 0 && !$('#galleryData').val()) {
+        // Collect visible gallery images if galleryData is empty
+        var visibleGallery = [];
+        $('.gallery-item img').each(function() {
+            var src = $(this).attr('src');
+            // Extract just the filename from the path
+            var filename = src.split('/').pop();
+            visibleGallery.push(filename);
+        });
+        
+        if (visibleGallery.length > 0) {
+            $('#galleryData').val(JSON.stringify(visibleGallery));
+            console.log("Auto-populated galleryData:", $('#galleryData').val());
+        }
+    }
+    
+    // For debugging
+    console.log("Form submitted with galleryData:", $('#galleryData').val());
+});
+</script>
