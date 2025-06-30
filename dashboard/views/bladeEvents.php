@@ -248,6 +248,7 @@ if( isset($_POST["title"]) ){
 <script>
 	$(document).on("click",".edit", function(){
 		var id = $(this).attr("id");
+		$("input[name=update]").val(id);
 		$("input[name=title]").val($("#title"+id).html()).focus();
 		$("input[name=eventDate]").val($("#eventDate"+id).html());
 		$("input[name=eventTime]").val($("#eventTime"+id).html());
