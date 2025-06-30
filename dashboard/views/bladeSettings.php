@@ -713,27 +713,46 @@ if ($currList = getCurr()) {
 				</div>
 				<div class="panel-wrapper collapse in">
 					<div class="panel-body">
-						<div class="col-md-3">
+						<div class="col-md-4" style="display: none;">
 						<div class="text">
 						<input class="form-control" name="whatsappNoti[name]" value="<?php echo $wSelected = isset($whatsappNoti["name"]) ? "{$whatsappNoti["name"]}" : "" ?>" placeholder="<?php echo direction("Website Name","إسم الموقع") ?>">
 						</div>
 						</div>
 
-						<div class="col-md-3">
+						<div class="col-md-4" style="display: none;">
 						<div class="text">
 						<input class="form-control" name="whatsappNoti[domain_token]" value="<?php echo $wSelected = isset($whatsappNoti["domain_token"]) ? "{$whatsappNoti["domain_token"]}" : "" ?>" placeholder="<?php echo direction("Automate Domain Token","رمز الموقع من أوتوميت") ?>">
 						</div>
 						</div>
 
-						<div class="col-md-3">
+						<div class="col-md-4" style="display: none;">
 						<div class="text">
 						<input class="form-control" name="whatsappNoti[to]" value="<?php echo $wSelected = isset($whatsappNoti["to"]) ? "{$whatsappNoti["to"]}" : "" ?>" placeholder="<?php echo direction("Orders Phone","هاتف الطلبات") ?>">
 						</div>
 						</div>
 
-						<div class="col-md-3">
+						<div class="col-md-4">
+						<div class="file">
+						<input class="form-control" type="file" name="whatsappNoti[image]" >
+						<img src="<?php echo $whatsappNoti["image"] ?>" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px;">
+						</div>
+						</div>
+
+						<div class="col-md-4">
+						<div class="text">
+						<input class="form-control" name="whatsappNoti[InstanceId]" value="<?php echo $wSelected = isset($whatsappNoti["InstanceId"]) ? "{$whatsappNoti["InstanceId"]}" : "" ?>" placeholder="<?php echo direction("Orders Phone","هاتف الطلبات") ?>">
+						</div>
+						</div>
+
+						<div class="col-md-4">
 						<div class="text">
 						<input class="form-control" name="whatsappToken" value="<?php echo $whatsappToken = isset($whatsappToken) ? "{$whatsappToken}" : "" ?>" placeholder="<?php echo direction("Ultra Msg Token","رمز Ultra Msg") ?>">
+						</div>
+						</div>
+
+						<div class="col-md-12">
+						<div class="text">
+						<textarea id="whatsappCaption" class="form-control" name="whatsappNoti[caption]"><?php echo $wSelected = isset($whatsappNoti["caption"]) ? htmlspecialchars($whatsappNoti["caption"]) : "" ?></textarea>
 						</div>
 						</div>
 					</div>
@@ -1000,3 +1019,20 @@ if ($currList = getCurr()) {
 
 </div>
 </form>
+
+<!-- TinyMCE Scripts -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: '#whatsappCaption',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        height: 300,
+        directionality: 'auto',
+        setup: function(editor) {
+            editor.on('change', function() {
+                tinymce.triggerSave();
+            });
+        }
+    });
+</script>
