@@ -151,8 +151,9 @@ if( isset($_POST["title"]) ){
 			</div>
 
 			<div class="col-md-4">
-			<div class="text">
-			<input class="form-control" name="whatsappCaption" placeholder="<?php echo direction("Caption[ for new line use \n]","وصف [ لاستخدام سطر جديد استخدم \n]") ?>">
+			<div class="file">
+			<input class="form-control" type="file" name="whatsappImage" >
+			<img src="" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px; display:none" id="whatsappImagePreview" alt="<?php echo direction("WhatsApp Image","صورة الواتساب") ?>">
 			</div>
 			</div>
 
@@ -163,7 +164,7 @@ if( isset($_POST["title"]) ){
 			</div>
 
 			<div class="col-md-4">
-			<div class="file">
+			<div class="text">
 			<img src="" style="height:250p x; width:250px; border-radius: 10px; margin-top: 10px; display:none" id="whatsappImagePreview" alt="<?php echo direction("WhatsApp Image","صورة الواتساب") ?>">
 			</div>
 			</div>
