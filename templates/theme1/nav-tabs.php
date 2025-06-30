@@ -12,7 +12,7 @@
         <span class="nav-tab-label"><?php echo direction("Date","الموعد") ?></span>
     </li>
     <?php 
-    if( empty($event["gallery"]) ){
+    if( !empty($event["gallery"]) ){
         ?>
         <li class="nav-tab" data-panel="gallery">
         <i class="bi bi-camera"></i>
