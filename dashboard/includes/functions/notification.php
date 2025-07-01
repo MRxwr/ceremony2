@@ -282,15 +282,17 @@ function whatsappUltraMsg($order){
 	}
 }
 
-function whatsappUltraMsgImage($to,$eventId){
+function whatsappUltraMsgImage($to,$eventId, $inviteeLink){
 	if( $whatsappNoti = selectDB("settings","`id` = '1'") ){
 		$event = selectDB("events","`id` = '{$eventId}'");
 		$messageDetails = json_decode($whatsappNoti[0]["whatsappNoti"],true);
 		if( $messageDetails["status"] != 1 ){
 			$data = array();
-			return $data; // Return the empty array instead of null
-		}else{
-			$messageDetails["caption"] = "{$event[0]["whatsappCaption"]}";
+			return $data; // Return the empty array instead of null		
+			}else{
+			// Shorten the invitee link
+			$shortLink = shortenUrl($inviteeLink);
+			$messageDetails["caption"] = "{$event[0]["whatsappCaption"]} \n\n{$shortLink}";
 			$messageDetails["image"] = "https://ceremony.createkuwait.com/logos/{$event[0]["whatsappImage"]}";
 			$data = array(
 				'token' => "{$whatsappNoti[0]["whatsappToken"]}",
@@ -321,6 +323,33 @@ function whatsappUltraMsgImage($to,$eventId){
 	}else{
 		$data = array();
 		return $data;
+	}
+}
+
+// Link shortener function
+function shortenUrl($url) {
+	// Using TinyURL API as a free link shortener
+	$apiUrl = "http://tinyurl.com/api-create.php?url=" . urlencode($url);
+	
+	$curl = curl_init();
+	curl_setopt_array($curl, array(
+		CURLOPT_URL => $apiUrl,
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_TIMEOUT => 10,
+		CURLOPT_FOLLOWLOCATION => true,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => "GET",
+	));
+	
+	$response = curl_exec($curl);
+	$httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+	curl_close($curl);
+	
+	// If shortening fails, return the original URL
+	if ($httpCode == 200 && !empty($response) && filter_var($response, FILTER_VALIDATE_URL)) {
+		return $response;
+	} else {
+		return $url; // Return original URL if shortening fails
 	}
 }
 ?>

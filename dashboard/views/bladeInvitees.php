@@ -15,9 +15,18 @@ if( isset($_GET["isConfirmed"]) && !empty($_GET["isConfirmed"]) ){
 	}
 }
 if( isset($_GET["isSent"]) && !empty($_GET["isSent"]) ){
-	if( $to = selectDB("invitees","`id` = '{$_GET["isSent"]}'") ){
-		$to = $to[0]["countryCode"] . $to[0]["mobile"];
-		whatsappUltraMsgImage($to, $_GET["eventId"]);
+	if( $inviteeData = selectDB("invitees","`id` = '{$_GET["isSent"]}'") ){
+		$to = $inviteeData[0]["countryCode"] . $inviteeData[0]["mobile"];
+		
+		// Get event code
+		$eventData = selectDB("events","`id` = '{$_GET["eventId"]}'");
+		$eventCode = $eventData[0]["code"];
+		$inviteeCode = $inviteeData[0]["code"];
+		
+		// Construct invitee link
+		$inviteeLink = $_SERVER['HTTP_HOST'] . "/{$eventCode}?i={$inviteeCode}";
+		
+		whatsappUltraMsgImage($to, $_GET["eventId"], $inviteeLink);
 		if( updateDB('invitees',array('invitationSent'=> '1'),"`id` = '{$_GET["isSent"]}'") ){
 			header("LOCATION: ?v=Invitees&eventId={$_GET["eventId"]}");
 		}
