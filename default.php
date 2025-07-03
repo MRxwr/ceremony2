@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ceremony Cards - Beautiful Digital Wedding Invitations</title>
+    <title>7yyak - Beautiful Digital Wedding Invitations</title>
     <meta name="description" content="Create stunning digital wedding invitations with RSVP tracking, QR codes, and beautiful galleries. Modern, elegant, and easy to manage.">
     
     <!-- Bootstrap CSS -->
@@ -346,7 +346,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
         <div class="container">
             <a class="navbar-brand font-display fw-bold fs-3" href="#" style="color: var(--primary-color);">
-                <i class="bi bi-heart-fill me-2"></i>Ceremony Cards
+                <i class="bi bi-heart-fill me-2"></i>7yyak
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -581,7 +581,7 @@
             <div class="row text-center">
                 <div class="col-lg-8 mx-auto" data-aos="fade-up">
                     <h2 class="font-display">Ready to Create Your Perfect Invitation?</h2>
-                    <p>Join thousands of couples who chose Ceremony Cards for their special day. Start creating your beautiful invitation today!</p>
+                    <p>Join thousands of couples who chose 7yyak for their special day. Start creating your beautiful invitation today!</p>
                     <a href="dashboard/" class="btn-white pulse">Start Your Free Invitation</a>
                 </div>
             </div>
@@ -594,7 +594,7 @@
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h5 class="font-display">
-                        <i class="bi bi-heart-fill me-2"></i>Ceremony Cards
+                        <i class="bi bi-heart-fill me-2"></i>7yyak
                     </h5>
                     <p class="text-muted">Creating beautiful digital wedding invitations that make your special day unforgettable.</p>
                     <div class="d-flex gap-3">
@@ -644,7 +644,7 @@
             <hr class="mt-4 mb-4" style="border-color: #495057;">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <small class="text-muted">&copy; 2025 Ceremony Cards. All rights reserved.</small>
+                    <small class="text-muted">&copy; 2025 7yyak. All rights reserved.</small>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <small class="text-muted">Made with <i class="bi bi-heart-fill text-danger"></i> for happy couples</small>
