@@ -18,35 +18,35 @@
     <div class="main-container">
         <div class="wedding-card">
             <!-- Card Header -->
-            <?php require_once("templates/theme1/head-section.php"); ?>
+            <?php require_once("templates/theme2/head-section.php"); ?>
             
             <!-- Navigation Tabs -->
-            <?php require_once("templates/theme1/nav-tabs.php"); ?>
+            <?php require_once("templates/theme2/nav-tabs.php"); ?>
             
             <!-- Content Container -->
             <div class="content-container">
                 <!-- Home Panel -->
-                <?php require_once("templates/theme1/home.php"); ?>
+                <?php require_once("templates/theme2/home.php"); ?>
                 
                 <!-- about Panel -->
-                <?php require_once("templates/theme1/about.php"); ?>
+                <?php require_once("templates/theme2/about.php"); ?>
                 
                 <!-- Event Panel -->
-                <?php require_once("templates/theme1/event.php"); ?>
+                <?php require_once("templates/theme2/event.php"); ?>
                 
                 <!-- Gallery Panel -->
-                <?php require_once("templates/theme1/gallery.php"); ?>
+                <?php require_once("templates/theme2/gallery.php"); ?>
                 
                 <!-- RSVP Panel -->
-                <?php require_once("templates/theme1/rsvp.php"); ?>
+                <?php require_once("templates/theme2/rsvp.php"); ?>
             </div>
             
             <!-- Card Footer -->
-            <?php require_once("templates/theme1/footer.php"); ?>
+            <?php require_once("templates/theme2/footer.php"); ?>
         </div>
     </div>
     
     <!-- Bootstrap 5 JS -->
-    <?php require_once("templates/theme1/script.php"); ?>
+    <?php require_once("templates/theme2/script.php"); ?>
 </body>
 </html>
