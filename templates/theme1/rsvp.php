@@ -30,7 +30,7 @@ if ( $invitee[0]["isConfirmed"] != 1 ){
             </select>
         </div>
         <div class="form-group">
-            <textarea class="form-control" rows="3" placeholder="<?php echo direction("Special message or dietary requirements (optional)","رسالة خاصة او طلبات غذائية") ?>" name="message"></textarea>
+            <textarea class="form-control" rows="3" placeholder="<?php echo direction("Special message (optional)","رسالة خاصة ( اختياري )") ?>" name="message"></textarea>
         </div>
         <div class="form-group">
             <?php echo "{$event["terms"]}"; ?>
