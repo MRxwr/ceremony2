@@ -25,7 +25,6 @@ if( isset($_GET["isSent"]) && !empty($_GET["isSent"]) ){
 		
 		// Construct invitee link
 		$inviteeLink = "https://" . $_SERVER['HTTP_HOST'] . "/{$eventCode}?i={$inviteeCode}";
-		var_dump($to, $_GET["eventId"], $inviteeLink);die();
 		whatsappUltraMsgImage($to, $_GET["eventId"], $inviteeLink);
 		if( updateDB('invitees',array('invitationSent'=> '1'),"`id` = '{$_GET["isSent"]}'") ){
 			header("LOCATION: ?v=Invitees&eventId={$_GET["eventId"]}");
