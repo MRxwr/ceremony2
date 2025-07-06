@@ -283,6 +283,7 @@ function whatsappUltraMsg($order){
 }
 
 function whatsappUltraMsgImage($to,$eventId, $inviteeLink){
+	$GLOBAL $_SERVER;
 	if( $whatsappNoti = selectDB("settings","`id` = '1'") ){
 		$event = selectDB("events","`id` = '{$eventId}'");
 		$messageDetails = json_decode($whatsappNoti[0]["whatsappNoti"],true);
@@ -293,7 +294,7 @@ function whatsappUltraMsgImage($to,$eventId, $inviteeLink){
 			// Shorten the invitee link
 			$shortLink = shortenUrl($inviteeLink);
 			$messageDetails["caption"] = "{$event[0]["whatsappCaption"]} \n\n{$shortLink}";
-			$messageDetails["image"] = "https://ceremony.createkuwait.com/logos/{$event[0]["whatsappImage"]}";
+			$messageDetails["image"] = "{$_SERVER['HTTP_HOST']}/logos/{$event[0]["whatsappImage"]}";
 			$data = array(
 				'token' => "{$whatsappNoti[0]["whatsappToken"]}",
 				'to' => "{$to}",
