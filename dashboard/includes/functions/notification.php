@@ -294,7 +294,7 @@ function whatsappUltraMsgImage($to,$eventId, $inviteeLink){
 			// Shorten the invitee link
 			$shortLink = shortenUrl($inviteeLink);
 			$messageDetails["caption"] = "{$event[0]["whatsappCaption"]} \n\n{$shortLink}";
-			$messageDetails["image"] = "{$_SERVER['HTTP_HOST']}/logos/{$event[0]["whatsappImage"]}";
+			$messageDetails["image"] = "https://{$_SERVER['HTTP_HOST']}/logos/{$event[0]["whatsappImage"]}";
 			$data = array(
 				'token' => "{$whatsappNoti[0]["whatsappToken"]}",
 				'to' => "{$to}",
