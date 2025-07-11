@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 'code' => $code
             ];
             insertDB('verification_code', $data);
-            sendWhatsAppCode($input['phone'], $code);
+            whatsappUltraMsgVerify($input['phone'], $code);
             echo outputData(["msg" => "Verification code sent."]);
             break;
         case 'verifyCode':
@@ -137,7 +137,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 break;
             }
             $code = rand(100000, 999999);
-            $_SESSION['verify_code_' . $input['phone']] = $code;
             whatsappUltraMsgVerify($input['phone'], $code);
             echo outputData(["msg" => "Password reset code sent."]);
             break;
