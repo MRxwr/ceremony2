@@ -8,7 +8,7 @@ servers:
 paths:
   /requests/index.php:
     post:
-      summary: RSVP to event
+      summary: get qr-code for invitation
       tags:
         - RSVP
       parameters:
