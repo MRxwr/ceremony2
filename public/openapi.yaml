@@ -213,6 +213,104 @@ paths:
               "phone": "1234567890",
               "code": "123456"
             }
+    post:
+      summary: Forget password
+      description: Send a password reset code to the user's phone via WhatsApp.
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [endpoint, phone]
+              properties:
+                endpoint:
+                  type: string
+                  example: forgetPassword
+                phone:
+                  type: string
+                  example: '1234567890'
+      responses:
+        '200':
+          description: Forget password response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      msg:
+                        type: string
+                        example: Password reset code sent.
+      x-codeSamples:
+        - lang: JSON
+          label: Forget Password
+          source: |
+            {
+              "endpoint": "forgetPassword",
+              "phone": "1234567890"
+            }
+    put:
+      summary: Change password
+      description: Change the user's password using bearer token authentication. Requires old and new password.
+      tags: [User]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [endpoint, oldPassword, newPassword]
+              properties:
+                endpoint:
+                  type: string
+                  example: changePassword
+                oldPassword:
+                  type: string
+                  example: oldpass
+                newPassword:
+                  type: string
+                  example: newpass
+      responses:
+        '200':
+          description: Change password response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      msg:
+                        type: string
+                        example: Password changed.
+      x-codeSamples:
+        - lang: JSON
+          label: Change Password
+          source: |
+            {
+              "endpoint": "changePassword",
+              "oldPassword": "oldpass",
+              "newPassword": "newpass"
+            }
                           msg:
                             type: string
                             example: Password changed.

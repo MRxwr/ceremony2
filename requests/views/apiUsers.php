@@ -6,46 +6,152 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 /**
+
+/**
  * @OA\Post(
  *   path="/requests/index.php?a=Users",
- *   summary="User API (register, login, forgetPassword, changePassword, sendCode, verifyCode)",
+ *   summary="User Registration",
+ *   description="Register a new user with phone, email, full name, password, and verification code.",
  *   tags={"User"},
  *   @OA\RequestBody(
  *     required=true,
  *     @OA\JsonContent(
- *       required={"endpoint"},
- *       @OA\Property(property="endpoint", type="string", example="register", description="Action: register, login, forgetPassword, changePassword, sendCode, verifyCode"),
- *       @OA\Property(property="fullName", type="string", example="John Doe", description="Required for register"),
- *       @OA\Property(property="email", type="string", example="john@example.com", description="Required for register"),
- *       @OA\Property(property="phone", type="string", example="1234567890", description="Required for all actions except changePassword"),
- *       @OA\Property(property="password", type="string", example="secret123", description="Required for register/login"),
- *       @OA\Property(property="oldPassword", type="string", example="oldpass", description="Required for changePassword"),
- *       @OA\Property(property="newPassword", type="string", example="newpass", description="Required for changePassword"),
- *       @OA\Property(property="code", type="string", example="123456", description="Required for register/verifyCode/forgetPassword")
+ *       required={"endpoint", "fullName", "email", "phone", "password", "code"},
+ *       @OA\Property(property="endpoint", type="string", example="register"),
+ *       @OA\Property(property="fullName", type="string", example="John Doe"),
+ *       @OA\Property(property="email", type="string", example="john@example.com"),
+ *       @OA\Property(property="phone", type="string", example="1234567890"),
+ *       @OA\Property(property="password", type="string", example="secret123"),
+ *       @OA\Property(property="code", type="string", example="123456")
  *     )
  *   ),
  *   @OA\Response(
  *     response=200,
- *     description="User API response (see endpoint for details)",
+ *     description="Registration response",
  *     @OA\JsonContent(
  *       @OA\Property(property="ok", type="boolean", example=true),
- *       @OA\Property(property="error", type="string", example="0"),
- *       @OA\Property(property="status", type="string", example="successful"),
- *       @OA\Property(property="data", type="object", oneOf={
- *         @OA\Schema(
- *           @OA\Property(property="msg", type="string", example="Login successful."),
- *           @OA\Property(property="token", type="string", example="abcdef123456...")
- *         ),
- *         @OA\Schema(
- *           @OA\Property(property="msg", type="string", example="Verification code sent.")
- *         ),
- *         @OA\Schema(
- *           @OA\Property(property="msg", type="string", example="Password changed.")
- *         )
- *       })
+ *       @OA\Property(property="data", type="object", @OA\Property(property="msg", type="string", example="Registration successful."))
+ *     )
+ *   )
+ * )
+
+ * @OA\Post(
+ *   path="/requests/index.php?a=Users",
+ *   summary="User Login",
+ *   description="Login with phone and password to receive a bearer token.",
+ *   tags={"User"},
+ *   @OA\RequestBody(
+ *     required=true,
+ *     @OA\JsonContent(
+ *       required={"endpoint", "phone", "password"},
+ *       @OA\Property(property="endpoint", type="string", example="login"),
+ *       @OA\Property(property="phone", type="string", example="1234567890"),
+ *       @OA\Property(property="password", type="string", example="secret123")
  *     )
  *   ),
- *   security={{"bearerAuth":{}}}
+ *   @OA\Response(
+ *     response=200,
+ *     description="Login response",
+ *     @OA\JsonContent(
+ *       @OA\Property(property="ok", type="boolean", example=true),
+ *       @OA\Property(property="data", type="object", @OA\Property(property="msg", type="string", example="Login successful."), @OA\Property(property="token", type="string", example="abcdef123456..."))
+ *     )
+ *   )
+ * )
+
+ * @OA\Post(
+ *   path="/requests/index.php?a=Users",
+ *   summary="Send Verification Code",
+ *   description="Send a WhatsApp verification code to the user's phone.",
+ *   tags={"User"},
+ *   @OA\RequestBody(
+ *     required=true,
+ *     @OA\JsonContent(
+ *       required={"endpoint", "phone"},
+ *       @OA\Property(property="endpoint", type="string", example="sendCode"),
+ *       @OA\Property(property="phone", type="string", example="1234567890")
+ *     )
+ *   ),
+ *   @OA\Response(
+ *     response=200,
+ *     description="Send code response",
+ *     @OA\JsonContent(
+ *       @OA\Property(property="ok", type="boolean", example=true),
+ *       @OA\Property(property="data", type="object", @OA\Property(property="msg", type="string", example="Verification code sent."))
+ *     )
+ *   )
+ * )
+
+ * @OA\Post(
+ *   path="/requests/index.php?a=Users",
+ *   summary="Verify Code",
+ *   description="Verify the WhatsApp code sent to the user's phone.",
+ *   tags={"User"},
+ *   @OA\RequestBody(
+ *     required=true,
+ *     @OA\JsonContent(
+ *       required={"endpoint", "phone", "code"},
+ *       @OA\Property(property="endpoint", type="string", example="verifyCode"),
+ *       @OA\Property(property="phone", type="string", example="1234567890"),
+ *       @OA\Property(property="code", type="string", example="123456")
+ *     )
+ *   ),
+ *   @OA\Response(
+ *     response=200,
+ *     description="Verify code response",
+ *     @OA\JsonContent(
+ *       @OA\Property(property="ok", type="boolean", example=true),
+ *       @OA\Property(property="data", type="object", @OA\Property(property="msg", type="string", example="Code verified."))
+ *     )
+ *   )
+ * )
+
+ * @OA\Post(
+ *   path="/requests/index.php?a=Users",
+ *   summary="Forget Password",
+ *   description="Send a password reset code to the user's phone via WhatsApp.",
+ *   tags={"User"},
+ *   @OA\RequestBody(
+ *     required=true,
+ *     @OA\JsonContent(
+ *       required={"endpoint", "phone"},
+ *       @OA\Property(property="endpoint", type="string", example="forgetPassword"),
+ *       @OA\Property(property="phone", type="string", example="1234567890")
+ *     )
+ *   ),
+ *   @OA\Response(
+ *     response=200,
+ *     description="Forget password response",
+ *     @OA\JsonContent(
+ *       @OA\Property(property="ok", type="boolean", example=true),
+ *       @OA\Property(property="data", type="object", @OA\Property(property="msg", type="string", example="Password reset code sent."))
+ *     )
+ *   )
+ * )
+
+ * @OA\Post(
+ *   path="/requests/index.php?a=Users",
+ *   summary="Change Password",
+ *   description="Change the user's password using bearer token authentication. Requires old and new password.",
+ *   tags={"User"},
+ *   security={{"bearerAuth":{}}},
+ *   @OA\RequestBody(
+ *     required=true,
+ *     @OA\JsonContent(
+ *       required={"endpoint", "oldPassword", "newPassword"},
+ *       @OA\Property(property="endpoint", type="string", example="changePassword"),
+ *       @OA\Property(property="oldPassword", type="string", example="oldpass"),
+ *       @OA\Property(property="newPassword", type="string", example="newpass")
+ *     )
+ *   ),
+ *   @OA\Response(
+ *     response=200,
+ *     description="Change password response",
+ *     @OA\JsonContent(
+ *       @OA\Property(property="ok", type="boolean", example=true),
+ *       @OA\Property(property="data", type="object", @OA\Property(property="msg", type="string", example="Password changed."))
+ *     )
+ *   )
  * )
  */
 
@@ -143,7 +249,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 break;
             }
             $code = rand(100000, 999999);
-            whatsappUltraMsgVerify($input['phone'], $code);
+            $whatsappResult = whatsappUltraMsgForgetPassword($input['phone'], $code);
+            if (empty($whatsappResult)) {
+                echo outputError(["msg" => "Failed to send WhatsApp password reset message."]);
+                break;
+            }
             echo outputData(["msg" => "Password reset code sent."]);
             break;
         case 'changePassword':

@@ -1,6 +1,4 @@
 <?php
-// email \\
-
 //Notification through Create Pay \\
 function sendNotification($data){
 	$curl = curl_init();
@@ -362,6 +360,43 @@ function whatsappUltraMsgVerify($to, $code){
 	}else{
 		$data = array();
 		return $data;
+	}
+}
+
+// Send WhatsApp message for password reset (Forget Password)
+function whatsappUltraMsgForgetPassword($to, $code) {
+	if ($whatsappNoti = selectDB("settings", "`id` = '1'") ) {
+		$messageDetails = json_decode($whatsappNoti[0]["whatsappNoti"], true);
+		if ($messageDetails["status"] != 1) {
+			return false;
+		} else {
+			$data = array(
+				'token' => "{$whatsappNoti[0]["whatsappToken"]}",
+				'to' => "{$to}",
+				'body' => "Hello, your password reset code is: {$code}. Please use it to reset your password.\n\n7yyak.com",
+			);
+			$curl = curl_init();
+			curl_setopt_array($curl, array(
+				CURLOPT_URL => "https://api.ultramsg.com/{$messageDetails["InstanceId"]}/messages/chat",
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => "",
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 30,
+				CURLOPT_SSL_VERIFYHOST => 0,
+				CURLOPT_SSL_VERIFYPEER => 0,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => "POST",
+				CURLOPT_POSTFIELDS => http_build_query($data),
+				CURLOPT_HTTPHEADER => array(
+					"content-type: application/x-www-form-urlencoded"
+				),
+			));
+			$response = curl_exec($curl);
+			curl_close($curl);
+			return $response;
+		}
+	} else {
+		return false;
 	}
 }
 
