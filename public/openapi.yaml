@@ -293,9 +293,6 @@ paths:
               "oldPassword": "oldpass",
               "newPassword": "newpass"
             }
-                          msg:
-                            type: string
-                            example: Password changed.
       security:
         - bearerAuth: []
 components:
