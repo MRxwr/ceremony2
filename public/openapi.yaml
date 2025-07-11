@@ -26,7 +26,7 @@ paths:
                 endpoint:
                   type: string
                   example: register
-                  description: Action: register, login, forgetPassword, changePassword, sendCode, verifyCode
+                  description: Action-> register, login, forgetPassword, changePassword, sendCode, verifyCode
                 fullName:
                   type: string
                   example: John Doe
