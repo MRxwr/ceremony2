@@ -93,14 +93,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
             }
             break;
         case 'register':
-            $required = ['fullName','email','phone','password','code'];
+            $required = ['fullName','email','phone','password'];
             foreach ($required as $r) {
                 if (empty($input[$r])) {
                     echo outputError(["msg" => "$r required."]);
                     exit;
                 }
             }
-            // Optionally delete the code after successful registration
             $exists = selectDBNew('users', [$input['phone']], '`phone` = ?', '');
             if ($exists && is_array($exists) && count($exists) > 0) {
                 echo outputError(["msg" => "Phone already registered."]);
