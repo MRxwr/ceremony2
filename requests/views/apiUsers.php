@@ -53,7 +53,6 @@ error_reporting(E_ALL);
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] === 'Users')) {
     $input = json_decode(file_get_contents('php://input'), true);
     $endpoint = isset($input['endpoint']) ? $input['endpoint'] : '';
-    require_once __DIR__ . '/../../../dashboard/includes/functions/sql.php';
     switch ($endpoint) {
         case 'sendCode':
             if (empty($input['phone'])) {
