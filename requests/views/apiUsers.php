@@ -1,156 +1,66 @@
 <?php
+
 /**
  * @OA\Post(
- *   path="/requests/index.php?a=UserRegister",
- *   summary="Register a new user (with WhatsApp phone verification)",
+ *   path="/requests/index.php?a=Users",
+ *   summary="User API (register, login, forgetPassword, changePassword, sendCode, verifyCode)",
  *   tags={"User"},
  *   @OA\RequestBody(
  *     required=true,
  *     @OA\JsonContent(
- *       required={"fullName","email","phone","password","code"},
+ *       required={"endpoint"},
+ *       @OA\Property(property="endpoint", type="string", example="register", description="Action: register, login, forgetPassword, changePassword, sendCode, verifyCode"),
  *       @OA\Property(property="fullName", type="string", example="John Doe"),
  *       @OA\Property(property="email", type="string", example="john@example.com"),
  *       @OA\Property(property="phone", type="string", example="1234567890"),
  *       @OA\Property(property="password", type="string", example="secret123"),
+ *       @OA\Property(property="oldPassword", type="string", example="oldpass"),
+ *       @OA\Property(property="newPassword", type="string", example="newpass"),
  *       @OA\Property(property="code", type="string", example="123456")
  *     )
  *   ),
  *   @OA\Response(
  *     response=200,
- *     description="Registration result",
- *     @OA\JsonContent(
- *       @OA\Property(property="status", type="string"),
- *       @OA\Property(property="msg", type="string")
- *     )
- *   )
- * )
- */
-// ... User registration logic here ...
-
-/**
- * @OA\Post(
- *   path="/requests/index.php?a=UserSendCode",
- *   summary="Send WhatsApp code to phone for verification",
- *   tags={"User"},
- *   @OA\RequestBody(
- *     required=true,
- *     @OA\JsonContent(
- *       required={"phone"},
- *       @OA\Property(property="phone", type="string", example="1234567890")
- *     )
- *   ),
- *   @OA\Response(
- *     response=200,
- *     description="Code sent result",
- *     @OA\JsonContent(
- *       @OA\Property(property="status", type="string"),
- *       @OA\Property(property="msg", type="string")
- *     )
- *   )
- * )
- */
-// ... Send code logic here ...
-
-/**
- * @OA\Post(
- *   path="/requests/index.php?a=UserVerifyCode",
- *   summary="Verify WhatsApp code for phone",
- *   tags={"User"},
- *   @OA\RequestBody(
- *     required=true,
- *     @OA\JsonContent(
- *       required={"phone","code"},
- *       @OA\Property(property="phone", type="string", example="1234567890"),
- *       @OA\Property(property="code", type="string", example="123456")
- *     )
- *   ),
- *   @OA\Response(
- *     response=200,
- *     description="Verification result",
- *     @OA\JsonContent(
- *       @OA\Property(property="status", type="string"),
- *       @OA\Property(property="msg", type="string")
- *     )
- *   )
- * )
- */
-// ... Verify code logic here ...
-
-/**
- * @OA\Post(
- *   path="/requests/index.php?a=UserLogin",
- *   summary="User login (returns bearer token)",
- *   tags={"User"},
- *   @OA\RequestBody(
- *     required=true,
- *     @OA\JsonContent(
- *       required={"phone","password"},
- *       @OA\Property(property="phone", type="string", example="1234567890"),
- *       @OA\Property(property="password", type="string", example="secret123")
- *     )
- *   ),
- *   @OA\Response(
- *     response=200,
- *     description="Login result",
+ *     description="User API response",
  *     @OA\JsonContent(
  *       @OA\Property(property="status", type="string"),
  *       @OA\Property(property="msg", type="string"),
  *       @OA\Property(property="token", type="string")
  *     )
- *   )
- * )
- */
-// ... Login logic here ...
-
-/**
- * @OA\Post(
- *   path="/requests/index.php?a=UserForgetPassword",
- *   summary="Request password reset (sends WhatsApp code)",
- *   tags={"User"},
- *   @OA\RequestBody(
- *     required=true,
- *     @OA\JsonContent(
- *       required={"phone"},
- *       @OA\Property(property="phone", type="string", example="1234567890")
- *     )
- *   ),
- *   @OA\Response(
- *     response=200,
- *     description="Forget password result",
- *     @OA\JsonContent(
- *       @OA\Property(property="status", type="string"),
- *       @OA\Property(property="msg", type="string")
- *     )
- *   )
- * )
- */
-// ... Forget password logic here ...
-
-/**
- * @OA\Post(
- *   path="/requests/index.php?a=UserChangePassword",
- *   summary="Change password (requires bearer token)",
- *   tags={"User"},
- *   @OA\RequestBody(
- *     required=true,
- *     @OA\JsonContent(
- *       required={"oldPassword","newPassword"},
- *       @OA\Property(property="oldPassword", type="string", example="oldpass"),
- *       @OA\Property(property="newPassword", type="string", example="newpass")
- *     )
- *   ),
- *   @OA\Response(
- *     response=200,
- *     description="Change password result",
- *     @OA\JsonContent(
- *       @OA\Property(property="status", type="string"),
- *       @OA\Property(property="msg", type="string")
- *     )
  *   ),
  *   security={{"bearerAuth":{}}}
  * )
  */
-// ... Change password logic here ...
+
+// Unified Users endpoint logic
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] === 'Users')) {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $endpoint = isset($input['endpoint']) ? $input['endpoint'] : '';
+    switch ($endpoint) {
+        case 'register':
+            // ...registration logic...
+            break;
+        case 'login':
+            // ...login logic...
+            break;
+        case 'forgetPassword':
+            // ...forget password logic...
+            break;
+        case 'changePassword':
+            // ...change password logic...
+            break;
+        case 'sendCode':
+            // ...send WhatsApp code logic...
+            break;
+        case 'verifyCode':
+            // ...verify WhatsApp code logic...
+            break;
+        default:
+            echo json_encode(["status" => "error", "msg" => "Invalid endpoint."]);
+            break;
+    }
+    exit;
+}
 
 // Helper: Check bearer token
 function checkBearerToken($token) {
