@@ -1,3 +1,11 @@
+
+<?php
+$allowed_ip = '123.123.123.123'; // CHANGE THIS TO YOUR IP
+if ($_SERVER['REMOTE_ADDR'] !== $allowed_ip) {
+    echo '<!DOCTYPE html><html><head><title>Access Denied</title></head><body style="font-family:sans-serif;background:#f7f7f7;text-align:center;padding-top:100px;"><h2>Access Denied</h2><p>Your IP is not allowed to view this page.</p></body></html>';
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
