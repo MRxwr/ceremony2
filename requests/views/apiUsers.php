@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
             }
             $code = rand(100000, 999999);
             $_SESSION['verify_code_' . $input['phone']] = $code;
-            sendWhatswhatsappUltraMsgVerifyAppCode($input['phone'], $code);
+            whatsappUltraMsgVerify($input['phone'], $code);
             echo outputData(["msg" => "Password reset code sent."]);
             break;
         case 'changePassword':
