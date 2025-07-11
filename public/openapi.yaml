@@ -1,65 +1,103 @@
 openapi: 3.0.0
+openapi: 3.0.0
 info:
-  title: 7yyak API
+  title: Ceremony2 User API
   version: 1.0.0
-  description: API documentation for 7yyak digital invitation system.
+  description: |
+    Unified user API endpoint for registration, login, password management, and phone verification.
+    
+    **All actions use POST** to `/requests/index.php?a=Users` with a JSON body containing an `endpoint` field and other required parameters.
 servers:
-  - url: https://7yyak.com/requests/index.php
+  - url: /
 paths:
-  /requests/index.php:
+  /requests/index.php?a=Users:
     post:
-      summary: get qr-code for invitation
+      summary: User API (register, login, forgetPassword, changePassword, sendCode, verifyCode)
       tags:
-        - RSVP
-      parameters:
-        - in: query
-          name: a
-          required: true
-          schema:
-            type: string
-          example: Rsvp
+        - User
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
+              required:
+                - endpoint
               properties:
-                systemCode:
+                endpoint:
                   type: string
-                  example: ABC123
-                i:
-                  type: string
-                  example: INVITEECODE
-                name:
+                  example: register
+                  description: Action: register, login, forgetPassword, changePassword, sendCode, verifyCode
+                fullName:
                   type: string
                   example: John Doe
-                mobile:
+                  description: Required for register
+                email:
                   type: string
-                  example: 123456789
-                attendees:
-                  type: integer
-                  example: 2
-                isConfirmed:
-                  type: integer
-                  example: 1
-                message:
+                  example: john@example.com
+                  description: Required for register
+                phone:
                   type: string
-                  example: Looking forward!
+                  example: '1234567890'
+                  description: Required for all actions except changePassword
+                password:
+                  type: string
+                  example: secret123
+                  description: Required for register/login
+                oldPassword:
+                  type: string
+                  example: oldpass
+                  description: Required for changePassword
+                newPassword:
+                  type: string
+                  example: newpass
+                  description: Required for changePassword
+                code:
+                  type: string
+                  example: '123456'
+                  description: Required for register/verifyCode/forgetPassword
       responses:
         '200':
-          description: RSVP response
+          description: User API response (see endpoint for details)
           content:
             application/json:
               schema:
                 type: object
                 properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: '0'
                   status:
                     type: string
-                    example: success
-                  msg:
-                    type: string
-                    example: RSVP updated successfully.
-                  qr_code:
-                    type: string
-                    example: https://yourdomain.com/qr.png
+                    example: successful
+                  data:
+                    oneOf:
+                      - type: object
+                        properties:
+                          msg:
+                            type: string
+                            example: Login successful.
+                          token:
+                            type: string
+                            example: abcdef123456...
+                      - type: object
+                        properties:
+                          msg:
+                            type: string
+                            example: Verification code sent.
+                      - type: object
+                        properties:
+                          msg:
+                            type: string
+                            example: Password changed.
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
