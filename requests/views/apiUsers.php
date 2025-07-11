@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 'phone' => $input['phone'],
                 'code' => $code
             ];
+            var_dump($data);
             insertDB('verification_code', $data);
             whatsappUltraMsgVerify($input['phone'], $code);
             echo outputData(["msg" => "Verification code sent."]);
