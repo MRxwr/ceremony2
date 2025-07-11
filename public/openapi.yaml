@@ -29,9 +29,6 @@ paths:
                 password:
                   type: string
                   example: secret123
-                code:
-                  type: string
-                  example: '123456'
       responses:
         '200':
           description: Registration response
@@ -61,7 +58,6 @@ paths:
               "email": "john@example.com",
               "phone": "1234567890",
               "password": "secret123",
-              "code": "123456"
             }
 
   /requests/index.php?a=Users&endpoint=login:
