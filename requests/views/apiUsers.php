@@ -63,10 +63,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 'phone' => $input['phone'],
                 'code' => $code
             ];
-            var_dump($data);
-            insertDB('verification_code', $data);
-            whatsappUltraMsgVerify($input['phone'], $code);
-            echo outputData(["msg" => "Verification code sent."]);
+            $insertResult = insertDB('verification_code', $data);
+            $whatsappResult = whatsappUltraMsgVerify($input['phone'], $code);
+            if ($insertResult !== 1) {
+                echo outputError(["msg" => "Failed to save code to database."]);
+                break;
+            }
+            if (empty($whatsappResult)) {
+                echo outputError(["msg" => "Failed to send WhatsApp message."]);
+                break;
+            }
+            echo outputData(["msg" => "Verification code sent.", "debug" => ["db" => $insertResult, "whatsapp" => $whatsappResult]]);
             break;
         case 'verifyCode':
             if (empty($input['phone']) || empty($input['code'])) {
