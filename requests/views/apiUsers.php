@@ -48,7 +48,7 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] === 'Users')) {
     $input = json_decode(file_get_contents('php://input'), true);
     $endpoint = isset($input['endpoint']) ? $input['endpoint'] : '';
-    session_start();
+    require_once __DIR__ . '/../../../dashboard/includes/functions/sql.php';
     switch ($endpoint) {
         case 'sendCode':
             if (empty($input['phone'])) {
@@ -56,7 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 break;
             }
             $code = rand(100000, 999999);
-            $_SESSION['verify_code_' . $input['phone']] = $code;
+            // Remove any previous code for this phone
+            $del = deleteDBNew('verification_code', [$input['phone']], '`phone` = ?');
+            // Insert new code
+            $data = [
+                'phone' => $input['phone'],
+                'code' => $code
+            ];
+            insertDB('verification_code', $data);
             sendWhatsAppCode($input['phone'], $code);
             echo outputData(["msg" => "Verification code sent."]);
             break;
@@ -66,6 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 break;
             }
             if (verifyWhatsAppCode($input['phone'], $input['code'])) {
+                // Optionally delete the code after successful verification
+                deleteDBNew('verification_code', [$input['phone']], '`phone` = ?');
                 echo outputData(["msg" => "Code verified."]);
             } else {
                 echo outputError(["msg" => "Invalid code."]);
@@ -83,6 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 echo outputError(["msg" => "Phone not verified."]);
                 break;
             }
+            // Optionally delete the code after successful registration
+            deleteDBNew('verification_code', [$input['phone']], '`phone` = ?');
             $exists = selectDBNew('users', [$input['phone']], '`phone` = ?', '');
             if ($exists && is_array($exists) && count($exists) > 0) {
                 echo outputError(["msg" => "Phone already registered."]);
@@ -170,8 +181,9 @@ function sendWhatsAppCode($phone, $code) {
 
 // Helper: Verify WhatsApp code (implement code storage/validation)
 function verifyWhatsAppCode($phone, $code) {
-    session_start();
-    return (isset($_SESSION['verify_code_' . $phone]) && $_SESSION['verify_code_' . $phone] == $code);
+    // Check verification_code table for phone/code match (and optionally, not expired)
+    $row = selectDBNew('verification_code', [$phone, $code], '`phone` = ? AND `code` = ?', '');
+    return ($row && isset($row[0]));
 }
 
 // ...existing code...
