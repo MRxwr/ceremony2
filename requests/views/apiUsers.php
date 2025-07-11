@@ -100,12 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                     exit;
                 }
             }
-            if (!verifyWhatsAppCode($input['phone'], $input['code'])) {
-                echo outputError(["msg" => "Phone not verified."]);
-                break;
-            }
             // Optionally delete the code after successful registration
-            deleteDBNew('verification_code', [$input['phone']], '`phone` = ?');
             $exists = selectDBNew('users', [$input['phone']], '`phone` = ?', '');
             if ($exists && is_array($exists) && count($exists) > 0) {
                 echo outputError(["msg" => "Phone already registered."]);
