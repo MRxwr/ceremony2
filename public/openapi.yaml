@@ -4,6 +4,7 @@ info:
   version: 1.0.0
   description: |
     Unified user API endpoint for registration, login, password management, and phone verification.
+paths:
   /requests/index.php?a=Users:
     post:
       summary: Register a new user
