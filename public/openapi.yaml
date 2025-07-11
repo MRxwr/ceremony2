@@ -1,0 +1,65 @@
+openapi: 3.0.0
+info:
+  title: Ceremony2 API
+  version: 1.0.0
+  description: API documentation for Ceremony2 digital invitation system.
+servers:
+  - url: https://yourdomain.com/requests/index.php
+paths:
+  /requests/index.php:
+    post:
+      summary: RSVP to event
+      tags:
+        - RSVP
+      parameters:
+        - in: query
+          name: a
+          required: true
+          schema:
+            type: string
+          example: Rsvp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                systemCode:
+                  type: string
+                  example: ABC123
+                i:
+                  type: string
+                  example: INVITEECODE
+                name:
+                  type: string
+                  example: John Doe
+                mobile:
+                  type: string
+                  example: 123456789
+                attendees:
+                  type: integer
+                  example: 2
+                isConfirmed:
+                  type: integer
+                  example: 1
+                message:
+                  type: string
+                  example: Looking forward!
+      responses:
+        '200':
+          description: RSVP response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  msg:
+                    type: string
+                    example: RSVP updated successfully.
+                  qr_code:
+                    type: string
+                    example: https://yourdomain.com/qr.png

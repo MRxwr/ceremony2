@@ -1,4 +1,34 @@
-<?php 
+<?php
+/**
+ * @OA\Post(
+ *     path="/requests/index.php?a=Rsvp",
+ *     summary="RSVP to event",
+ *     tags={"RSVP"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"systemCode", "i", "name", "mobile", "attendees", "isConfirmed"},
+ *             @OA\Property(property="systemCode", type="string", example="ABC123"),
+ *             @OA\Property(property="i", type="string", example="INVITEECODE"),
+ *             @OA\Property(property="name", type="string", example="John Doe"),
+ *             @OA\Property(property="mobile", type="string", example="123456789"),
+ *             @OA\Property(property="attendees", type="integer", example=2),
+ *             @OA\Property(property="isConfirmed", type="integer", example=1),
+ *             @OA\Property(property="message", type="string", example="Looking forward!")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="RSVP response",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="string", example="success"),
+ *             @OA\Property(property="msg", type="string", example="RSVP updated successfully."),
+ *             @OA\Property(property="qr_code", type="string", example="https://yourdomain.com/qr.png")
+ *         )
+ *     )
+ * )
+ */
+
 // Start output buffering to catch any unexpected output
 ob_start();
 
