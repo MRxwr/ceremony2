@@ -1,10 +1,10 @@
 openapi: 3.0.0
 info:
-  title: Ceremony2 API
+  title: 7yyak API
   version: 1.0.0
-  description: API documentation for Ceremony2 digital invitation system.
+  description: API documentation for 7yyak digital invitation system.
 servers:
-  - url: https://yourdomain.com/requests/index.php
+  - url: https://7yyak.com/requests/index.php
 paths:
   /requests/index.php:
     post:
