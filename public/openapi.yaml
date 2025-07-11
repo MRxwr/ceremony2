@@ -5,12 +5,9 @@ info:
   description: |
     Unified user API endpoint for registration, login, password management, and phone verification.
 paths:
-  /requests/index.php?a=Users:
+  /requests/index.php?a=Users&endpoint=register:
     post:
-      summary: Unified User API
-      description: |
-        All user actions (register, login, forgetPassword, changePassword, sendCode, verifyCode) are handled via the 'endpoint' parameter in the request body.
-        Use the appropriate fields for each action as shown in the code samples below.
+      summary: Register a new user
       tags: [User]
       requestBody:
         required: true
@@ -18,13 +15,8 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - endpoint
+              required: [fullName, email, phone, password, code]
               properties:
-                endpoint:
-                  type: string
-                  description: Action to perform (register, login, sendCode, verifyCode, forgetPassword, changePassword)
-                  example: register
                 fullName:
                   type: string
                   example: John Doe
@@ -40,15 +32,9 @@ paths:
                 code:
                   type: string
                   example: '123456'
-                oldPassword:
-                  type: string
-                  example: oldpass
-                newPassword:
-                  type: string
-                  example: newpass
       responses:
         '200':
-          description: User API response
+          description: Registration response
           content:
             application/json:
               schema:
@@ -65,57 +51,249 @@ paths:
                     properties:
                       msg:
                         type: string
-                        example: Success message
-                      token:
-                        type: string
-                        example: abcdef123456...
+                        example: Registration successful.
       x-codeSamples:
         - lang: JSON
           label: Register
           source: |
             {
-              "endpoint": "register",
               "fullName": "John Doe",
               "email": "john@example.com",
               "phone": "1234567890",
               "password": "secret123",
               "code": "123456"
             }
+
+  /requests/index.php?a=Users&endpoint=login:
+    post:
+      summary: Login
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone, password]
+              properties:
+                phone:
+                  type: string
+                  example: '1234567890'
+                password:
+                  type: string
+                  example: secret123
+      responses:
+        '200':
+          description: Login response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      msg:
+                        type: string
+                        example: Login successful.
+                      token:
+                        type: string
+                        example: abcdef123456...
+      x-codeSamples:
         - lang: JSON
           label: Login
           source: |
             {
-              "endpoint": "login",
               "phone": "1234567890",
               "password": "secret123"
             }
+
+  /requests/index.php?a=Users&endpoint=sendCode:
+    post:
+      summary: Send verification code
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone]
+              properties:
+                phone:
+                  type: string
+                  example: '1234567890'
+      responses:
+        '200':
+          description: Send code response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      msg:
+                        type: string
+                        example: Verification code sent.
+      x-codeSamples:
         - lang: JSON
           label: Send Code
           source: |
             {
-              "endpoint": "sendCode",
               "phone": "1234567890"
             }
+
+  /requests/index.php?a=Users&endpoint=verifyCode:
+    post:
+      summary: Verify code
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone, code]
+              properties:
+                phone:
+                  type: string
+                  example: '1234567890'
+                code:
+                  type: string
+                  example: '123456'
+      responses:
+        '200':
+          description: Verify code response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      msg:
+                        type: string
+                        example: Code verified.
+      x-codeSamples:
         - lang: JSON
           label: Verify Code
           source: |
             {
-              "endpoint": "verifyCode",
               "phone": "1234567890",
               "code": "123456"
             }
+
+  /requests/index.php?a=Users&endpoint=forgetPassword:
+    post:
+      summary: Forget password
+      description: Send a password reset code to the user's phone via WhatsApp.
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone]
+              properties:
+                phone:
+                  type: string
+                  example: '1234567890'
+      responses:
+        '200':
+          description: Forget password response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      msg:
+                        type: string
+                        example: Password reset code sent.
+      x-codeSamples:
         - lang: JSON
           label: Forget Password
           source: |
             {
-              "endpoint": "forgetPassword",
               "phone": "1234567890"
             }
+
+  /requests/index.php?a=Users&endpoint=changePassword:
+    post:
+      summary: Change password
+      description: Change the user's password using bearer token authentication. Requires old and new password.
+      tags: [User]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [oldPassword, newPassword]
+              properties:
+                oldPassword:
+                  type: string
+                  example: oldpass
+                newPassword:
+                  type: string
+                  example: newpass
+      responses:
+        '200':
+          description: Change password response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      msg:
+                        type: string
+                        example: Password changed.
+      x-codeSamples:
         - lang: JSON
           label: Change Password
           source: |
             {
-              "endpoint": "changePassword",
               "oldPassword": "oldpass",
               "newPassword": "newpass"
             }
