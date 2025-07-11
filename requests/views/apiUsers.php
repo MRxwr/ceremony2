@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 echo outputError(["msg" => "Failed to send WhatsApp message."]);
                 break;
             }
-            echo outputData(["msg" => "Verification code sent.", "debug" => ["db" => $insertResult, "whatsapp" => $whatsappResult]]);
+            echo outputData(["msg" => "Verification code sent."]);
             break;
         case 'verifyCode':
             if (empty($input['phone']) || empty($input['code'])) {
