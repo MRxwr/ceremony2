@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
             }
             $code = rand(100000, 999999);
             $_SESSION['verify_code_' . $input['phone']] = $code;
-            sendWhatsAppCode($input['phone'], $code);
+            sendWhatswhatsappUltraMsgVerifyAppCode($input['phone'], $code);
             echo outputData(["msg" => "Password reset code sent."]);
             break;
         case 'changePassword':
@@ -172,11 +172,6 @@ function checkBearerToken($token) {
     if (empty($token)) return false;
     $user = selectDBNew('users', [$token], '`keepMeAlive` = ?', '');
     return ($user && isset($user[0])) ? $user[0] : false;
-}
-
-// Helper: Send WhatsApp code (use your notification function)
-function sendWhatsAppCode($phone, $code) {
-    whatsappUltraMsgVerify($phone, $code);
 }
 
 // Helper: Verify WhatsApp code (implement code storage/validation)
