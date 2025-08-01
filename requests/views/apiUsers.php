@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 echo outputError(["msg" => "Phone required."]);
                 break;
             }
-            $code = rand(100000, 999999);
+            $code = rand(000000, 999999);
             // Remove any previous code for this phone
             $del = deleteDBNew('verification_code', [$input['phone']], '`phone` = ?');
             // Insert new code
