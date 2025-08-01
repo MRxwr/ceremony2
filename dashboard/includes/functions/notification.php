@@ -402,9 +402,8 @@ function whatsappUltraMsgForgetPassword($to, $code) {
 
 // Link shortener function
 function shortenUrl($url) {
-	/*
-	// Using TinyURL API as a free link shortener
-	$apiUrl = "http://tinyurl.com/api-create.php?url=" . urlencode($url);
+	// Using is.gd API as a free link shortener
+	$apiUrl = "https://is.gd/create.php?format=simple&url=" . urlencode($url);
 	
 	$curl = curl_init();
 	curl_setopt_array($curl, array(
@@ -412,6 +411,8 @@ function shortenUrl($url) {
 		CURLOPT_RETURNTRANSFER => true,
 		CURLOPT_TIMEOUT => 10,
 		CURLOPT_FOLLOWLOCATION => true,
+		CURLOPT_SSL_VERIFYHOST => 0,
+		CURLOPT_SSL_VERIFYPEER => 0,
 		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		CURLOPT_CUSTOMREQUEST => "GET",
 	));
@@ -422,11 +423,9 @@ function shortenUrl($url) {
 	
 	// If shortening fails, return the original URL
 	if ($httpCode == 200 && !empty($response) && filter_var($response, FILTER_VALIDATE_URL)) {
-		return $response;
+		return trim($response);
 	} else {
 		return $url; // Return original URL if shortening fails
 	}
-		*/
-		return $url; // For now, return the original URL without shortening
 }
 ?>
