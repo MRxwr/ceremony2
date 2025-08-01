@@ -280,6 +280,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
             break;
     }
     exit;
+}else{
+    echo outputError(["msg" => "Invalid request method or endpoint."]);
+    exit;
 }
 
 // Helper: Check bearer token
