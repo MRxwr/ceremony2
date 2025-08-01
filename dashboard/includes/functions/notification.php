@@ -402,6 +402,7 @@ function whatsappUltraMsgForgetPassword($to, $code) {
 
 // Link shortener function
 function shortenUrl($url) {
+	/*
 	// Using TinyURL API as a free link shortener
 	$apiUrl = "http://tinyurl.com/api-create.php?url=" . urlencode($url);
 	
@@ -425,5 +426,7 @@ function shortenUrl($url) {
 	} else {
 		return $url; // Return original URL if shortening fails
 	}
+		*/
+		return $url; // For now, return the original URL without shortening
 }
 ?>
