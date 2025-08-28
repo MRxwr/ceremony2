@@ -210,6 +210,9 @@ if( isset($_POST["arTitle"]) ){
         $("input[name=enTitle]").val($("#enTitle"+id).html()).focus();
 		$("input[name=arTitle]").val($("#arTitle"+id).html());
 		$("select[name=hidden]").val($("#hidden"+id).html());
+        $("input[name=attendees]").val($("#attendees"+id).html());
+        $("input[name=price]").val($("#price"+id).html());
+        $("input[name=discount]").val($("#discount"+id).html());
         tinymce.get('enDetails').setContent($("#enDetails"+id).html());
         tinymce.get('arDetails').setContent($("#arDetails"+id).html());
 		$("#images").attr("style","margin-top:10px;display:block");
