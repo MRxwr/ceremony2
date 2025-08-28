@@ -1,49 +1,35 @@
 <?php 
 if( isset($_GET["hide"]) && !empty($_GET["hide"]) ){
-	if( updateDB('categories',array('hidden'=> '2'),"`id` = '{$_GET["hide"]}'") ){
-		header("LOCATION: ?v=Categories");
+	if( updateDB("packages",array('hidden'=> '2'),"`id` = '{$_GET["hide"]}'") ){
+		header("LOCATION: ?v=Packages");
 	}
 }
 
 if( isset($_GET["show"]) && !empty($_GET["show"]) ){
-	if( updateDB('categories',array('hidden'=> '1'),"`id` = '{$_GET["show"]}'") ){
-		header("LOCATION: ?v=Categories");
+	if( updateDB("packages",array('hidden'=> '1'),"`id` = '{$_GET["show"]}'") ){
+		header("LOCATION: ?v=Packages");
 	}
 }
 
 if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
-	if( updateDB('categories',array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
-		header("LOCATION: ?v=Categories");
+	if( updateDB("packages",array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
+		header("LOCATION: ?v=Packages");
 	}
 }
 
 if( isset($_POST["updateRank"]) ){
 	for( $i = 0; $i < sizeof($_POST["rank"]); $i++){
-		updateDB("categories",array("rank"=>$_POST["rank"][$i]),"`id` = '{$_POST["id"][$i]}'");
+		updateDB("packages",array("rank"=>$_POST["rank"][$i]),"`id` = '{$_POST["id"][$i]}'");
 	}
-	header("LOCATION: ?v=Categories");
+	header("LOCATION: ?v=Packages");
 }
 
 if( isset($_POST["arTitle"]) ){
 	$id = $_POST["update"];
 	unset($_POST["update"]);
 	if ( $id == 0 ){
-		/*
-		if (is_uploaded_file($_FILES['imageurl']['tmp_name'])) {
-			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name']);
-		} else {
-			$_POST["imageurl"] = "";
-		}
-		
-		if (is_uploaded_file($_FILES['header']['tmp_name'])) {
-			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name']);
-		} else {
-			$_POST["header"] = "";
-		}
-		*/
-		
-		if( insertDB("categories", $_POST) ){
-			header("LOCATION: ?v=Categories");
+		if( insertDB("packages", $_POST) ){
+			header("LOCATION: ?v=Packages");
 		}else{
 		?>
 		<script>
@@ -52,24 +38,8 @@ if( isset($_POST["arTitle"]) ){
 		<?php
 		}
 	}else{
-		/*
-		if (is_uploaded_file($_FILES['imageurl']['tmp_name'])) {
-			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name']);
-		} else {
-			$imageurl = selectDB("categories", "`id` = '{$id}'");
-			$_POST["imageurl"] = $imageurl[0]["imageurl"];
-		}
-		
-		if (is_uploaded_file($_FILES['header']['tmp_name'])) {
-			$_POST["header"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name']);
-		} else {
-			$header = selectDB("categories", "`id` = '{$id}'");
-			$_POST["header"] = $header[0]["header"];
-		}
-			*/
-		
-		if( updateDB("categories", $_POST, "`id` = '{$id}'") ){
-			header("LOCATION: ?v=Categories");
+		if( updateDB("packages", $_POST, "`id` = '{$id}'") ){
+			header("LOCATION: ?v=Packages");
 		}else{
 		?>
 		<script>
@@ -93,14 +63,15 @@ if( isset($_POST["arTitle"]) ){
 <div class="panel-body">
 	<form class="" method="POST" action="" enctype="multipart/form-data">
 		<div class="row m-0">
+
+            <div class="col-md-4">
+			<label><?php echo direction("English Title","العنوان بالإنجليزي") ?></label>
+			<input type="text" name="enTitle" class="form-control" required>
+			</div>
+
 			<div class="col-md-4">
 			<label><?php echo direction("Arabic Title","العنوان بالعربي") ?></label>
 			<input type="text" name="arTitle" class="form-control" required>
-			</div>
-			
-			<div class="col-md-4">
-			<label><?php echo direction("English Title","العنوان بالإنجليزي") ?></label>
-			<input type="text" name="enTitle" class="form-control" required>
 			</div>
 			
 			<div class="col-md-4">
