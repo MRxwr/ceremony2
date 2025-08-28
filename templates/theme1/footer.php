@@ -1,7 +1,7 @@
 <div class="card-footer-section">
     <div class="social-links">
         <a href="" target="_blank"><i class="bi bi-facebook"></i></a>
-        <a href="" target="_blank"><i class="bi bi-instagram"></i></a>
+        <a href="https://www.instagram.com/coeo_app/" target="_blank"><i class="bi bi-instagram"></i></a>
         <a href="" target="_blank"><i class="bi bi-twitter"></i></a>
         <a href=""><i class="bi bi-envelope"></i></a>
     </div>

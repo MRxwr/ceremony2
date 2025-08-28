@@ -20,6 +20,4 @@ if( isset($_GET["v"]) && searchFile("views","blade{$_GET["v"]}.php") ){
 }else{
 	require_once("views/bladeHome.php");
 }
-
-//require("templates/theme1/footer.php");
 ?>
