@@ -335,4 +335,66 @@ function sendOrderToAllowMENA($orderId){
 		curl_close($curl);
 	}
 }
+
+function upaymentCreateInvoice($data){
+	$settings = selectDB("settings","id = '1'");
+	$accessToken = ( $settings[0]["paymentMode"] == 1 ) ? $settings[0]["accessToken"] : 'e66a94d579cf75fba327ff716ad68c53aae11528';
+	$baseUrl = ( $settings[0]["paymentMode"] == 1 ) ? 'https://uapi.upayments.com/api/v1/charge' : 'https://sandboxapi.upayments.com/api/v1/charge';
+	$invoiceData = array(
+		'language' => 'en',
+		"customer[name]" => $data["customer"]["name"],
+		"customer[email]" => $data["customer"]["email"],
+		"customer[mobile]" => $data["customer"]["mobile"],
+		'order[id]' => "{$data["order"]["id"]}",
+		'order[currency]' => $data["order"]["currency"],
+		'order[amount]' => "{$data["order"]["amount"]}",
+		'reference[id]' => "{$data["reference"]["id"]}",
+		'returnUrl' => "{$settings[0]["returnUrl"]}",
+		'cancelUrl' => "{$settings[0]["cancelUrl"]}",
+		'notificationUrl' => "{$settings[0]["notificationUrl"]}",
+	);
+	$curl = curl_init();
+	curl_setopt_array($curl, array(
+		CURLOPT_URL => $baseUrl,
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_ENCODING => '',
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 0,
+		CURLOPT_FOLLOWLOCATION => true,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => 'POST',
+		CURLOPT_POSTFIELDS => $invoiceData,
+		CURLOPT_HTTPHEADER => array(
+			'Content-Type: application/json',
+			"Authorization: Bearer $accessToken"
+		),
+	));
+	$response = curl_exec($curl);
+	curl_close($curl);
+	return $response;
+}
+
+function upaymentCheckInvoice($trackId){
+	$settings = selectDB("settings","id = '1'");
+	$accessToken = ( $settings[0]["paymentMode"] == 1 ) ? $settings[0]["accessToken"] : 'e66a94d579cf75fba327ff716ad68c53aae11528';
+	$baseUrl = ( $settings[0]["paymentMode"] == 1 ) ? "https://uapi.upayments.com/api/v1/get-payment-status/{$trackId}" : "https://sandboxapi.upayments.com/api/v1/get-payment-status/{$trackId}";
+	$curl = curl_init();
+	curl_setopt_array($curl, array(
+		CURLOPT_URL => $baseUrl."/$trackId",
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_ENCODING => '',
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 0,
+		CURLOPT_FOLLOWLOCATION => true,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => 'GET',
+		CURLOPT_HTTPHEADER => array(
+			'Content-Type: application/json',
+			"Authorization: Bearer $accessToken"
+		),
+	));
+	$response = curl_exec($curl);
+	curl_close($curl);
+	return $response;
+}
 ?>
