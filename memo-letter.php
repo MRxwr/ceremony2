@@ -1,14 +1,15 @@
 <?php
 // Memo & Letter Generator
-// This is a standalone project for generating Word documents
+// This is a standalone project for generating Word/PDF documents
 
 // Check if PHPWord is installed
 $phpWordPath = __DIR__ . '/vendor/autoload.php';
 if (!file_exists($phpWordPath)) {
-    die('<h2>PHPWord Library Required</h2>
-        <p>Please install PHPWord library using Composer:</p>
-        <pre>composer require phpoffice/phpword</pre>
-        <p>Or download it manually and place in vendor folder.</p>');
+    die('<h2>PHPWord & TCPDF Libraries Required</h2>
+        <p>Please install required libraries using Composer:</p>
+        <pre>composer require phpoffice/phpword
+composer require tecnickcom/tcpdf</pre>
+        <p>Or download them manually and place in vendor folder.</p>');
 }
 
 require_once $phpWordPath;
@@ -38,6 +39,7 @@ function generateMemo() {
     $exclText = $_POST['excl_text'] ?? 'Excl: As stated above';
     $ccText = $_POST['cc_text'] ?? 'Cc: File';
     $footerWebsite = $_POST['footer_website'] ?? 'www.kockw.com';
+    $outputFormat = $_POST['output_format'] ?? 'pdf'; // pdf or docx
     
     // Create new PHPWord document
     $phpWord = new PhpWord();
@@ -204,25 +206,49 @@ function generateMemo() {
         array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER)
     );
     
-    // Save document
-    $filename = 'Memorandum_' . date('Ymd_His') . '.docx';
-    $tempFile = sys_get_temp_dir() . '/' . $filename;
-    
-    $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-    $objWriter->save($tempFile);
-    
-    // Download file
-    header('Content-Description: File Transfer');
-    header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-    header('Content-Disposition: attachment; filename="' . $filename . '"');
-    header('Content-Transfer-Encoding: binary');
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Pragma: public');
-    header('Content-Length: ' . filesize($tempFile));
-    
-    readfile($tempFile);
-    unlink($tempFile);
+    // Save document based on output format
+    if ($outputFormat === 'pdf') {
+        // Generate PDF
+        $filename = 'Memorandum_' . date('Ymd_His') . '.pdf';
+        $tempFile = sys_get_temp_dir() . '/' . $filename;
+        
+        // Use TCPDF writer
+        $objWriter = IOFactory::createWriter($phpWord, 'PDF');
+        $objWriter->save($tempFile);
+        
+        // Download file
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($tempFile));
+        
+        readfile($tempFile);
+        unlink($tempFile);
+    } else {
+        // Generate DOCX
+        $filename = 'Memorandum_' . date('Ymd_His') . '.docx';
+        $tempFile = sys_get_temp_dir() . '/' . $filename;
+        
+        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save($tempFile);
+        
+        // Download file
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($tempFile));
+        
+        readfile($tempFile);
+        unlink($tempFile);
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -385,7 +411,7 @@ function generateMemo() {
     <div class="container">
         <div class="header">
             <h1>📝 Memorandum Generator</h1>
-            <p>Create professional memorandum documents in Word format</p>
+            <p>Create professional memorandum documents in PDF or Word format</p>
         </div>
         
         <div class="form-container">
@@ -475,6 +501,16 @@ Moreover, kindly be informed that..." required></textarea>
                 <div class="form-group">
                     <label for="footer_website">Footer Website:</label>
                     <input type="text" id="footer_website" name="footer_website" value="www.kockw.com">
+                </div>
+                
+                <div class="section-title">Output Format</div>
+                
+                <div class="form-group">
+                    <label for="output_format">Download Format:</label>
+                    <select id="output_format" name="output_format" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 14px;">
+                        <option value="pdf" selected>PDF Document (.pdf)</option>
+                        <option value="docx">Word Document (.docx)</option>
+                    </select>
                 </div>
                 
                 <div class="btn-container">
