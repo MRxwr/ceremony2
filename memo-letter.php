@@ -51,30 +51,40 @@ function generateMemo() {
     );
     $section = $phpWord->addSection($sectionStyle);
     
-    // Header with logos
-    $header = $section->addHeader();
-    $headerTable = $header->addTable(array('width' => 100 * 50, 'unit' => 'pct'));
-    $headerTable->addRow();
+    // Logo table at top
+    $logoTable = $section->addTable(array(
+        'borderSize' => 0,
+        'borderColor' => 'FFFFFF'
+    ));
+    $logoTable->addRow(800);
     
     // Left logo (Kuwait Oil Company)
-    $leftCell = $headerTable->addCell(3000);
+    $leftCell = $logoTable->addCell(3000, array('valign' => 'center'));
     $leftLogoPath = __DIR__ . '/img/logo-left.png';
     if (file_exists($leftLogoPath)) {
-        $leftCell->addImage($leftLogoPath, array('width' => 80, 'height' => 80, 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER));
+        $leftCell->addImage($leftLogoPath, array(
+            'width' => 70,
+            'height' => 70,
+            'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
+        ));
     } else {
-        $leftCell->addText('[Left Logo]', array('size' => 10, 'color' => '999999'), array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER));
+        $leftCell->addText('[Left Logo]', array('size' => 9, 'color' => '999999'), array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER));
     }
     
     // Middle cell (empty)
-    $headerTable->addCell(3000);
+    $logoTable->addCell(3000);
     
     // Right logo (NEWKUWAIT)
-    $rightCell = $headerTable->addCell(3000);
+    $rightCell = $logoTable->addCell(3000, array('valign' => 'center'));
     $rightLogoPath = __DIR__ . '/img/logo-right.png';
     if (file_exists($rightLogoPath)) {
-        $rightCell->addImage($rightLogoPath, array('width' => 80, 'height' => 80, 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER));
+        $rightCell->addImage($rightLogoPath, array(
+            'width' => 70,
+            'height' => 70,
+            'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
+        ));
     } else {
-        $rightCell->addText('[Right Logo]', array('size' => 10, 'color' => '999999'), array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER));
+        $rightCell->addText('[Right Logo]', array('size' => 9, 'color' => '999999'), array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER));
     }
     
     // Add spacing
@@ -88,41 +98,33 @@ function generateMemo() {
     );
     
     // From/To/Date/Ref table
-    $metaTable = $section->addTable(array('width' => 100 * 50, 'unit' => 'pct'));
+    $metaTable = $section->addTable(array('borderSize' => 0));
     
     // From and Date row
     $metaTable->addRow();
-    $metaTable->addCell(4500)->addText(
-        'From:    ' . $from,
-        array('size' => 11, 'name' => 'Times New Roman'),
-        array('spaceAfter' => 100)
-    );
-    $metaTable->addCell(4500)->addText(
-        'Date:    ' . $date,
-        array('size' => 11, 'name' => 'Times New Roman'),
-        array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::LEFT, 'spaceAfter' => 100)
-    );
+    $fromCell = $metaTable->addCell(4500);
+    $fromCell->addText('From:', array('size' => 11, 'name' => 'Times New Roman', 'bold' => false));
+    $fromCell->addText($from, array('size' => 11, 'name' => 'Times New Roman'));
+    
+    $dateCell = $metaTable->addCell(4500);
+    $dateCell->addText('Date:', array('size' => 11, 'name' => 'Times New Roman', 'bold' => false));
+    $dateCell->addText($date, array('size' => 11, 'name' => 'Times New Roman'));
     
     // To and Ref row
     $metaTable->addRow();
-    $metaTable->addCell(4500)->addText(
-        'To:    ' . $to,
-        array('size' => 11, 'name' => 'Times New Roman'),
-        array('spaceAfter' => 100)
-    );
-    $metaTable->addCell(4500)->addText(
-        'Ref:    ' . $ref,
-        array('size' => 11, 'name' => 'Times New Roman'),
-        array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::LEFT, 'spaceAfter' => 100)
-    );
+    $toCell = $metaTable->addCell(4500);
+    $toCell->addText('To:', array('size' => 11, 'name' => 'Times New Roman', 'bold' => false));
+    $toCell->addText($to, array('size' => 11, 'name' => 'Times New Roman'));
     
-    // Horizontal line
-    $section->addLine(array(
-        'weight' => 1,
-        'width' => 450,
-        'height' => 0,
-        'color' => '000000'
-    ));
+    $refCell = $metaTable->addCell(4500);
+    $refCell->addText('Ref:', array('size' => 11, 'name' => 'Times New Roman', 'bold' => false));
+    $refCell->addText($ref, array('size' => 11, 'name' => 'Times New Roman'));
+    
+    $section->addTextBreak(1);
+    
+    // Add horizontal line
+    $lineStyle = array('weight' => 0.5, 'width' => 450, 'height' => 0, 'color' => '000000');
+    $section->addLine($lineStyle);
     
     $section->addTextBreak(1);
     
@@ -170,19 +172,14 @@ function generateMemo() {
     
     // Signature section
     if (!empty($signatureName)) {
-        // Signature line
-        $signatureTable = $section->addTable();
-        $signatureTable->addRow();
-        $signatureCell = $signatureTable->addCell(3000);
-        
-        // Handwriting icon placeholder
-        $signatureCell->addText('✍', array('size' => 20), array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::LEFT));
+        // Handwriting icon/signature mark
+        $section->addText('✍', array('size' => 16, 'name' => 'Arial'), array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::LEFT));
         
         // Line above name
         $section->addText(
             '____________________________',
             array('size' => 11, 'name' => 'Times New Roman'),
-            array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::LEFT)
+            array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::LEFT, 'spaceAfter' => 0)
         );
         
         // Name
