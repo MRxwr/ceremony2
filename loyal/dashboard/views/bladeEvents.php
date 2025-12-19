@@ -15,12 +15,12 @@ if( isset($_POST["title"]) ){
 			goto generateCode;
 		}
         if (is_uploaded_file($_FILES['background']['tmp_name'])) {
-			$_POST["background"] = uploadImageBannerFreeImageHost($_FILES['background']['tmp_name']);
+			$_POST["background"] = uploadImageBannerFreeImageHost($_FILES['background']['tmp_name'],"events");
 		} else {
 			$_POST["background"] = "";
 		}
         if (is_uploaded_file($_FILES['whatsappImage']['tmp_name'])) {
-			$_POST["whatsappImage"] = uploadImageBannerFreeImageHost($_FILES['whatsappImage']['tmp_name']);
+			$_POST["whatsappImage"] = uploadImageBannerFreeImageHost($_FILES['whatsappImage']['tmp_name'],"events");
 		} else {
 			$_POST["whatsappImage"] = "";
 		}
@@ -30,7 +30,7 @@ if( isset($_POST["title"]) ){
         if (isset($_FILES['gallery']) && !empty($_FILES['gallery']['tmp_name'][0])) {
             for ($i = 0; $i < count($_FILES['gallery']['tmp_name']); $i++) {
                 if (is_uploaded_file($_FILES['gallery']['tmp_name'][$i])) {
-                    $uploadedImage = uploadImageBannerFreeImageHost($_FILES['gallery']['tmp_name'][$i]);
+                    $uploadedImage = uploadImageBannerFreeImageHost($_FILES['gallery']['tmp_name'][$i],"gallery");
                     if (!empty($uploadedImage)) {
                         $galleryImages[] = $uploadedImage;
                     }
@@ -58,13 +58,13 @@ if( isset($_POST["title"]) ){
 			}
 		}
         if (is_uploaded_file($_FILES['background']['tmp_name'])) {
-			$_POST["background"] = uploadImageBannerFreeImageHost($_FILES['background']['tmp_name']);
+			$_POST["background"] = uploadImageBannerFreeImageHost($_FILES['background']['tmp_name'],"events");
 		}else{
 			$imageurl = selectDB("events", "`id` = '{$id}'");
 			$_POST["background"] = $imageurl[0]["background"];
 		}
         if (is_uploaded_file($_FILES['whatsappImage']['tmp_name'])) {
-			$_POST["whatsappImage"] = uploadImageBannerFreeImageHost($_FILES['whatsappImage']['tmp_name']);
+			$_POST["whatsappImage"] = uploadImageBannerFreeImageHost($_FILES['whatsappImage']['tmp_name'],"events");
 		}else{
 			$imageurl = selectDB("events", "`id` = '{$id}'");
 			$_POST["whatsappImage"] = $imageurl[0]["whatsappImage"];
@@ -83,7 +83,7 @@ if( isset($_POST["title"]) ){
         if (isset($_FILES['gallery']) && !empty($_FILES['gallery']['tmp_name'][0])) {
             for ($i = 0; $i < count($_FILES['gallery']['tmp_name']); $i++) {
                 if (is_uploaded_file($_FILES['gallery']['tmp_name'][$i])) {
-                    $uploadedImage = uploadImageBannerFreeImageHost($_FILES['gallery']['tmp_name'][$i]);
+                    $uploadedImage = uploadImageBannerFreeImageHost($_FILES['gallery']['tmp_name'][$i],"gallery");
                     if (!empty($uploadedImage)) {
                         $existingGallery[] = $uploadedImage;
                     }

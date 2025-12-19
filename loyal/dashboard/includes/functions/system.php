@@ -159,7 +159,7 @@ function uploadImageFreeImageHost($imageLocation){
 	}
 }
 
-function uploadImageBannerFreeImageHost($imageLocation){
+function uploadImageBannerFreeImageHost($imageLocation, $folder = ""){
 	$curl = curl_init();
 	curl_setopt_array($curl, array(
 	  CURLOPT_URL => 'https://api.imgbb.com/1/upload?expiration=600&key=d4aba98558417ca912f2669f469950c7',
@@ -175,7 +175,13 @@ function uploadImageBannerFreeImageHost($imageLocation){
 	$response = json_decode(curl_exec($curl),true);
 	curl_close($curl);
 	if( isset($response["success"]) && $response["success"] == true ){
-		file_put_contents("../logos/{$response["data"]["id"]}.{$response["data"]["image"]["extension"]}", file_get_contents($response["data"]["image"]["url"]));
+		$folderPath = $folder ? "/logos/{$folder}/" : "/logos/";
+		// Ensure the folder exists
+		if (!is_dir(__DIR__ . "/../../.." . $folderPath)) {
+			mkdir(__DIR__ . "/../../.." . $folderPath, 0777, true);
+		}
+		$filePath = __DIR__ . "/../../.." . $folderPath . "{$response["data"]["id"]}.{$response["data"]["image"]["extension"]}";
+		file_put_contents($filePath, file_get_contents($response["data"]["image"]["url"]));
 		return "{$response["data"]["id"]}.{$response["data"]["image"]["extension"]}"; 
 	}else{
 		return "";
