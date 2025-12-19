@@ -1,12 +1,9 @@
 <!-- Merchant QR Scanner View -->
 <?php
-if (!isset($_SESSION['employeeId']) || empty($_SESSION['employeeId'])) {
-    header("Location: login.php");
-    exit;
-}
+require_once("includes/checksouthead.php");
 
 // Get merchant store info
-$employeeId = $_SESSION['employeeId'];
+$employeeId = $userID;
 $storeResult = selectDB("store_staff", "`employeeId`='$employeeId' AND `status`='0' LIMIT 1");
 if (!$storeResult || $storeResult === 0 || !is_array($storeResult) || count($storeResult) == 0) {
     echo "<div class='alert alert-danger'>You are not assigned to any store.</div>";
