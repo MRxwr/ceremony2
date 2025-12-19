@@ -1,0 +1,13 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "loyalty_data",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "uid", "order": "ASCENDING" },
+        { "fieldPath": "last_updated", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
