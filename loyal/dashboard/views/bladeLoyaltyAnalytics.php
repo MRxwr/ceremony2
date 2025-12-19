@@ -43,12 +43,12 @@ $stats['totalStores'] = ($storesResult && is_array($storesResult)) ? intval($sto
 $cardsQuery = "SELECT COUNT(*) as count FROM customer_cards WHERE status = '0'";
 $cardsResult = queryDB($cardsQuery);
 $stats['totalCards'] = ($cardsResult && is_array($cardsResult)) ? intval($cardsResult[0]['count']) : 0;
-
+echo "<!--"; print_r($stats); echo "-->";die();
 // Total Points Issued
 $pointsQuery = "SELECT SUM(points) as total FROM points_transactions WHERE type = 'earned' AND status = '0'";
 $pointsResult = queryDB($pointsQuery);
 $stats['totalPointsIssued'] = ($pointsResult && is_array($pointsResult)) ? intval($pointsResult[0]['total'] ?? 0) : 0;
-echo "<!--"; print_r($stats); echo "-->";die();
+
 // Total Points Redeemed
 $redeemedQuery = "SELECT SUM(pointsCost) as total FROM redemptions WHERE status = 'completed'";
 $redeemedResult = queryDB($redeemedQuery);
