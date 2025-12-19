@@ -1,11 +1,4 @@
 <?php
-$sql = "SELECT * FROM `s_media` WHERE `id` LIKE '3'";
-$result = $dbconnect->query($sql);
-$row = $result->fetch_assoc();
-$emailOpt = $row["emailOpt"];
-$giftCard = $row["giftCard"];
-$theme = $row["theme"];
-
 $sql = "SELECT * FROM `settings` WHERE `id` LIKE '1'";
 $result = $dbconnect->query($sql);
 $row = $result->fetch_assoc();
