@@ -63,13 +63,13 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 		
 		<tbody>
 		<?php 
-		$pendingStores = selectJoinDB("stores", 
+		$pendingStores = var_dump(selectJoinDB("stores", 
 			array(
 				"select" => array("t.*", "t1.enTitle", "t1.arTitle"),
 				"join" => array("categories"),
 				"on" => array("t.categoryId = t1.id")
 			),
-			"t.isApproved = '0' AND t.status = '0' ORDER BY t.date DESC");
+			"t.isApproved = '0' AND t.status = '0' ORDER BY t.date DESC"));
 		if( $pendingStores && is_array($pendingStores) ){
 			for( $i = 0; $i < sizeof($pendingStores); $i++ ){
 				$counter = $i + 1;
