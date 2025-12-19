@@ -11,7 +11,3 @@ RewriteRule ^([^/]+)/?$ $1.php [L,QSA]
 
 # Prevent rewriting default.php
 RewriteRule ^default\.php$ - [L]
-
-# Rewrite any other requests with a parameter or redirect to default when there is nothing after the domain
-RewriteRule ^$ /default.php [L]
-RewriteRule ^([^/]+)/?$ /?systemCode=$1 [L,QSA]
