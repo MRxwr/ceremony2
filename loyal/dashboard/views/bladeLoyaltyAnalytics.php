@@ -56,12 +56,12 @@ $stats['totalPointsRedeemed'] = ($redeemedResult && is_array($redeemedResult)) ?
 
 // Active Points Balance
 $stats['activePointsBalance'] = $stats['totalPointsIssued'] - $stats['totalPointsRedeemed'];
-
+echo "<!--"; print_r($stats); echo "-->";die();
 // Total Transactions (in period)
 $transactionsQuery = "SELECT COUNT(*) as count FROM points_transactions WHERE status = '0' AND date >= '$startDate'";
 $transactionsResult = queryDB($transactionsQuery);
 $stats['periodTransactions'] = ($transactionsResult && is_array($transactionsResult)) ? intval($transactionsResult[0]['count']) : 0;
-echo "<!--"; print_r($stats); echo "-->";die();
+
 // Total Transaction Value (in period)
 $valueQuery = "SELECT SUM(amount) as total FROM points_transactions WHERE transactionType = 'earned' AND status = '0' AND date >= '$startDate'";
 $valueResult = queryDB($valueQuery);
