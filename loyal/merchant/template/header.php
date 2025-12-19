@@ -1,6 +1,6 @@
 <?php
 ob_start();
-require ("includes/checksouthead.php");
+require ("../includes/checksouthead.php");
 require ("payment.php");
 ?>
 <!DOCTYPE html>
