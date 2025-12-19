@@ -326,7 +326,7 @@ else:
 		<?php 
 		$tickets = selectJoinDB("support_tickets",
 			array(
-				"select" => array("t.*", "t1.firstName", "t1.lastName", "t1.email"),
+				"select" => array("t.*", "t1.fullName", "t1.email"),
 				"join" => array("users"),
 				"on" => array("t.userId = t1.id")
 			),
