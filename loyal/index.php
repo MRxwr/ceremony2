@@ -14,7 +14,7 @@ if( isset($_REQUEST["systemCode"]) && !empty($_REQUEST["systemCode"]) && $event 
 	header("Location: default.php");die();
 }
 
-require_once("templates/theme1/header.php");
+require_once("template/header.php");
 
 if( isset($_GET["v"]) && searchFile("views","blade{$_GET["v"]}.php") ){
 	require_once("views/".searchFile("views","blade{$_GET["v"]}.php"));
