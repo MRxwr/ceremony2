@@ -107,6 +107,12 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 			</tr>
 			<?php
 			}
+		}else{
+			?>
+			<tr>
+				<td colspan="7" class="text-center"><?php echo direction("No pending store approvals","لا توجد طلبات موافقة معلقة") ?></td>
+			</tr>
+			<?php
 		}
 		?>
 		</tbody>
@@ -205,6 +211,12 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 			</tr>
 			<?php
 			}
+		}else{
+			?>
+			<tr>
+				<td colspan="7" class="text-center"><?php echo direction("No approved stores","لا توجد متاجر معتمدة") ?></td>
+			</tr>
+			<?php
 		}
 		?>
 		</tbody>
