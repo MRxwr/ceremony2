@@ -28,7 +28,7 @@ $stats = array();
 $usersQuery = "SELECT COUNT(*) as count FROM users WHERE status = '0'";
 $usersResult = queryDB($usersQuery);
 $stats['totalUsers'] = ($usersResult && is_array($usersResult)) ? intval($usersResult[0]['count']) : 0;
-
+echo $stats['totalUsers'];die();
 // New Users (in period)
 $newUsersQuery = "SELECT COUNT(*) as count FROM users WHERE status = '0' AND date >= '$startDate'";
 $newUsersResult = queryDB($newUsersQuery);

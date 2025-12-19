@@ -387,17 +387,16 @@ else:
 </div>
 </div>
 </div>
-
-<script>
-	$(document).ready(function() {
-		<?php if(!isset($_GET["view"])): ?>
-		$('#myTable').DataTable({
-			"order": [[ 6, "desc" ]]
-		});
-		<?php endif; ?>
-	});
-</script>
-
 <?php endif; ?>
 
 </div>
+
+<script>
+$(document).ready(function() {
+	if($('#myTable').length) {
+		$('#myTable').DataTable({
+			"order": [[ 6, "desc" ]]
+		});
+	}
+});
+</script>
