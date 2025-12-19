@@ -43,9 +43,9 @@ $stats['totalStores'] = ($storesResult && is_array($storesResult)) ? intval($sto
 $cardsQuery = "SELECT COUNT(*) as count FROM customer_cards WHERE status = '0'";
 $cardsResult = queryDB($cardsQuery);
 $stats['totalCards'] = ($cardsResult && is_array($cardsResult)) ? intval($cardsResult[0]['count']) : 0;
-echo "<!--"; print_r($stats); echo "-->";die();
+
 // Total Points Issued
-$pointsQuery = "SELECT SUM(points) as total FROM points_transactions WHERE type = 'earned' AND status = '0'";
+$pointsQuery = "SELECT SUM(points) as total FROM points_transactions WHERE transactionType = 'earned' AND status = '0'";
 $pointsResult = queryDB($pointsQuery);
 $stats['totalPointsIssued'] = ($pointsResult && is_array($pointsResult)) ? intval($pointsResult[0]['total'] ?? 0) : 0;
 
@@ -63,7 +63,7 @@ $transactionsResult = queryDB($transactionsQuery);
 $stats['periodTransactions'] = ($transactionsResult && is_array($transactionsResult)) ? intval($transactionsResult[0]['count']) : 0;
 
 // Total Transaction Value (in period)
-$valueQuery = "SELECT SUM(amount) as total FROM points_transactions WHERE type = 'earned' AND status = '0' AND date >= '$startDate'";
+$valueQuery = "SELECT SUM(amount) as total FROM points_transactions WHERE transactionType = 'earned' AND status = '0' AND date >= '$startDate'";
 $valueResult = queryDB($valueQuery);
 $stats['periodTransactionValue'] = ($valueResult && is_array($valueResult)) ? floatval($valueResult[0]['total'] ?? 0) : 0;
 
@@ -71,7 +71,7 @@ $stats['periodTransactionValue'] = ($valueResult && is_array($valueResult)) ? fl
 $redemptionsQuery = "SELECT COUNT(*) as count FROM redemptions WHERE status = 'completed' AND date >= '$startDate'";
 $redemptionsResult = queryDB($redemptionsQuery);
 $stats['periodRedemptions'] = ($redemptionsResult && is_array($redemptionsResult)) ? intval($redemptionsResult[0]['count']) : 0;
-
+echo "<!--"; print_r($stats); echo "-->";die();
 // Get top stores by members
 $topStoresQuery = "SELECT s.id, s.enStoreName, s.arStoreName, COUNT(DISTINCT cc.customerId) as memberCount
 				   FROM stores s
