@@ -85,9 +85,9 @@ $topStores = queryDB($topStoresQuery);
 if (!$topStores || !is_array($topStores)) $topStores = array();
 
 // Get recent transactions for chart
-$chartQuery = "SELECT DATE(date) as day, COUNT(*) as count, SUM(amount) as value
+$chartQuery = "SELECT DATE(date) as day, COUNT(*) as count, SUM(purchaseAmount) as value
 			   FROM points_transactions
-			   WHERE type = 'earned' AND status = '0' AND date >= '$startDate'
+			   WHERE transactionType = 'earned' AND status = '0' AND date >= '$startDate'
 			   GROUP BY DATE(date)
 			   ORDER BY day ASC";
 $chartData = queryDB($chartQuery);
