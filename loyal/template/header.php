@@ -33,3 +33,13 @@
     <?php include_once "template/styles.php"; ?>
 </head>
 
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="heart"></div>
+    </div>
+    
+    <!-- Floating Hearts Background -->
+    <?php include_once "template/navbar-tabs.php"; ?>
+    
+
