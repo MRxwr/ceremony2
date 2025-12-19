@@ -43,7 +43,7 @@ $stats['totalStores'] = ($storesResult && is_array($storesResult)) ? intval($sto
 $cardsQuery = "SELECT COUNT(*) as count FROM customer_cards WHERE status = '0'";
 $cardsResult = queryDB($cardsQuery);
 $stats['totalCards'] = ($cardsResult && is_array($cardsResult)) ? intval($cardsResult[0]['count']) : 0;
-echo "<!--"; print_r($stats); echo "-->";die();
+
 // Total Points Issued
 $pointsQuery = "SELECT SUM(points) as total FROM points_transactions WHERE type = 'earned' AND status = '0'";
 $pointsResult = queryDB($pointsQuery);
@@ -61,7 +61,7 @@ $stats['activePointsBalance'] = $stats['totalPointsIssued'] - $stats['totalPoint
 $transactionsQuery = "SELECT COUNT(*) as count FROM points_transactions WHERE status = '0' AND date >= '$startDate'";
 $transactionsResult = queryDB($transactionsQuery);
 $stats['periodTransactions'] = ($transactionsResult && is_array($transactionsResult)) ? intval($transactionsResult[0]['count']) : 0;
-
+echo "<!--"; print_r($stats); echo "-->";die();
 // Total Transaction Value (in period)
 $valueQuery = "SELECT SUM(amount) as total FROM points_transactions WHERE type = 'earned' AND status = '0' AND date >= '$startDate'";
 $valueResult = queryDB($valueQuery);
