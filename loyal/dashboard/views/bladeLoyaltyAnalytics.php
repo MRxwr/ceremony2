@@ -50,18 +50,18 @@ $pointsResult = queryDB($pointsQuery);
 $stats['totalPointsIssued'] = ($pointsResult && is_array($pointsResult)) ? intval($pointsResult[0]['total'] ?? 0) : 0;
 
 // Total Points Redeemed
-$redeemedQuery = "SELECT SUM(pointsCost) as total FROM redemptions WHERE redemptionStatus = 'completed'";
+$redeemedQuery = "SELECT SUM(pointsSpent) as total FROM redemptions WHERE redemptionStatus = 'completed'";
 $redeemedResult = queryDB($redeemedQuery);
 $stats['totalPointsRedeemed'] = ($redeemedResult && is_array($redeemedResult)) ? intval($redeemedResult[0]['total'] ?? 0) : 0;
 
 // Active Points Balance
 $stats['activePointsBalance'] = $stats['totalPointsIssued'] - $stats['totalPointsRedeemed'];
-
+echo "<!--"; print_r($stats); echo "-->";die();
 // Total Transactions (in period)
 $transactionsQuery = "SELECT COUNT(*) as count FROM points_transactions WHERE status = '0' AND date >= '$startDate'";
 $transactionsResult = queryDB($transactionsQuery);
 $stats['periodTransactions'] = ($transactionsResult && is_array($transactionsResult)) ? intval($transactionsResult[0]['count']) : 0;
-echo "<!--"; print_r($stats); echo "-->";die();
+
 // Total Transaction Value (in period)
 $valueQuery = "SELECT SUM(amount) as total FROM points_transactions WHERE transactionType = 'earned' AND status = '0' AND date >= '$startDate'";
 $valueResult = queryDB($valueQuery);
