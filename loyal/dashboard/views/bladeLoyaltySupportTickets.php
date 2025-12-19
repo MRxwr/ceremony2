@@ -174,9 +174,13 @@ if( isset($_POST["replyMessage"]) ){
 
 <?php if(isset($_GET["view"]) && !empty($_GET["view"])): 
 	$ticketId = $_GET["view"];
-	$ticketData = selectDB("support_tickets st
-						   JOIN users u ON st.userId = u.id",
-						   "st.id = '{$ticketId}' LIMIT 1");
+	$ticketData = selectJoinDB("support_tickets",
+		array(
+			"select" => array("t.*", "t1.firstName", "t1.lastName", "t1.email"),
+			"join" => array("users"),
+			"on" => array("t.userId = t1.id")
+		),
+		"t.id = '{$ticketId}' LIMIT 1");
 	if ($ticketData && is_array($ticketData) && count($ticketData) > 0):
 		$ticket = $ticketData[0];
 ?>
@@ -320,16 +324,13 @@ else:
 		
 		<tbody>
 		<?php 
-		$tickets = selectDB("support_tickets st
-						    JOIN users u ON st.userId = u.id",
-						   "st.status = '0' ORDER BY 
-						    CASE st.ticketStatus 
-						        WHEN 'open' THEN 1 
-						        WHEN 'in_progress' THEN 2 
-						        WHEN 'resolved' THEN 3 
-						        WHEN 'closed' THEN 4 
-						    END,
-						    st.date DESC");
+		$tickets = selectJoinDB("support_tickets",
+			array(
+				"select" => array("t.*", "t1.firstName", "t1.lastName", "t1.email"),
+				"join" => array("users"),
+				"on" => array("t.userId = t1.id")
+			),
+			"t.status = '0' ORDER BY CASE t.ticketStatus WHEN 'open' THEN 1 WHEN 'in_progress' THEN 2 WHEN 'resolved' THEN 3 WHEN 'closed' THEN 4 END, t.date DESC");
 		if( $tickets && is_array($tickets) ){
 			for( $i = 0; $i < sizeof($tickets); $i++ ){
 				$counter = $i + 1;
@@ -369,6 +370,12 @@ else:
 			</tr>
 			<?php
 			}
+		}else{
+			?>
+			<tr>
+				<td colspan="8" class="text-center"><?php echo direction("No support tickets found","لا توجد تذاكر دعم") ?></td>
+			</tr>
+			<?php
 		}
 		?>
 		</tbody>
