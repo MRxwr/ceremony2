@@ -34,7 +34,9 @@ The main entry point for the application is `index.php` in the root directory. T
 
 ## Database Table Schema Standard
 
-When creating new tables in the database, follow this standard schema:
+When creating new modules (like categories, banners, pages, etc.), follow this standard schema as a base, and extend as needed for the module's requirements. This ensures consistency, maintainability, and scalability across the system.
+
+### Example: Standard Table Schema for Modules
 
 | Column      | Type           | Description                       |
 |-------------|----------------|-----------------------------------|
@@ -44,10 +46,52 @@ When creating new tables in the database, follow this standard schema:
 | arTitle     | VARCHAR(255)   | Arabic title                      |
 | enDetails   | LONGTEXT       | English details                   |
 | arDetails   | LONGTEXT       | Arabic details                    |
-| hidden      | INT            | Hidden flag (0/1)                 |
-| status      | INT            | Status flag (0/1)                 |
+| hidden      | INT            | Hidden flag (0/1/2) (1=visible, 2=hidden) |
+| status      | INT            | Status flag (0=active, 1=deleted/archived) |
 
-**All future tables should use this schema for consistency and maintainability.**
+#### Extending the Schema for Specific Modules
+
+- **Add module-specific fields:** For example, the `categories` table adds `rank`, `imageurl`, and `header` fields:
+  - `rank` (INT): Used for ordering categories in the UI.
+  - `imageurl` (VARCHAR): Stores the filename or path of the logo image.
+  - `header` (VARCHAR): Stores the filename or path of the header/banner image.
+- **For other modules:** Add fields relevant to the module's function (e.g., `link` for banners, `content` for pages, etc.).
+
+#### Best Practices for Module Table Design
+
+- **Always include** the base fields (`id`, `date`, `enTitle`, `arTitle`, `enDetails`, `arDetails`, `hidden`, `status`) for consistency.
+- **Use `status` for soft deletes** instead of removing records, to allow for recovery and auditing.
+- **Use `hidden` for visibility control** (e.g., 1=visible, 2=hidden), so items can be toggled without deletion.
+- **Store images as filenames/paths** (not blobs) and keep images in organized folders (e.g., `/logos/categories/`).
+- **Use `rank` or similar fields** for modules that require ordering (categories, banners, etc.).
+- **URL-encode/decode text fields** when saving/loading to support special characters and multi-language content.
+- **Add indexes** on frequently queried fields (e.g., `status`, `hidden`, `rank`) for performance.
+- **Document any additional fields** in the code and documentation for clarity.
+
+#### Example: Categories Table (Extended)
+
+| Column      | Type           | Description                       |
+|-------------|----------------|-----------------------------------|
+| id          | INT, AUTO_INCREMENT, PRIMARY KEY | Unique identifier |
+| date        | TIMESTAMP, DEFAULT CURRENT_TIMESTAMP | Creation date/time |
+| enTitle     | VARCHAR(255)   | English title                     |
+| arTitle     | VARCHAR(255)   | Arabic title                      |
+| enDetails   | LONGTEXT       | English details                   |
+| arDetails   | LONGTEXT       | Arabic details                    |
+| hidden      | INT            | Hidden flag (1=visible, 2=hidden) |
+| status      | INT            | Status flag (0=active, 1=deleted) |
+| rank        | INT            | Category order                    |
+| imageurl    | VARCHAR(255)   | Logo image filename               |
+| header      | VARCHAR(255)   | Header image filename             |
+
+#### Extensibility Notes
+
+- When creating a new module, start with the standard schema and add only the fields necessary for that module's functionality.
+- Keep naming conventions consistent (e.g., `enTitle`, `arTitle`, `enDetails`, `arDetails`).
+- For relationships (e.g., subcategories), use foreign keys (e.g., `parent_id`).
+- Update documentation and code comments whenever the schema is extended.
+
+**All future tables should use this schema as a foundation, extending it as needed for each module.**
 Suppose the user accesses:
 ```
 /index.php?systemCode=ABC123&i=INV001&v=Categories
