@@ -106,7 +106,7 @@ function selectDB($table, $where){
     $where = str_replace($check, "", $where);
     $sql = "SELECT * FROM `{$table}`";
     if (!empty($where)) {
-        echo $sql .= " WHERE {$where}";
+        $sql .= " WHERE {$where}";
     }
     if ($stmt = $dbconnect->prepare($sql)) {
         $stmt->execute();
