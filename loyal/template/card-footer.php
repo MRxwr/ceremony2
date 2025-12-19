@@ -1,4 +1,3 @@
-<!-- Card Footer -->
 <div class="card-footer-section">
     <div class="social-links">
         <a href="" target="_blank"><i class="bi bi-facebook"></i></a>
