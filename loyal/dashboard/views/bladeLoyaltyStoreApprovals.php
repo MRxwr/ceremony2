@@ -63,16 +63,16 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 		
 		<tbody>
 		<?php 
-		$pendingStores = var_dump(selectJoinDB("stores", 
-			array(
-				"select" => array("t.*", "t1.enTitle", "t1.arTitle"),
-				"join" => array("categories"),
-				"on" => array("t.categoryId = t1.id")
-			),
-			"t.isApproved = '0' AND t.status = '0' ORDER BY t.date DESC"));
+		// First, let's try a simpler approach - get stores and categories separately
+		$pendingStores = selectDB("stores", "isApproved = '0' AND status = '0' ORDER BY date DESC");
 		if( $pendingStores && is_array($pendingStores) ){
 			for( $i = 0; $i < sizeof($pendingStores); $i++ ){
 				$counter = $i + 1;
+				// Get category info
+				$catId = $pendingStores[$i]["categoryId"];
+				$category = selectDB("categories", "`id` = '$catId'");
+				$categoryEN = ($category && is_array($category)) ? urldecode($category[0]["enTitle"]) : "N/A";
+				$categoryAR = ($category && is_array($category)) ? urldecode($category[0]["arTitle"]) : "غير محدد";
 			?>
 			<tr>
 			<td><?php echo $counter ?></td>
@@ -80,7 +80,7 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 				<div><strong><?php echo urldecode($pendingStores[$i]["enStoreName"]) ?></strong></div>
 				<div style="font-size:12px;color:#999"><?php echo urldecode($pendingStores[$i]["arStoreName"]) ?></div>
 			</td>
-			<td><?php echo direction(urldecode($pendingStores[$i]["enTitle"] ?? "N/A"), urldecode($pendingStores[$i]["arTitle"] ?? "غير محدد")) ?></td>
+			<td><?php echo direction($categoryEN, $categoryAR) ?></td>
 			<td><?php echo $pendingStores[$i]["ownerName"] ?? "N/A" ?></td>
 			<td><?php echo $pendingStores[$i]["phone"] ?? "N/A" ?></td>
 			<td><?php echo date('Y-m-d', strtotime($pendingStores[$i]["date"])) ?></td>
@@ -147,17 +147,17 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 		
 		<tbody>
 		<?php 
-		$approvedStores = selectJoinDB("stores", 
-			array(
-				"select" => array("t.*", "t1.enTitle", "t1.arTitle"),
-				"join" => array("categories"),
-				"on" => array("t.categoryId = t1.id")
-			),
-			"t.isApproved = '1' AND t.status = '0' ORDER BY t.date DESC");
+		$approvedStores = selectDB("stores", "isApproved = '1' AND status = '0' ORDER BY date DESC");
 		if( $approvedStores && is_array($approvedStores) ){
 			for( $i = 0; $i < sizeof($approvedStores); $i++ ){
 				$counter = $i + 1;
 				$storeId = $approvedStores[$i]["id"];
+				
+				// Get category info
+				$catId = $approvedStores[$i]["categoryId"];
+				$category = selectDB("categories", "`id` = '$catId'");
+				$categoryEN = ($category && is_array($category)) ? urldecode($category[0]["enTitle"]) : "N/A";
+				$categoryAR = ($category && is_array($category)) ? urldecode($category[0]["arTitle"]) : "غير محدد";
 				
 				// Get member count
 				$membersQuery = "SELECT COUNT(DISTINCT cc.customerId) as count
@@ -181,7 +181,7 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 				<div><strong><?php echo urldecode($approvedStores[$i]["enStoreName"]) ?></strong></div>
 				<div style="font-size:12px;color:#999"><?php echo urldecode($approvedStores[$i]["arStoreName"]) ?></div>
 			</td>
-			<td><?php echo direction(urldecode($approvedStores[$i]["enTitle"] ?? "N/A"), urldecode($approvedStores[$i]["arTitle"] ?? "غير محدد")) ?></td>
+			<td><?php echo direction($categoryEN, $categoryAR) ?></td>
 			<td><span class="badge badge-primary"><?php echo $memberCount ?></span></td>
 			<td><span class="badge badge-success"><?php echo $cardCount ?></span></td>
 			<td><?php echo date('Y-m-d', strtotime($approvedStores[$i]["date"])) ?></td>
