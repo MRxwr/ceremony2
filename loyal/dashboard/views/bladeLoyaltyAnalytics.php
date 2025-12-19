@@ -50,13 +50,13 @@ $pointsResult = queryDB($pointsQuery);
 $stats['totalPointsIssued'] = ($pointsResult && is_array($pointsResult)) ? intval($pointsResult[0]['total'] ?? 0) : 0;
 
 // Total Points Redeemed
-$redeemedQuery = "SELECT SUM(pointsCost) as total FROM redemptions WHERE status = 'completed'";
+$redeemedQuery = "SELECT SUM(pointsCost) as total FROM redemptions WHERE redemptionStatus = 'completed'";
 $redeemedResult = queryDB($redeemedQuery);
 $stats['totalPointsRedeemed'] = ($redeemedResult && is_array($redeemedResult)) ? intval($redeemedResult[0]['total'] ?? 0) : 0;
 
 // Active Points Balance
 $stats['activePointsBalance'] = $stats['totalPointsIssued'] - $stats['totalPointsRedeemed'];
-echo "<!--"; print_r($stats); echo "-->";die();
+
 // Total Transactions (in period)
 $transactionsQuery = "SELECT COUNT(*) as count FROM points_transactions WHERE status = '0' AND date >= '$startDate'";
 $transactionsResult = queryDB($transactionsQuery);
@@ -68,10 +68,10 @@ $valueResult = queryDB($valueQuery);
 $stats['periodTransactionValue'] = ($valueResult && is_array($valueResult)) ? floatval($valueResult[0]['total'] ?? 0) : 0;
 
 // Total Redemptions (in period)
-$redemptionsQuery = "SELECT COUNT(*) as count FROM redemptions WHERE status = 'completed' AND date >= '$startDate'";
+$redemptionsQuery = "SELECT COUNT(*) as count FROM redemptions WHERE redemptionStatus = 'completed' AND date >= '$startDate'";
 $redemptionsResult = queryDB($redemptionsQuery);
 $stats['periodRedemptions'] = ($redemptionsResult && is_array($redemptionsResult)) ? intval($redemptionsResult[0]['count']) : 0;
-
+echo "<!--"; print_r($stats); echo "-->";die();
 // Get top stores by members
 $topStoresQuery = "SELECT s.id, s.enStoreName, s.arStoreName, COUNT(DISTINCT cc.customerId) as memberCount
 				   FROM stores s
