@@ -236,7 +236,7 @@ if (!$chartData || !is_array($chartData)) $chartData = array();
 		<div class="panel-wrapper collapse in">
 			<div class="panel-body">
 				<div class="text-center">
-					<h2 class="text-success"><?php echo number_format($stats['periodTransactionValue'], 2) ?> SAR</h2>
+					<h2 class="text-success"><?php echo number_format($stats['periodTransactionValue'], 2) ?> KD</h2>
 					<p><?php echo direction("Total Value","القيمة الإجمالية") ?></p>
 				</div>
 			</div>
