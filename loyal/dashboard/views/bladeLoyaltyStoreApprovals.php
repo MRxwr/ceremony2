@@ -64,8 +64,8 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 		<tbody>
 		<?php 
 		// First, let's try a simpler approach - get stores and categories separately
-		$pendingStores = selectDB("stores", "isApproved = '0' AND status = '0' ORDER BY date DESC");
-		if( $pendingStores && is_array($pendingStores) ){
+		
+		if( $pendingStores = selectDB("stores", "isApproved = '0' AND status = '0' ORDER BY date DESC") ){
 			for( $i = 0; $i < sizeof($pendingStores); $i++ ){
 				$counter = $i + 1;
 				// Get category info
@@ -153,8 +153,7 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 		
 		<tbody>
 		<?php 
-		$approvedStores = selectDB("stores", "isApproved = '1' AND status = '0' ORDER BY date DESC");
-		if( $approvedStores && is_array($approvedStores) ){
+		if( $approvedStores = selectDB("stores", "isApproved = '1' AND status = '0' ORDER BY date DESC") ){
 			for( $i = 0; $i < sizeof($approvedStores); $i++ ){
 				$counter = $i + 1;
 				$storeId = $approvedStores[$i]["id"];
