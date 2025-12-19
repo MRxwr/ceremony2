@@ -233,10 +233,13 @@ if( isset($_POST["replyMessage"]) ){
 				
 				<!-- Replies -->
 				<?php 
-				$replies = selectDB("ticket_replies tr
-								    LEFT JOIN users u ON tr.userId = u.id
-								    LEFT JOIN employees e ON tr.userId = e.id",
-								   "tr.ticketId = '{$ticketId}' AND tr.status = '0' ORDER BY tr.date ASC");
+			$replies = selectJoinDB("ticket_replies", 
+				array(
+					"select" => array("t.*", "t1.firstName", "t1.lastName", "t2.name as empName"),
+					"join" => array("users", "employees"),
+					"on" => array("t.userId = t1.id", "t.userId = t2.id")
+				),
+				"t.ticketId = '{$ticketId}' AND t.status = '0' ORDER BY t.date ASC");
 				if ($replies && is_array($replies)):
 					foreach ($replies as $reply):
 						$isAdmin = $reply["isAdminReply"] == '1';

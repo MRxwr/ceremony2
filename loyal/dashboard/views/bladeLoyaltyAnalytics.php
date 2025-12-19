@@ -26,32 +26,32 @@ $stats = array();
 
 // Total Users
 $usersQuery = "SELECT COUNT(*) as count FROM users WHERE status = '0'";
-$usersResult = selectDB("users", "1=1", $usersQuery);
+$usersResult = queryDB($usersQuery);
 $stats['totalUsers'] = ($usersResult && is_array($usersResult)) ? intval($usersResult[0]['count']) : 0;
 
 // New Users (in period)
 $newUsersQuery = "SELECT COUNT(*) as count FROM users WHERE status = '0' AND date >= '$startDate'";
-$newUsersResult = selectDB("users", "1=1", $newUsersQuery);
+$newUsersResult = queryDB($newUsersQuery);
 $stats['newUsers'] = ($newUsersResult && is_array($newUsersResult)) ? intval($newUsersResult[0]['count']) : 0;
 
 // Total Stores
 $storesQuery = "SELECT COUNT(*) as count FROM stores WHERE status = '0' AND isApproved = '1'";
-$storesResult = selectDB("stores", "1=1", $storesQuery);
+$storesResult = queryDB($storesQuery);
 $stats['totalStores'] = ($storesResult && is_array($storesResult)) ? intval($storesResult[0]['count']) : 0;
 
 // Active Cards
 $cardsQuery = "SELECT COUNT(*) as count FROM customer_cards WHERE status = '0'";
-$cardsResult = selectDB("customer_cards", "1=1", $cardsQuery);
+$cardsResult = queryDB($cardsQuery);
 $stats['totalCards'] = ($cardsResult && is_array($cardsResult)) ? intval($cardsResult[0]['count']) : 0;
 
 // Total Points Issued
 $pointsQuery = "SELECT SUM(points) as total FROM points_transactions WHERE type = 'earned' AND status = '0'";
-$pointsResult = selectDB("points_transactions", "1=1", $pointsQuery);
+$pointsResult = queryDB($pointsQuery);
 $stats['totalPointsIssued'] = ($pointsResult && is_array($pointsResult)) ? intval($pointsResult[0]['total'] ?? 0) : 0;
 
 // Total Points Redeemed
 $redeemedQuery = "SELECT SUM(pointsCost) as total FROM redemptions WHERE status = 'completed'";
-$redeemedResult = selectDB("redemptions", "1=1", $redeemedQuery);
+$redeemedResult = queryDB($redeemedQuery);
 $stats['totalPointsRedeemed'] = ($redeemedResult && is_array($redeemedResult)) ? intval($redeemedResult[0]['total'] ?? 0) : 0;
 
 // Active Points Balance
@@ -59,17 +59,17 @@ $stats['activePointsBalance'] = $stats['totalPointsIssued'] - $stats['totalPoint
 
 // Total Transactions (in period)
 $transactionsQuery = "SELECT COUNT(*) as count FROM points_transactions WHERE status = '0' AND date >= '$startDate'";
-$transactionsResult = selectDB("points_transactions", "1=1", $transactionsQuery);
+$transactionsResult = queryDB($transactionsQuery);
 $stats['periodTransactions'] = ($transactionsResult && is_array($transactionsResult)) ? intval($transactionsResult[0]['count']) : 0;
 
 // Total Transaction Value (in period)
 $valueQuery = "SELECT SUM(amount) as total FROM points_transactions WHERE type = 'earned' AND status = '0' AND date >= '$startDate'";
-$valueResult = selectDB("points_transactions", "1=1", $valueQuery);
+$valueResult = queryDB($valueQuery);
 $stats['periodTransactionValue'] = ($valueResult && is_array($valueResult)) ? floatval($valueResult[0]['total'] ?? 0) : 0;
 
 // Total Redemptions (in period)
 $redemptionsQuery = "SELECT COUNT(*) as count FROM redemptions WHERE status = 'completed' AND date >= '$startDate'";
-$redemptionsResult = selectDB("redemptions", "1=1", $redemptionsQuery);
+$redemptionsResult = queryDB($redemptionsQuery);
 $stats['periodRedemptions'] = ($redemptionsResult && is_array($redemptionsResult)) ? intval($redemptionsResult[0]['count']) : 0;
 
 // Get top stores by members
@@ -81,7 +81,7 @@ $topStoresQuery = "SELECT s.id, s.enStoreName, s.arStoreName, COUNT(DISTINCT cc.
 				   GROUP BY s.id
 				   ORDER BY memberCount DESC
 				   LIMIT 10";
-$topStores = selectDB("stores s", "1=1", $topStoresQuery);
+$topStores = queryDB($topStoresQuery);
 if (!$topStores || !is_array($topStores)) $topStores = array();
 
 // Get recent transactions for chart
@@ -90,7 +90,7 @@ $chartQuery = "SELECT DATE(date) as day, COUNT(*) as count, SUM(amount) as value
 			   WHERE type = 'earned' AND status = '0' AND date >= '$startDate'
 			   GROUP BY DATE(date)
 			   ORDER BY day ASC";
-$chartData = selectDB("points_transactions", "1=1", $chartQuery);
+$chartData = queryDB($chartQuery);
 if (!$chartData || !is_array($chartData)) $chartData = array();
 ?>
 

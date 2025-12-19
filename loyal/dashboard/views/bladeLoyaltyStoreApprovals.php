@@ -63,9 +63,13 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 		
 		<tbody>
 		<?php 
-		$pendingStores = selectDB("stores s 
-								  LEFT JOIN categories c ON s.categoryId = c.id",
-								  "s.isApproved = '0' AND s.status = '0' ORDER BY s.date DESC");
+		$pendingStores = selectJoinDB("stores", 
+			array(
+				"select" => array("t.*", "t1.enTitle", "t1.arTitle"),
+				"join" => array("categories"),
+				"on" => array("t.categoryId = t1.id")
+			),
+			"t.isApproved = '0' AND t.status = '0' ORDER BY t.date DESC");
 		if( $pendingStores && is_array($pendingStores) ){
 			for( $i = 0; $i < sizeof($pendingStores); $i++ ){
 				$counter = $i + 1;
@@ -143,9 +147,13 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 		
 		<tbody>
 		<?php 
-		$approvedStores = selectDB("stores s 
-								   LEFT JOIN categories c ON s.categoryId = c.id",
-								   "s.isApproved = '1' AND s.status = '0' ORDER BY s.date DESC");
+		$approvedStores = selectJoinDB("stores", 
+			array(
+				"select" => array("t.*", "t1.enTitle", "t1.arTitle"),
+				"join" => array("categories"),
+				"on" => array("t.categoryId = t1.id")
+			),
+			"t.isApproved = '1' AND t.status = '0' ORDER BY t.date DESC");
 		if( $approvedStores && is_array($approvedStores) ){
 			for( $i = 0; $i < sizeof($approvedStores); $i++ ){
 				$counter = $i + 1;
@@ -156,7 +164,7 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 								FROM customer_cards cc
 								JOIN loyalty_programs lp ON cc.programId = lp.id
 								WHERE lp.storeId = '$storeId' AND cc.status = '0'";
-				$membersResult = selectDB("customer_cards cc", "1=1", $membersQuery);
+				$membersResult = queryDB($membersQuery);
 				$memberCount = ($membersResult && is_array($membersResult)) ? intval($membersResult[0]['count']) : 0;
 				
 				// Get card count
@@ -164,7 +172,7 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 							  FROM customer_cards cc
 							  JOIN loyalty_programs lp ON cc.programId = lp.id
 							  WHERE lp.storeId = '$storeId' AND cc.status = '0'";
-				$cardsResult = selectDB("customer_cards cc", "1=1", $cardsQuery);
+				$cardsResult = queryDB($cardsQuery);
 				$cardCount = ($cardsResult && is_array($cardsResult)) ? intval($cardsResult[0]['count']) : 0;
 			?>
 			<tr>
