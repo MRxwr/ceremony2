@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" dir="<?php echo $event["language"] ?>">
+<html lang="en" dir="<?php echo direction("ltr","rtl") ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?php echo $event["title"] ?> - Join us as we celebrate our day <?php echo $event["eventDate"] ?> at <?php echo $event["venue"] ?>. We look forward to sharing this special day with you.">
-    <meta name="keywords" content="wedding, <?php echo $event["title"] ?>, celebration, love, event">
-    <meta property="og:title" content="<?php echo $event["title"] ?> - 7yyak.com">
-    <meta property="og:description" content="Join us as we celebrate our special day">
-    <meta property="og:image" content="logos/<?php echo $event["whatsappImage"] ?>">
-    <meta property="og:url" content="<?php echo $event["url"] ?>">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta property="og:title" content="Loyal.com">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="logo/favicon.ico">
+    <meta property="og:url" content="">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="7yyak.com">
+    <meta property="og:site_name" content="Loyal.com">
     
     
-    <title><?php echo $event["title"] ?> - 7yyak.com</title>
+    <title>Loyal.com</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="logos/<?php echo $event["whatsappImage"] ?>">
+    <link rel="icon" type="image/x-icon" href="logo/favicon.ico">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -38,8 +38,5 @@
     <div class="loader" id="loader">
         <div class="heart"></div>
     </div>
-    
-    <!-- Floating Hearts Background -->
-    <?php include_once "template/navbar-tabs.php"; ?>
     
 
