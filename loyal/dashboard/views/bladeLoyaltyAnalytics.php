@@ -73,7 +73,7 @@ $redemptionsResult = queryDB($redemptionsQuery);
 $stats['periodRedemptions'] = ($redemptionsResult && is_array($redemptionsResult)) ? intval($redemptionsResult[0]['count']) : 0;
 
 // Get top stores by members
-$topStoresQuery = "SELECT s.id, s.enStoreName, s.arStoreName, COUNT(DISTINCT cc.customerId) as memberCount
+$topStoresQuery = "SELECT s.id, s.enStoreName, s.arStoreName, COUNT(DISTINCT cc.userId) as memberCount
 				   FROM stores s
 				   JOIN loyalty_programs lp ON s.id = lp.storeId
 				   JOIN customer_cards cc ON lp.id = cc.programId
