@@ -177,9 +177,10 @@ if( isset($_POST["arTitle"]) ){
 		<thead>
 		<tr>
 		<th>#</th>
-		<th><?php echo $English_Title ?></th>
-		<th><?php echo $Arabic_Title ?></th>
-		<th class="text-nowrap"><?php echo $Action ?></th>
+		<th><?php echo direction("Logo","الشعار") ?></th>
+		<th><?php echo direction("English Title","العنوان بالإنجليزي") ?></th>
+		<th><?php echo direction("Arabic Title","العنوان بالعربي") ?></th>
+		<th class="text-nowrap"><?php echo direction("Action","الإجراء") ?></th>
 		</tr>
 		</thead>
 		
@@ -203,6 +204,7 @@ if( isset($_POST["arTitle"]) ){
 			<input name="rank[]" class="form-control" type="number" value="<?php echo $counter ?>">
 			<input name="id[]" class="form-control" type="hidden" value="<?php echo $categories[$i]["id"] ?>">
 			</td>
+			<td><img src="../logos/categories/<?php echo $categories[$i]["imageurl"] ?>" style="width:50px;height:50px"></td>
 			<td id="enTitle<?php echo $categories[$i]["id"]?>" ><?php echo $categories[$i]["enTitle"] ?></td>
 			<td id="arTitle<?php echo $categories[$i]["id"]?>" ><?php echo $categories[$i]["arTitle"] ?></td>
 			<td class="text-nowrap">
