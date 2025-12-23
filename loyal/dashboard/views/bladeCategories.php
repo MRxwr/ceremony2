@@ -27,20 +27,21 @@ if( isset($_POST["updateRank"]) ){
 if( isset($_POST["arTitle"]) ){
 	$id = $_POST["update"];
 	unset($_POST["update"]);
+	$_POST["enDetails"] = urlencode($_POST["enDetails"]);
+	$_POST["arDetails"] = urlencode($_POST["arDetails"]);
 	if ( $id == 0 ){
-		/*
 		if (is_uploaded_file($_FILES['imageurl']['tmp_name'])) {
-			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name']);
+			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name'], "categories");
 		} else {
 			$_POST["imageurl"] = "";
 		}
 		
 		if (is_uploaded_file($_FILES['header']['tmp_name'])) {
-			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name']);
+			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name'], "categories");
 		} else {
 			$_POST["header"] = "";
 		}
-		*/
+		
 		
 		if( insertDB("categories", $_POST) ){
 			header("LOCATION: ?v=Categories");
@@ -52,21 +53,19 @@ if( isset($_POST["arTitle"]) ){
 		<?php
 		}
 	}else{
-		/*
 		if (is_uploaded_file($_FILES['imageurl']['tmp_name'])) {
-			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name']);
+			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name'], "categories");
 		} else {
 			$imageurl = selectDB("categories", "`id` = '{$id}'");
 			$_POST["imageurl"] = $imageurl[0]["imageurl"];
 		}
 		
 		if (is_uploaded_file($_FILES['header']['tmp_name'])) {
-			$_POST["header"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name']);
+			$_POST["header"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name'], "categories");
 		} else {
 			$header = selectDB("categories", "`id` = '{$id}'");
 			$_POST["header"] = $header[0]["header"];
 		}
-			*/
 		
 		if( updateDB("categories", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Categories");
@@ -110,8 +109,7 @@ if( isset($_POST["arTitle"]) ){
 				<option value="2">Yes</option>
 			</select>
 			</div>
-			<?php
-			/*
+
 			<div class="col-md-6">
 			<label><?php echo direction("Logo","الشعار") ?></label>
 			<input type="file" name="imageurl" class="form-control" required>
@@ -121,8 +119,6 @@ if( isset($_POST["arTitle"]) ){
 			<label><?php echo direction("Header","الصورة الكبيرة") ?></label>
 			<input type="file" name="header" class="form-control" required>
 			</div>
-			*/
-			?>
 			
 			<div id="images" style="margin-top: 10px; display:none">
 				<div class="col-md-6">
@@ -153,7 +149,7 @@ if( isset($_POST["arTitle"]) ){
 <div class="panel panel-default card-view">
 <div class="panel-heading">
 <div class="pull-left">
-<h6 class="panel-title txt-dark"><?php echo $List_of_Categories ?></h6>
+<h6 class="panel-title txt-dark"><?php echo direction("List of Categories","قائمة الأقسام") ?></h6>
 </div>
 <div class="clearfix"></div>
 </div>
@@ -204,9 +200,13 @@ if( isset($_POST["arTitle"]) ){
 			</a>
 			<a href="<?php echo "?v={$_GET["v"]}&delId={$categories[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>"><i class="fa fa-close text-danger"></i>
 			</a>
-			<div style="display:none"><label id="hidden<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["hidden"] ?></label></div>
-			<div style="display:none"><label id="logo<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["imageurl"] ?></label></div>
-			<div style="display:none"><label id="header<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["header"] ?></label></div>
+			<div style="display:none">
+				<label id="hidden<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["hidden"] ?></label>
+				<label id="logo<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["imageurl"] ?></label>
+				<label id="header<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["header"] ?></label>
+				<label id="enDetails<?php echo $categories[$i]["id"]?>"><?php echo urldecode(htmlspecialchars($categories[$i]["enDetails"])) ?></label>
+				<label id="arDetails<?php echo $categories[$i]["id"]?>"><?php echo urldecode(htmlspecialchars($categories[$i]["arDetails"])) ?></label>
+			</div>
 			
 			</td>
 			</tr>
@@ -228,18 +228,26 @@ if( isset($_POST["arTitle"]) ){
 <script>
 	$(document).on("click",".edit", function(){
 		var id = $(this).attr("id");
-		var arTitle = $("#arTitle"+id).html();
-		var enTitle = $("#enTitle"+id).html();
-		var hidden = $("#hidden"+id).html();
-		var logo = $("#logo"+id).html();
-		var header = $("#header"+id).html();
-		$("input[type=file]").prop("required",false);
-		$("input[name=arTitle]").val(arTitle).focus();
 		$("input[name=update]").val(id);
-		$("input[name=enTitle]").val(enTitle);
-		$("select[name=hidden]").val(hidden);
-		$("#headerImg").attr("src","../logos/"+header);
-		$("#logoImg").attr("src","../logos/"+logo);
+
+		$("input[type=file]").prop("required",false);
+		$("input[name=enTitle]").val($("#enTitle"+id).html()).focus();
+		$("input[name=arTitle]").val($("#arTitle"+id).html());
+		$("select[name=hidden]").val($("#hidden"+id).html());
+		$("#headerImg").attr("src","../logos/"+$("#header"+id).html());
+		$("#logoImg").attr("src","../logos/"+$("#logo"+id).html());
 		$("#images").attr("style","margin-top:10px;display:block");
+		// Set TinyMCE content with a small delay to ensure editors are ready
+		setTimeout(function() {
+			var enDetails = tinymce.get('enDetails');
+			var arDetails = tinymce.get('arDetails');
+			
+			if (enDetails) {
+				enDetails.setContent($("#enDetails"+id).html());
+			}
+			if (arDetails) {
+				arDetails.setContent($("#arDetails"+id).html());
+			}
+		}, 100);
 	})
 </script>
