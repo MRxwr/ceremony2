@@ -111,6 +111,16 @@ if( isset($_POST["arTitle"]) ){
 			</div>
 
 			<div class="col-md-6">
+			<label><?php echo direction("English Details","التفاصيل بالإنجليزي") ?></label>
+			<textarea id="enDetails" name="enDetails" class="tinymce"></textarea>
+			</div>
+
+            <div class="col-md-6">
+			<label><?php echo direction("Arabic Details","التفاصيل بالعربي") ?></label>
+			<textarea id="arDetails" name="arDetails" class="tinymce"></textarea>
+			</div>
+
+			<div class="col-md-6">
 			<label><?php echo direction("Logo","الشعار") ?></label>
 			<input type="file" name="imageurl" class="form-control" required>
 			</div>
