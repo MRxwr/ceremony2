@@ -92,58 +92,61 @@ if( isset($_POST["arTitle"]) ){
 <div class="panel-body">
 	<form class="" method="POST" action="" enctype="multipart/form-data">
 		<div class="row m-0">
+
 			<div class="col-md-4">
-			<label><?php echo direction("Arabic Title","العنوان بالعربي") ?></label>
-			<input type="text" name="arTitle" class="form-control" required>
+				<label><?php echo direction("English Title","العنوان بالإنجليزي") ?></label>
+				<input type="text" name="enTitle" class="form-control" required>
+			</div>
+
+			<div class="col-md-4">
+				<label><?php echo direction("Arabic Title","العنوان بالعربي") ?></label>
+				<input type="text" name="arTitle" class="form-control" required>
 			</div>
 			
-			<div class="col-md-4">
-			<label><?php echo direction("English Title","العنوان بالإنجليزي") ?></label>
-			<input type="text" name="enTitle" class="form-control" required>
-			</div>
+			
 			
 			<div class="col-md-4">
-			<label><?php echo direction("Hide Category","أخفي القسم") ?></label>
-			<select name="hidden" class="form-control">
-				<option value="1">No</option>
-				<option value="2">Yes</option>
-			</select>
+				<label><?php echo direction("Hide Category","أخفي القسم") ?></label>
+				<select name="hidden" class="form-control">
+					<option value="1">No</option>
+					<option value="2">Yes</option>
+				</select>
 			</div>
 
 			<div class="col-md-6">
-			<label><?php echo direction("English Details","التفاصيل بالإنجليزي") ?></label>
-			<textarea id="enDetails" name="enDetails" class="tinymce"></textarea>
+				<label><?php echo direction("English Details","التفاصيل بالإنجليزي") ?></label>
+				<textarea id="enDetails" name="enDetails" class="tinymce"></textarea>
 			</div>
 
             <div class="col-md-6">
-			<label><?php echo direction("Arabic Details","التفاصيل بالعربي") ?></label>
-			<textarea id="arDetails" name="arDetails" class="tinymce"></textarea>
+				<label><?php echo direction("Arabic Details","التفاصيل بالعربي") ?></label>
+				<textarea id="arDetails" name="arDetails" class="tinymce"></textarea>
 			</div>
 
 			<div class="col-md-6">
-			<label><?php echo direction("Logo","الشعار") ?></label>
-			<input type="file" name="imageurl" class="form-control" required>
+				<label><?php echo direction("Logo","الشعار") ?></label>
+				<input type="file" name="imageurl" class="form-control" required>
 			</div>
 			
 			<div class="col-md-6">
-			<label><?php echo direction("Header","الصورة الكبيرة") ?></label>
-			<input type="file" name="header" class="form-control" required>
+				<label><?php echo direction("Header","الصورة الكبيرة") ?></label>
+				<input type="file" name="header" class="form-control" required>
 			</div>
 			
 			<div id="images" style="margin-top: 10px; display:none">
 				<div class="col-md-6">
-				<img id="logoImg" src="" style="width:250px;height:250px">
+					<img id="logoImg" src="" style="width:250px;height:250px">
 				</div>
 				
 				<div class="col-md-6">
-				<img id="headerImg" src="" style="width:250px;height:250px">
+					<img id="headerImg" src="" style="width:250px;height:250px">
 				</div>
 			</div>
 			
 			
 			<div class="col-md-6" style="margin-top:10px">
-			<input type="submit" class="btn btn-primary" value="<?php echo direction("Submit","أرسل") ?>">
-			<input type="hidden" name="update" value="0">
+				<input type="submit" class="btn btn-primary" value="<?php echo direction("Submit","أرسل") ?>">
+				<input type="hidden" name="update" value="0">
 			</div>
 		</div>
 	</form>
