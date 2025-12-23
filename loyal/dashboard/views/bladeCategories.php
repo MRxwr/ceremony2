@@ -176,11 +176,11 @@ if( isset($_POST["arTitle"]) ){
 	<table class="table display responsive product-overview mb-30" id="myTable">
 		<thead>
 		<tr>
-		<th>#</th>
-		<th><?php echo direction("Logo","الشعار") ?></th>
-		<th><?php echo direction("English Title","العنوان بالإنجليزي") ?></th>
-		<th><?php echo direction("Arabic Title","العنوان بالعربي") ?></th>
-		<th class="text-nowrap"><?php echo direction("Action","الإجراء") ?></th>
+			<th>#</th>
+			<th><?php echo direction("Logo","الشعار") ?></th>
+			<th><?php echo direction("English Title","العنوان بالإنجليزي") ?></th>
+			<th><?php echo direction("Arabic Title","العنوان بالعربي") ?></th>
+			<th class="text-nowrap"><?php echo direction("Action","الإجراء") ?></th>
 		</tr>
 		</thead>
 		
@@ -200,30 +200,26 @@ if( isset($_POST["arTitle"]) ){
 			}
 			?>
 			<tr>
-			<td>
-			<input name="rank[]" class="form-control" type="number" value="<?php echo $counter ?>">
-			<input name="id[]" class="form-control" type="hidden" value="<?php echo $categories[$i]["id"] ?>">
-			</td>
-			<td><img src="../logos/categories/<?php echo $categories[$i]["imageurl"] ?>" style="width:50px;height:50px"></td>
-			<td id="enTitle<?php echo $categories[$i]["id"]?>" ><?php echo $categories[$i]["enTitle"] ?></td>
-			<td id="arTitle<?php echo $categories[$i]["id"]?>" ><?php echo $categories[$i]["arTitle"] ?></td>
-			<td class="text-nowrap">
-			
-			<a id="<?php echo $categories[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i>
-			</a>
-			<a href="<?php echo $link ?>" class="mr-25" data-toggle="tooltip" data-original-title="<?php echo $hide ?>"> <i class="<?php echo $icon ?> text-inverse m-r-10"></i>
-			</a>
-			<a href="<?php echo "?v={$_GET["v"]}&delId={$categories[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>"><i class="fa fa-close text-danger"></i>
-			</a>
-			<div style="display:none">
-				<label id="hidden<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["hidden"] ?></label>
-				<label id="logo<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["imageurl"] ?></label>
-				<label id="header<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["header"] ?></label>
-				<label id="enDetails<?php echo $categories[$i]["id"]?>"><?php echo urldecode(htmlspecialchars($categories[$i]["enDetails"])) ?></label>
-				<label id="arDetails<?php echo $categories[$i]["id"]?>"><?php echo urldecode(htmlspecialchars($categories[$i]["arDetails"])) ?></label>
-			</div>
-			
-			</td>
+				<td>
+					<input name="rank[]" class="form-control" type="number" value="<?php echo $counter ?>">
+					<input name="id[]" class="form-control" type="hidden" value="<?php echo $categories[$i]["id"] ?>">
+				</td>
+				<td><img src="../logos/categories/<?php echo $categories[$i]["imageurl"] ?>" style="width:50px;height:50px"></td>
+				<td id="enTitle<?php echo $categories[$i]["id"]?>" ><?php echo $categories[$i]["enTitle"] ?></td>
+				<td id="arTitle<?php echo $categories[$i]["id"]?>" ><?php echo $categories[$i]["arTitle"] ?></td>
+				<td class="text-nowrap">
+					<a id="<?php echo $categories[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i></a>
+					<a href="<?php echo $link ?>" class="mr-25" data-toggle="tooltip" data-original-title="<?php echo $hide ?>"> <i class="<?php echo $icon ?> text-inverse m-r-10"></i></a>
+					<a href="<?php echo "?v={$_GET["v"]}&delId={$categories[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>"><i class="fa fa-close text-danger"></i></a>
+				<div style="display:none">
+					<label id="hidden<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["hidden"] ?></label>
+					<label id="logo<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["imageurl"] ?></label>
+					<label id="header<?php echo $categories[$i]["id"]?>"><?php echo $categories[$i]["header"] ?></label>
+					<label id="enDetails<?php echo $categories[$i]["id"]?>"><?php echo urldecode(htmlspecialchars($categories[$i]["enDetails"])) ?></label>
+					<label id="arDetails<?php echo $categories[$i]["id"]?>"><?php echo urldecode(htmlspecialchars($categories[$i]["arDetails"])) ?></label>
+				</div>
+				
+				</td>
 			</tr>
 			<?php
 			}
