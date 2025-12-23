@@ -1,1 +1,0 @@
-<?php header("LOCATION: index.php?v=Home"); die(); ?>
