@@ -175,8 +175,14 @@ function uploadImageBannerFreeImageHost($imageLocation, $folderName = "logos"){
 	$response = json_decode(curl_exec($curl),true);
 	curl_close($curl);
 	if( isset($response["success"]) && $response["success"] == true ){
-		file_put_contents("../storage/{$folderName}/{$response["data"]["id"]}.{$response["data"]["image"]["extension"]}", file_get_contents($response["data"]["image"]["url"]));
-		return "{$response["data"]["id"]}.{$response["data"]["image"]["extension"]}"; 
+		$dirPath = dirname(__DIR__, 3)."/storage/{$folderName}";
+		if (!is_dir($dirPath)) {
+			mkdir($dirPath, 0777, true);
+		}
+		$fileName = "{$response["data"]["id"]}.{$response["data"]["image"]["extension"]}";
+		$filePath = "$dirPath/$fileName";
+		file_put_contents($filePath, file_get_contents($response["data"]["image"]["url"]));
+		return $fileName; 
 	}else{
 		return "";
 	}
