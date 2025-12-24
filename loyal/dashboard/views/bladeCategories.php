@@ -37,7 +37,7 @@ if( isset($_POST["arTitle"]) ){
 		}
 		
 		if (is_uploaded_file($_FILES['header']['tmp_name'])) {
-			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name'], "categories");
+			$_POST["header"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name'], "categories");
 		} else {
 			$_POST["header"] = "";
 		}
