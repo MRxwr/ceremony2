@@ -25,7 +25,11 @@ if( isset($_POST["updateRank"]) ){
 }
 
 if( isset($_POST["arTitle"]) ){
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+	
 	$id = $_POST["update"];
+	echo "<pre>DEBUG - Update ID: " . $id . "</pre>";
 	
 	// Prepare data array with only valid database columns
 	$data = array(
@@ -35,6 +39,9 @@ if( isset($_POST["arTitle"]) ){
 		"arDetails" => urlencode($_POST["arDetails"]),
 		"hidden" => $_POST["hidden"]
 	);
+	echo "<pre>DEBUG - Initial data: ";
+	print_r($data);
+	echo "</pre>";
 	
 	if ( $id == 0 ){
 		// Insert new category
@@ -84,11 +91,16 @@ if( isset($_POST["arTitle"]) ){
 			}
 		}
 		
-		// Debug: Log the data being updated
-		error_log("Updating category ID: " . $id);
-		error_log("Data: " . print_r($data, true));
+		// Debug: Output the data being updated
+		echo "<pre>DEBUG - Final Update Data: ";
+		print_r($data);
+		echo "</pre>";
+		echo "<pre>DEBUG - Calling updateDB for ID: {$id}</pre>";
 		
-		if( updateDB("categories", $data, "`id` = '{$id}'") ){
+		$result = updateDB("categories", $data, "`id` = '{$id}'");
+		echo "<pre>DEBUG - UpdateDB Result: " . ($result ? 'SUCCESS' : 'FAILED') . "</pre>";
+		
+		if( $result ){
 			header("LOCATION: ?v=Categories");
 			exit();
 		}else{
