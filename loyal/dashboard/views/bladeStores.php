@@ -93,7 +93,7 @@ if( isset($_POST["arTitle"]) ){
 	<form class="" method="POST" action="" enctype="multipart/form-data">
 		<div class="row m-0">
 
-			<div class="col-md-4">
+			<div class="col-md-3">
 				<label><?php echo direction("Select Category","اختر القسم") ?></label>
 				<select name="categoryId" class="form-control" required>
 					<option value="" disabled selected><?php echo direction("No Category","بدون قسم") ?></option>
@@ -109,17 +109,17 @@ if( isset($_POST["arTitle"]) ){
 				</select>
 			</div>
 
-			<div class="col-md-4">
+			<div class="col-md-3">
 				<label><?php echo direction("English Title","العنوان بالإنجليزي") ?></label>
 				<input type="text" name="enTitle" class="form-control" required>
 			</div>
 
-			<div class="col-md-4">
+			<div class="col-md-3">
 				<label><?php echo direction("Arabic Title","العنوان بالعربي") ?></label>
 				<input type="text" name="arTitle" class="form-control" required>
 			</div>
 			
-			<div class="col-md-4">
+			<div class="col-md-3">
 				<label><?php echo direction("Hide Store","أخفي المتجر") ?></label>
 				<select name="hidden" class="form-control">
 					<option value="1">No</option>
