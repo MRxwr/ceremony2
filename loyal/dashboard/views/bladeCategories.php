@@ -27,15 +27,9 @@ if( isset($_POST["updateRank"]) ){
 if( isset($_POST["arTitle"]) ){
 	$id = $_POST["update"];
 	unset($_POST["update"]);
-	$_POST["enDetails"] = isset($_POST["enDetails"]) ? urlencode($_POST["enDetails"]) : "";
-	$_POST["arDetails"] = isset($_POST["arDetails"]) ? urlencode($_POST["arDetails"]) : "";
-	
-    $columns = ['rank', 'arTitle', 'enTitle', 'enDetails', 'arDetails', 'imageurl', 'header', 'glow', 'hidden', 'status'];
-
+	$_POST["enDetails"] = urlencode($_POST["enDetails"]);
+	$_POST["arDetails"] = urlencode($_POST["arDetails"]);
 	if ( $id == 0 ){
-		$_POST["rank"] = 0;
-		$_POST["glow"] = 0;
-		$_POST["status"] = 0;
 		if (is_uploaded_file($_FILES['imageurl']['tmp_name'])) {
 			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name'], "categories");
 		} else {
@@ -48,14 +42,8 @@ if( isset($_POST["arTitle"]) ){
 			$_POST["header"] = "";
 		}
 		
-        $data = [];
-        foreach($columns as $col){
-            if(isset($_POST[$col])){
-                $data[$col] = $_POST[$col];
-            }
-        }
 		
-		if( insertDB("categories", $data) ){
+		if( insertDB("categories", $_POST) ){
 			header("LOCATION: ?v=Categories");
 		}else{
 		?>
@@ -79,14 +67,7 @@ if( isset($_POST["arTitle"]) ){
 			$_POST["header"] = $header[0]["header"];
 		}
 		
-        $data = [];
-        foreach($columns as $col){
-            if(isset($_POST[$col])){
-                $data[$col] = $_POST[$col];
-            }
-        }
-
-		if( updateDB("categories", $data, "`id` = '{$id}'") ){
+		if( updateDB("categories", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Categories");
 		}else{
 		?>
