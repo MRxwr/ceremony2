@@ -263,7 +263,10 @@ function updateDB($table, $data, $where) {
     if ($stmt->execute()) {
         return 1;
     } else {
-        $error = array("msg" => "update table error");
+        error_log("UpdateDB Error: " . $stmt->error);
+        error_log("SQL: " . $sql);
+        error_log("Data: " . print_r($data, true));
+        $error = array("msg" => "update table error", "error" => $stmt->error);
         return 0;
     }
 }

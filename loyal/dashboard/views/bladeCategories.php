@@ -70,15 +70,23 @@ if( isset($_POST["arTitle"]) ){
 			$data["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name'], "categories");
 		} else {
 			$imageurl = selectDB("categories", "`id` = '{$id}'");
-			$data["imageurl"] = $imageurl[0]["imageurl"];
+			if($imageurl && isset($imageurl[0]["imageurl"])){
+				$data["imageurl"] = $imageurl[0]["imageurl"];
+			}
 		}
 		
 		if (is_uploaded_file($_FILES['header']['tmp_name'])) {
 			$data["header"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name'], "categories");
 		} else {
 			$header = selectDB("categories", "`id` = '{$id}'");
-			$data["header"] = $header[0]["header"];
+			if($header && isset($header[0]["header"])){
+				$data["header"] = $header[0]["header"];
+			}
 		}
+		
+		// Debug: Log the data being updated
+		error_log("Updating category ID: " . $id);
+		error_log("Data: " . print_r($data, true));
 		
 		if( updateDB("categories", $data, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Categories");
@@ -86,7 +94,7 @@ if( isset($_POST["arTitle"]) ){
 		}else{
 		?>
 		<script>
-			alert("Could not process your request, Please try again.");
+			alert("Could not process your request, Please try again. Check error log for details.");
 		</script>
 		<?php
 		}
