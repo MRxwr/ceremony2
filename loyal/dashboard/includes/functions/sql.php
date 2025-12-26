@@ -205,7 +205,7 @@ function insertDB($table, $data){
     }
     $sql = rtrim($sql, ",");
     $placeholders = rtrim($placeholders, ",");
-    echo $sql .= ") VALUES ({$placeholders})";
+    $sql .= ") VALUES ({$placeholders})";
     $stmt = $dbconnect->prepare($sql);
     $types = str_repeat('s', count($data));
     $stmt->bind_param($types, ...array_values($data));
@@ -243,7 +243,7 @@ function updateDB($table, $data, $where) {
         }
         $params .= "s";
     }
-    $sql .= " WHERE " . $where;
+    echo $sql .= " WHERE " . $where;
     $stmt = $dbconnect->prepare($sql); 
     $values = array_values($data);
     $stmt->bind_param($params, ...$values);
