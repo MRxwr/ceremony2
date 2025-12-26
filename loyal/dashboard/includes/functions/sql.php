@@ -244,7 +244,7 @@ function updateDB($table, $data, $where) {
         $params .= "s";
     }
     echo $sql .= " WHERE " . $where;
-    var_dump($values);
+    var_dump($data);
     $stmt = $dbconnect->prepare($sql); 
     $values = array_values($data);
     $stmt->bind_param($params, ...$values);
