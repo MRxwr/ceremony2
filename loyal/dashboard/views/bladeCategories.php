@@ -25,45 +25,26 @@ if( isset($_POST["updateRank"]) ){
 }
 
 if( isset($_POST["arTitle"]) ){
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
-	
 	$id = $_POST["update"];
-	echo "<pre>DEBUG - Update ID: " . $id . "</pre>";
-	
-	// Prepare data array with only valid database columns
-	$data = array(
-		"arTitle" => $_POST["arTitle"],
-		"enTitle" => $_POST["enTitle"],
-		"enDetails" => urlencode($_POST["enDetails"]),
-		"arDetails" => urlencode($_POST["arDetails"]),
-		"hidden" => $_POST["hidden"]
-	);
-	echo "<pre>DEBUG - Initial data: ";
-	print_r($data);
-	echo "</pre>";
-	
+	unset($_POST["update"]);
+	$_POST["enDetails"] = urlencode($_POST["enDetails"]);
+	$_POST["arDetails"] = urlencode($_POST["arDetails"]);
 	if ( $id == 0 ){
-		// Insert new category
-		$data["rank"] = 0;
-		$data["glow"] = 0;
-		$data["status"] = 0;
-		
 		if (is_uploaded_file($_FILES['imageurl']['tmp_name'])) {
-			$data["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name'], "categories");
+			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name'], "categories");
 		} else {
-			$data["imageurl"] = "";
+			$_POST["imageurl"] = "";
 		}
 		
 		if (is_uploaded_file($_FILES['header']['tmp_name'])) {
-			$data["header"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name'], "categories");
+			$_POST["header"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name'], "categories");
 		} else {
-			$data["header"] = "";
+			$_POST["header"] = "";
 		}
 		
-		if( insertDB("categories", $data) ){
+		
+		if( insertDB("categories", $_POST) ){
 			header("LOCATION: ?v=Categories");
-			exit();
 		}else{
 		?>
 		<script>
@@ -72,41 +53,26 @@ if( isset($_POST["arTitle"]) ){
 		<?php
 		}
 	}else{
-		// Update existing category
 		if (is_uploaded_file($_FILES['imageurl']['tmp_name'])) {
-			$data["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name'], "categories");
+			$_POST["imageurl"] = uploadImageBannerFreeImageHost($_FILES['imageurl']['tmp_name'], "categories");
 		} else {
 			$imageurl = selectDB("categories", "`id` = '{$id}'");
-			if($imageurl && isset($imageurl[0]["imageurl"])){
-				$data["imageurl"] = $imageurl[0]["imageurl"];
-			}
+			$_POST["imageurl"] = $imageurl[0]["imageurl"];
 		}
 		
 		if (is_uploaded_file($_FILES['header']['tmp_name'])) {
-			$data["header"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name'], "categories");
+			$_POST["header"] = uploadImageBannerFreeImageHost($_FILES['header']['tmp_name'], "categories");
 		} else {
 			$header = selectDB("categories", "`id` = '{$id}'");
-			if($header && isset($header[0]["header"])){
-				$data["header"] = $header[0]["header"];
-			}
+			$_POST["header"] = $header[0]["header"];
 		}
 		
-		// Debug: Output the data being updated
-		echo "<pre>DEBUG - Final Update Data: ";
-		print_r($data);
-		echo "</pre>";
-		echo "<pre>DEBUG - Calling updateDB for ID: {$id}</pre>";
-		
-		$result = updateDB("categories", $data, "`id` = '{$id}'");
-		echo "<pre>DEBUG - UpdateDB Result: " . ($result ? 'SUCCESS' : 'FAILED') . "</pre>";
-		
-		if( $result ){
+		if( updateDB("categories", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Categories");
-			exit();
 		}else{
 		?>
 		<script>
-			alert("Could not process your request, Please try again. Check error log for details.");
+			alert("Could not process your request, Please try again.");
 		</script>
 		<?php
 		}

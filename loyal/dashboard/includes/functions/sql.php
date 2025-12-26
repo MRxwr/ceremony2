@@ -244,18 +244,7 @@ function updateDB($table, $data, $where) {
         $params .= "s";
     }
     $sql .= " WHERE " . $where;
-    
-    echo "<pre>DEBUG SQL: " . $sql . "</pre>";
-    echo "<pre>DEBUG Params: " . $params . "</pre>";
-    echo "<pre>DEBUG Values: ";
-    print_r(array_values($data));
-    echo "</pre>";
-    
     $stmt = $dbconnect->prepare($sql); 
-    if(!$stmt){
-        echo "<pre>ERROR: Failed to prepare statement: " . $dbconnect->error . "</pre>";
-        return 0;
-    }
     $values = array_values($data);
     $stmt->bind_param($params, ...$values);
     
@@ -272,14 +261,9 @@ function updateDB($table, $data, $where) {
     
 
     if ($stmt->execute()) {
-        echo "<pre>DEBUG: Update executed successfully</pre>";
         return 1;
     } else {
-        echo "<pre>ERROR executing update: " . $stmt->error . "</pre>";
-        error_log("UpdateDB Error: " . $stmt->error);
-        error_log("SQL: " . $sql);
-        error_log("Data: " . print_r($data, true));
-        $error = array("msg" => "update table error", "error" => $stmt->error);
+        $error = array("msg" => "update table error");
         return 0;
     }
 }
