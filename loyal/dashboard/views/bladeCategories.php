@@ -204,7 +204,7 @@ if( isset($_POST["arTitle"]) ){
 					<input name="rank[]" class="form-control" type="number" value="<?php echo $counter ?>">
 					<input name="id[]" class="form-control" type="hidden" value="<?php echo $categories[$i]["id"] ?>">
 				</td>
-				<td><img src="../logos/categories/<?php echo $categories[$i]["imageurl"] ?>" style="width:50px;height:50px"></td>
+				<td><img src="../storage/<?php echo $categories[$i]["imageurl"] ?>" style="width:50px;height:50px"></td>
 				<td id="enTitle<?php echo $categories[$i]["id"]?>" ><?php echo $categories[$i]["enTitle"] ?></td>
 				<td id="arTitle<?php echo $categories[$i]["id"]?>" ><?php echo $categories[$i]["arTitle"] ?></td>
 				<td class="text-nowrap">
@@ -245,8 +245,8 @@ if( isset($_POST["arTitle"]) ){
 		$("input[name=enTitle]").val($("#enTitle"+id).html()).focus();
 		$("input[name=arTitle]").val($("#arTitle"+id).html());
 		$("select[name=hidden]").val($("#hidden"+id).html());
-		$("#headerImg").attr("src","../logos/"+$("#header"+id).html());
-		$("#logoImg").attr("src","../logos/"+$("#logo"+id).html());
+		$("#headerImg").attr("src","../storage/"+$("#header"+id).html());
+		$("#logoImg").attr("src","../storage/"+$("#logo"+id).html());
 		$("#images").attr("style","margin-top:10px;display:block");
 		// Set TinyMCE content with a small delay to ensure editors are ready
 		setTimeout(function() {

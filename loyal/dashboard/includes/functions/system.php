@@ -182,7 +182,7 @@ function uploadImageBannerFreeImageHost($imageLocation, $folderName = "logos"){
 		$fileName = "{$response["data"]["id"]}.{$response["data"]["image"]["extension"]}";
 		$filePath = "$dirPath/$fileName";
 		file_put_contents($filePath, file_get_contents($response["data"]["image"]["url"]));
-		return $fileName; 
+		return "{$folderName}/{$fileName}"; 
 	}else{
 		return "";
 	}
