@@ -127,7 +127,7 @@ if( isset($_POST["arTitle"]) ){
 					if( $cardTypes = selectDB("card_types","`status` = '0' ORDER BY `rank` ASC") ){
 						for( $i = 0; $i < sizeof($cardTypes); $i++ ){
 							?>
-							<option value="<?php echo $cardTypes[$i]["id"] ?>"><?php echo urldecode(direction($cardTypes[$i]["enTitle"], $cardTypes[$i]["arTitle"])) ?></option>
+							<option value="<?php echo $cardTypes[$i]["id"] ?>" data-enTitle="<?php echo $cardTypes[$i]["enTitle"] ?>" data-arTitle="<?php echo $cardTypes[$i]["arTitle"] ?>"><?php echo urldecode(direction($cardTypes[$i]["enTitle"], $cardTypes[$i]["arTitle"])) ?></option>
 							<?php
 						}
 					}
