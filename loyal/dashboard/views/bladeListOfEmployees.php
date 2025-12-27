@@ -17,7 +17,7 @@ if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
 	}
 }
 
-if( isset($_POST["fullName"]) ){
+if( isset($_POST["firstName"]) ){
 	$id = $_POST["update"];
 	unset($_POST["update"]);
 	if ( $id == 0 ){
