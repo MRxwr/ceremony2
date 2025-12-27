@@ -42,7 +42,7 @@ $stores = selectDB("stores", "$where ORDER BY `id` DESC");
         <?php if ($stores): foreach ($stores as $store): ?>
             <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden group hover:shadow-md transition-all">
                 <div class="relative h-40 overflow-hidden">
-                    <img src="logos/<?php echo $store['image'] ?>" alt="<?php echo $store['enTitle'] ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <img src="storage/<?php echo $store['image'] ?>" alt="<?php echo $store['enTitle'] ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     <div class="absolute top-3 right-3 bg-white/90 dark:bg-gray-900/90 px-2 py-1 rounded-lg text-[10px] font-bold text-primary">
                         <i class="fas fa-star mr-1"></i> 4.8
                     </div>
