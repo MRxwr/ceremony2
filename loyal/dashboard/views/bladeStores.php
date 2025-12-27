@@ -139,7 +139,7 @@ if( isset($_POST["arTitle"]) ){
 
 			<div class="col-md-6">
 				<label><?php echo direction("Logo","الشعار") ?></label>
-				<input type="file" name="imageurl" class="form-control" required>
+				<input type="file" name="logo" class="form-control" required>
 			</div>
 			
 			<div class="col-md-6">
@@ -221,7 +221,7 @@ if( isset($_POST["arTitle"]) ){
 					<input name="id[]" class="form-control" type="hidden" value="<?php echo $stores[$i]["id"] ?>">
 				</td>
 				<td><?php echo direction($category[0]["enTitle"], $category[0]["arTitle"]) ?></td>
-				<td><img src="../storage/<?php echo $stores[$i]["imageurl"] ?>" style="width:50px;height:50px"></td>
+				<td><img src="../storage/<?php echo $stores[$i]["logo"] ?>" style="width:50px;height:50px"></td>
 				<td id="enTitle<?php echo $stores[$i]["id"]?>" ><?php echo $stores[$i]["enTitle"] ?></td>
 				<td id="arTitle<?php echo $stores[$i]["id"]?>" ><?php echo $stores[$i]["arTitle"] ?></td>
 				<td class="text-nowrap">
@@ -230,7 +230,7 @@ if( isset($_POST["arTitle"]) ){
 					<a href="<?php echo "?v={$_GET["v"]}&delId={$stores[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>"><i class="fa fa-close text-danger"></i></a>
 				<div style="display:none">
 					<label id="hidden<?php echo $stores[$i]["id"]?>"><?php echo $stores[$i]["hidden"] ?></label>
-					<label id="logo<?php echo $stores[$i]["id"]?>"><?php echo $stores[$i]["imageurl"] ?></label>
+					<label id="logo<?php echo $stores[$i]["id"]?>"><?php echo $stores[$i]["logo"] ?></label>
 					<label id="header<?php echo $stores[$i]["id"]?>"><?php echo $stores[$i]["header"] ?></label>
 					<label id="categoryId<?php echo $stores[$i]["id"]?>"><?php echo $stores[$i]["categoryId"] ?></label>
 					<label id="enDetails<?php echo $stores[$i]["id"]?>"><?php echo urldecode(htmlspecialchars($stores[$i]["enDetails"])) ?></label>
