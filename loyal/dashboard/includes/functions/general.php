@@ -167,13 +167,13 @@ function decryptData($ciphertext, $key, $iv) {
 }
 
 // Generate QR code for encrypted invitee data
-function generateInviteeQR($inviteeCode) {
+function generateQR($userCode) {
     // Use a fixed key and IV for consistency (in production, use more secure methods)
     $key = 'ceremony2024secretkeyforqrencryption12'; // 32 characters for AES-256
     $iv = 'ceremony2024iv16'; // 16 characters for CBC mode
     
     // Encrypt the invitee code
-    $encryptedData = encryptData($inviteeCode, $key, $iv);
+    $encryptedData = encryptData($userCode, $key, $iv);
     
     // Generate QR code URL using Google Charts API (or you can use a local library)
     $qrData = urlencode($encryptedData);
