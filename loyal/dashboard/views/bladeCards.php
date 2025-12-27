@@ -111,7 +111,7 @@ if( isset($_POST["arTitle"]) ){
 					if( $stores = selectDB("stores","`status` = '0' ORDER BY `rank` ASC") ){
 						for( $i = 0; $i < sizeof($stores); $i++ ){
 							?>
-							<option value="<?php echo $stores[$i]["id"] ?>"><?php echo direction($stores[$i]["enTitle"], $stores[$i]["arTitle"]) ?></option>
+							<option value="<?php echo $stores[$i]["id"] ?>"><?php echo urldecode(direction($stores[$i]["enTitle"], $stores[$i]["arTitle"])) ?></option>
 							<?php
 						}
 					}
@@ -127,7 +127,7 @@ if( isset($_POST["arTitle"]) ){
 					if( $cardTypes = selectDB("card_types","`status` = '0' ORDER BY `rank` ASC") ){
 						for( $i = 0; $i < sizeof($cardTypes); $i++ ){
 							?>
-							<option value="<?php echo $cardTypes[$i]["id"] ?>" data-enTitle="<?php echo $cardTypes[$i]["enTitle"] ?>" data-arTitle="<?php echo $cardTypes[$i]["arTitle"] ?>"><?php echo direction($cardTypes[$i]["enTitle"], $cardTypes[$i]["arTitle"]) ?></option>
+							<option value="<?php echo $cardTypes[$i]["id"] ?>"><?php echo urldecode(direction($cardTypes[$i]["enTitle"], $cardTypes[$i]["arTitle"])) ?></option>
 							<?php
 						}
 					}
@@ -272,8 +272,8 @@ if( isset($_POST["arTitle"]) ){
 			}
 			?>
 			<tr>
-				<td><?php echo direction($cards[$i]["storeEnTitle"], $cards[$i]["storeArTitle"]) ?></td>
-				<td><?php echo direction($cards[$i]["cardTypeEnTitle"], $cards[$i]["cardTypeArTitle"]) ?></td>
+				<td><?php echo urldecode(direction($cards[$i]["storeEnTitle"], $cards[$i]["storeArTitle"])) ?></td>
+				<td><?php echo urldecode(direction($cards[$i]["cardTypeEnTitle"], $cards[$i]["cardTypeArTitle"])) ?></td>
 				<td id="enTitle<?php echo $cards[$i]["id"]?>" ><?php echo urldecode($cards[$i]["enTitle"]) ?></td>
 				<td id="arTitle<?php echo $cards[$i]["id"]?>" ><?php echo urldecode($cards[$i]["arTitle"]) ?></td>
 				<td class="text-nowrap">
