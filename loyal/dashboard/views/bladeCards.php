@@ -272,6 +272,7 @@ if( isset($_POST["arTitle"]) ){
 			}
 			?>
 			<tr>
+                <td><?php echo $counter ?></td>
 				<td><?php echo urldecode(direction($cards[$i]["storeEnTitle"], $cards[$i]["storeArTitle"])) ?></td>
 				<td><?php echo urldecode(direction($cards[$i]["cardTypeEnTitle"], $cards[$i]["cardTypeArTitle"])) ?></td>
 				<td id="enTitle<?php echo $cards[$i]["id"]?>" ><?php echo urldecode($cards[$i]["enTitle"]) ?></td>
