@@ -1,25 +1,25 @@
 <?php 
 if( isset($_GET["hide"]) && !empty($_GET["hide"]) ){
-	if( updateDB('banner',array('hidden'=> '2'),"`id` = '{$_GET["hide"]}'") ){
+	if( updateDB("banners",array('hidden'=> '2'),"`id` = '{$_GET["hide"]}'") ){
 		header("LOCATION: ?v=Banners");
 	}
 }
 
 if( isset($_GET["show"]) && !empty($_GET["show"]) ){
-	if( updateDB('banner',array('hidden'=> '1'),"`id` = '{$_GET["show"]}'") ){
+	if( updateDB("banners",array('hidden'=> '1'),"`id` = '{$_GET["show"]}'") ){
 		header("LOCATION: ?v=Banners");
 	}
 }
 
 if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
-	if( updateDB('banner',array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
+	if( updateDB("banners",array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
 		header("LOCATION: ?v=Banners");
 	}
 }
 
 if( isset($_POST["updateRank"]) ){
 	for( $i = 0; $i < sizeof($_POST["rank"]); $i++){
-		updateDB("banner",array("rank"=>$_POST["rank"][$i]),"`id` = '{$_POST["id"][$i]}'");
+		updateDB("banners",array("rank"=>$_POST["rank"][$i]),"`id` = '{$_POST["id"][$i]}'");
 	}
 	header("LOCATION: ?v=Banners");
 }
@@ -34,7 +34,7 @@ if( isset($_POST["title"]) ){
             $_POST["image"] = "";
         }
 		
-		if( insertDB("banner", $_POST) ){
+		if( insertDB("banners", $_POST) ){
 			header("LOCATION: ?v=Banners");
 		}else{
 		?>
@@ -50,7 +50,7 @@ if( isset($_POST["title"]) ){
             $imageurl = selectDB("banner", "`id` = '{$id}'");
             $_POST["image"] = $imageurl[0]["image"];
         }
-		if( updateDB("banner", $_POST, "`id` = '{$id}'") ){
+		if( updateDB("banners", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=Banners");
 		}else{
 		?>
@@ -149,7 +149,7 @@ if( isset($_POST["title"]) ){
 		
 		<tbody>
 		<?php 
-		if( $banners = selectDB("banner","`status` = '0' ORDER BY `rank` ASC") ){
+		if( $banners = selectDB("banners","`status` = '0' ORDER BY `rank` ASC") ){
 		for( $i = 0; $i < sizeof($banners); $i++ ){
 		$counter = $i + 1;
 		if ( $banners[$i]["hidden"] == 2 ){
