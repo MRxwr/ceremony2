@@ -35,8 +35,7 @@ if( isset($_POST["fullName"]) ){
 		if( !empty($_POST["password"]) ){
 			$_POST["password"] = sha1($_POST["password"]);
 		}else{
-			$password = selectDB("employees","`id` = '{$id}'");
-			$_POST["password"] = $password[0]["password"];
+			unset($_POST["password"]);
 		}
 		if( updateDB("employees", $_POST, "`id` = '{$id}'") ){
 			header("LOCATION: ?v=ListOfEmployees");
@@ -92,7 +91,8 @@ if( isset($_POST["fullName"]) ){
 			<label><?php echo direction("Shop","المحل") ?></label>
 			<select name="shopId" class="form-control">
 				<?php
-				if( $stores = selectDB("stores","`status` = '0'") ){
+				$orderByTitle = direction("enTitle","arTitle");
+				if( $stores = selectDB("stores","`status` = '0' AND `hidden` = '1' ORDER BY `{$orderByTitle}` ASC") ){
 					for( $i = 0; $i < sizeof($stores); $i++ ){
 						$shopTitle = direction($stores[$i]["enTitle"],$stores[$i]["arTitle"]);
 						echo "<option value='{$stores[$i]["id"]}'>{$shopTitle}</option>";
