@@ -1,6 +1,6 @@
 <?php
 // Fetch Categories
-$categories = selectDB("category", "`status` = '0' AND `hidden` = '1' ORDER BY `id` ASC");
+$categories = selectDB("categories", "`status` = '0' AND `hidden` = '1' ORDER BY `id` ASC");
 
 // Fetch Stores (with search and category filter)
 $where = "`status` = '0' AND `hidden` = '1'";
@@ -12,7 +12,7 @@ if (isset($_GET['q'])) {
     $q = escapeStringDirect($_GET['q']);
     $where .= " AND (`enTitle` LIKE '%$q%' OR `arTitle` LIKE '%$q%')";
 }
-$stores = selectDB("store", "$where ORDER BY `id` DESC");
+$stores = selectDB("stores", "$where ORDER BY `id` DESC");
 ?>
 
 <div class="space-y-6">
