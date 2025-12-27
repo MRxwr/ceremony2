@@ -121,13 +121,13 @@ if( isset($_POST["arTitle"]) ){
 
             <div class="col-md-6">
 				<label><?php echo direction("Card Type","نوع البطاقة") ?></label>
-				<select name="cardTypeId" class="form-control" required>
+				<select id="cardTypeSelect" name="cardTypeId" class="form-control" required>
 					<option value="" disabled selected><?php echo direction("No card Type","بدون نوع بطاقة") ?></option>
 					<?php 
 					if( $cardTypes = selectDB("card_types","`status` = '0' ORDER BY `rank` ASC") ){
 						for( $i = 0; $i < sizeof($cardTypes); $i++ ){
 							?>
-							<option value="<?php echo $cardTypes[$i]["id"] ?>"><?php echo direction($cardTypes[$i]["enTitle"], $cardTypes[$i]["arTitle"]) ?></option>
+							<option value="<?php echo $cardTypes[$i]["id"] ?>" data-enTitle="<?php echo $cardTypes[$i]["enTitle"] ?>" data-arTitle="<?php echo $cardTypes[$i]["arTitle"] ?>"><?php echo direction($cardTypes[$i]["enTitle"], $cardTypes[$i]["arTitle"]) ?></option>
 							<?php
 						}
 					}
@@ -145,34 +145,34 @@ if( isset($_POST["arTitle"]) ){
 				<input type="text" name="arTitle" class="form-control" required>
 			</div>
 
-			<div class="col-md-4">
+			<div class="col-md-4 numberOfItems-field">
 				<label><?php echo direction("Number of Items - Level 1","عدد العناصر - مستوى 1") ?></label>
-				<input type="number" name="numberOfItems[0]" class="form-control" required value="10">
+				<input type="number" name="numberOfItems[0]" class="form-control numberOfItems-input" required value="10">
 			</div>
 
-			<div class="col-md-4">
+			<div class="col-md-4 numberOfItems-field">
 				<label><?php echo direction("Number of Items - Level 2","عدد العناصر - مستوى 2") ?></label>
-				<input type="number" name="numberOfItems[1]" class="form-control" required value="7">
+				<input type="number" name="numberOfItems[1]" class="form-control numberOfItems-input" required value="7">
 			</div>
 
-			<div class="col-md-4">
+			<div class="col-md-4 numberOfItems-field">
 				<label><?php echo direction("Number of Items - Level 3","عدد العناصر - مستوى 3") ?></label>
-				<input type="number" name="numberOfItems[2]" class="form-control" required value="5">
+				<input type="number" name="numberOfItems[2]" class="form-control numberOfItems-input" required value="5">
 			</div>
 
-			<div class="col-md-4">
+			<div class="col-md-4 totalPoints-field">
 				<label><?php echo direction("Total Points - Level 1","إجمالي النقاط - مستوى 1") ?></label>
-				<input type="number" name="totalPoints[0]" class="form-control" required value="10">
+				<input type="number" name="totalPoints[0]" class="form-control totalPoints-input" required value="10">
 			</div>
 
-			<div class="col-md-4">
+			<div class="col-md-4 totalPoints-field">
 				<label><?php echo direction("Total Points - Level 2","إجمالي النقاط - مستوى 2") ?></label>
-				<input type="number" name="totalPoints[1]" class="form-control" required value="7">
+				<input type="number" name="totalPoints[1]" class="form-control totalPoints-input" required value="7">
 			</div>
 
-			<div class="col-md-4">
+			<div class="col-md-4 totalPoints-field">
 				<label><?php echo direction("Total Points - Level 3","إجمالي النقاط - مستوى 3") ?></label>
-				<input type="number" name="totalPoints[2]" class="form-control" required value="5">
+				<input type="number" name="totalPoints[2]" class="form-control totalPoints-input" required value="5">
 			</div>
 
 			<div class="col-md-6">
@@ -190,14 +190,14 @@ if( isset($_POST["arTitle"]) ){
 				<input type="file" name="logo" class="form-control" required>
 			</div>
 			
-			<div class="col-md-4">
+			<div class="col-md-4 stamp-image-field">
 				<label><?php echo direction("Item Image Unstamped","صورة غير مختومة") ?></label>
-				<input type="file" name="image" class="form-control" required>
+				<input type="file" name="image" class="form-control stamp-image-input" required>
 			</div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 stamp-image-field">
 				<label><?php echo direction("Item Stamped Image","الصورة المختومة") ?></label>
-				<input type="file" name="stampedImage" class="form-control" required>
+				<input type="file" name="stampedImage" class="form-control stamp-image-input" required>
 			</div>
 			
 			<div id="images" style="margin-top: 10px; display:none">
@@ -310,6 +310,55 @@ if( isset($_POST["arTitle"]) ){
 </div>
 </div>
 <script>
+	// Function to toggle fields based on card type
+	function toggleCardTypeFields() {
+		var selectedOption = $("#cardTypeSelect option:selected");
+		var enTitle = selectedOption.data("entitle");
+		var arTitle = selectedOption.data("artitle");
+		
+		// Check if it's Stamp or Points (case insensitive)
+		var isStamp = (enTitle && enTitle.toLowerCase().includes("stamp")) || 
+		              (arTitle && arTitle.includes("ختم"));
+		var isPoints = (enTitle && enTitle.toLowerCase().includes("point")) || 
+		               (arTitle && arTitle.includes("نقاط"));
+		
+		if (isStamp) {
+			// Show stamp-related fields
+			$(".numberOfItems-field").show();
+			$(".numberOfItems-input").prop("required", true);
+			$(".stamp-image-field").show();
+			$(".stamp-image-input").prop("required", function() {
+				return $("input[name=update]").val() == "0";
+			});
+			
+			// Hide and reset points fields
+			$(".totalPoints-field").hide();
+			$(".totalPoints-input").prop("required", false).val(0);
+		} else if (isPoints) {
+			// Show points-related fields
+			$(".totalPoints-field").show();
+			$(".totalPoints-input").prop("required", true);
+			
+			// Hide and reset stamp fields
+			$(".numberOfItems-field").hide();
+			$(".numberOfItems-input").prop("required", false).val(0);
+			$(".stamp-image-field").hide();
+			$(".stamp-image-input").prop("required", false);
+		} else {
+			// Default: show all fields
+			$(".numberOfItems-field, .totalPoints-field, .stamp-image-field").show();
+			$(".numberOfItems-input, .totalPoints-input").prop("required", true);
+			$(".stamp-image-input").prop("required", function() {
+				return $("input[name=update]").val() == "0";
+			});
+		}
+	}
+	
+	// Trigger on page load and on change
+	$(document).ready(function() {
+		$("#cardTypeSelect").on("change", toggleCardTypeFields);
+	});
+
 	$(document).on("click",".edit", function(){
 		var id = $(this).attr("id");
 		$("input[name=update]").val(id);
@@ -338,6 +387,10 @@ if( isset($_POST["arTitle"]) ){
 		$("input[name='totalPoints[2]']").val(totalPoints[2] || 5);
 		
 		$("#images").attr("style","margin-top:10px;display:block");
+		
+		// Trigger card type toggle after setting values
+		toggleCardTypeFields();
+		
 		// Set TinyMCE content with a small delay to ensure editors are ready
 		setTimeout(function() {
 			var enPolicy = tinymce.get('enPolicy');
