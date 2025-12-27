@@ -23,10 +23,10 @@ $userCards = queryDB($sql);
             <div class="relative bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden p-6">
                 <!-- Card Header -->
                 <div class="flex items-center gap-4 mb-6">
-                    <img src="logos/<?php echo $card['storeImage'] ?>" class="w-14 h-14 rounded-2xl object-cover shadow-sm">
+                    <img src="storage/<?php echo $card['storeImage'] ?>" class="w-14 h-14 rounded-2xl object-cover shadow-sm">
                     <div>
-                        <h3 class="font-bold text-lg"><?php echo direction($card['storeEn'], $card['storeAr']) ?></h3>
-                        <p class="text-xs text-gray-500"><?php echo direction($card['cardEn'], $card['cardAr']) ?></p>
+                        <h3 class="font-bold text-lg"><?php echo urldecode(direction($card['storeEn'], $card['storeAr'])) ?></h3>
+                        <p class="text-xs text-gray-500"><?php echo urldecode(direction($card['cardEn'], $card['cardAr'])) ?></p>
                     </div>
                 </div>
 
