@@ -173,8 +173,9 @@ function selectJoinDB($table, $joinData, $where){
         }
     }
     if ( !empty($where) ){
-        echo $sql .= " WHERE " . $where;
+        $sql .= " WHERE " . $where;
     }
+    echo $sql;
     if($stmt = $dbconnect->prepare($sql)){
         $stmt->execute();
         $result = $stmt->get_result();
