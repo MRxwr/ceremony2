@@ -36,7 +36,6 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 							<i class="zmdi zmdi-notifications top-nav-icon"></i>
 							<?php 
-								require('includes/config.php');
 								$sql = "SELECT * 
 										FROM `orders2` 
 										WHERE 
