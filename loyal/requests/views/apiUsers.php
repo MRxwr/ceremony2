@@ -199,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
             }
             break;
         case 'register':
-            $required = ['fullName','email','phone','password'];
+            $required = ['firstName','lastName','email','phone','password'];
             foreach ($required as $r) {
                 if (empty($input[$r])) {
                     echo outputError(["msg" => "$r required."]);
@@ -212,7 +212,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 break;
             }
             $data = [
-                'fullName' => $input['fullName'],
+                'firstName' => $input['firstName'],
+                'lastName' => $input['lastName'],
                 'email' => $input['email'],
                 'phone' => $input['phone'],
                 'password' => password_hash($input['password'], PASSWORD_DEFAULT),

@@ -64,23 +64,42 @@ if( isset($_POST["fullName"]) ){
 	<form class="" method="POST" action="" enctype="multipart/form-data">
 		<div class="row m-0">
 			<div class="col-md-6">
-			<label><?php echo direction("Name","الإسم") ?></label>
-			<input type="text" name="fullName" class="form-control" required>
+			<label><?php echo direction("First Name","الإسم الأول") ?></label>
+			<input type="text" name="firstName" class="form-control" required>
+			</div>
+
+			<div class="col-md-6">
+			<label><?php echo direction("Last Name","الإسم الأخير") ?></label>
+			<input type="text" name="lastName" class="form-control" required>
 			</div>
 			
-			<div class="col-md-6">
+			<div class="col-md-4">
 			<label><?php echo direction("Email","البريد الإلكتروني") ?></label>
 			<input type="text" name="email" class="form-control" required>
 			</div>
 			
-			<div class="col-md-6">
+			<div class="col-md-4">
 			<label><?php echo direction("Password","كلمة المرور") ?></label>
 			<input type="text" name="password" class="form-control" required>
 			</div>
 			
-			<div class="col-md-6">
+			<div class="col-md-4">
 			<label><?php echo direction("Mobile","الهاتف") ?></label>
 			<input type="number" min="0" maxlength="8" name="phone" class="form-control" required>
+			</div>
+
+			<div class="col-md-6">
+			<label><?php echo direction("Shop","المحل") ?></label>
+			<select name="shopId" class="form-control">
+				<?php
+				if( $stores = selectDB("stores","`status` = '0'") ){
+					for( $i = 0; $i < sizeof($stores); $i++ ){
+						$shopTitle = direction($stores[$i]["enTitle"],$stores[$i]["arTitle"]);
+						echo "<option value='{$stores[$i]["id"]}'>{$shopTitle}</option>";
+					}
+				}
+				?>
+			</select>
 			</div>
 			
 			<div class="col-md-6">
@@ -96,25 +115,8 @@ if( isset($_POST["fullName"]) ){
 				?>
 			</select>
 			</div>
-			<?php
-			/*
-			<div class="col-md-6">
-			<label><?php echo direction("Shop","المحل") ?></label>
-			<select name="shopId" class="form-control">
-				<?php
-				if( $shop = selectDB("shops","`status` = '0'") ){
-					for( $i = 0; $i < sizeof($shop); $i++ ){
-						$shopTitle = direction($shop[$i]["enTitle"],$shop[$i]["arTitle"]);
-						echo "<option value='{$shop[$i]["id"]}'>{$shopTitle}</option>";
-					}
-				}
-				?>
-			</select>
-			</div>
-			*/
-			?>
 			
-			<div class="col-md-6" style="margin-top:10px">
+			<div class="col-md-12" style="margin-top:10px">
 			<input type="submit" class="btn btn-primary" value="<?php echo direction("Submit","أرسل") ?>">
 			<input type="hidden" name="update" value="0">
 			</div>
@@ -164,7 +166,6 @@ if( isset($_POST["fullName"]) ){
 					$link = "?v={$_GET["v"]}&hide={$employees[$i]["id"]}";
 					$hide = direction("Lock","قفل الحساب");
 				}
-				
 				if ( $employees[$i]["empType"] == 0 ){
 					$type = "Admin";
 				}elseif( $employees[$i]["empType"] == 1 ){
@@ -172,14 +173,6 @@ if( isset($_POST["fullName"]) ){
 				}elseif( $employees[$i]["empType"] == 2 ){
 					$type = "POS";
 				}
-
-				/*
-				if( $shop = selectDB("shops","`id` = '{$employees[$i]["shopId"]}'") ){
-					$shop = direction($shop[0]["enTitle"],$shop[0]["arTitle"]);
-				}else{
-					$shop = "";
-				}
-				*/
 				if( $employee = selectDB("roles","`id` = '{$employees[$i]["empType"]}'") ){
 					$employee = direction($employee[0]["enTitle"],$employee[0]["arTitle"]);
 				}else{
@@ -188,22 +181,20 @@ if( isset($_POST["fullName"]) ){
 				
 				?>
 				<tr>
-				<td id="name<?php echo $employees[$i]["id"]?>" ><?php echo $employees[$i]["fullName"] ?></td>
+				<td><?php echo "{$employees[$i]["firstName"]} {$employees[$i]["lastName"]}" ?></td>
 				<td id="email<?php echo $employees[$i]["id"]?>" ><?php echo $employees[$i]["email"] ?></td>
 				<td id="mobile<?php echo $employees[$i]["id"]?>" ><?php echo $employees[$i]["phone"] ?></td>
 				<td><?php echo $employee ?></td>
-				<?php /* <td><?php echo $shop ?></td> */?>
 				<td class="text-nowrap">
-				
-				<a id="<?php echo $employees[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i>
-				</a>
-				<a href="<?php echo $link ?>" class="mr-25" data-toggle="tooltip" data-original-title="<?php echo $hide ?>"> <i class="<?php echo $icon ?> text-inverse m-r-10"></i>
-				</a>
-				<a href="<?php echo "?v={$_GET["v"]}&delId={$employees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>"><i class="fa fa-close text-danger"></i>
-				</a>
-				<div style="display:none">
-					<label id="type<?php echo $employees[$i]["id"]?>"><?php echo $employees[$i]["empType"] ?></label>
-					<label id="shop<?php echo $employees[$i]["id"]?>"><?php echo $employees[$i]["shopId"] ?></label></div>				
+					<a id="<?php echo $employees[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i></a>
+					<a href="<?php echo $link ?>" class="mr-25" data-toggle="tooltip" data-original-title="<?php echo $hide ?>"> <i class="<?php echo $icon ?> text-inverse m-r-10"></i></a>
+					<a href="<?php echo "?v={$_GET["v"]}&delId={$employees[$i]["id"]}" ?>" data-toggle="tooltip" data-original-title="<?php echo direction("Delete","حذف") ?>"><i class="fa fa-close text-danger"></i></a>
+					<div style="display:none">
+						<label id="type<?php echo $employees[$i]["id"]?>"><?php echo $employees[$i]["empType"] ?></label>
+						<label id="shop<?php echo $employees[$i]["id"]?>"><?php echo $employees[$i]["shopId"] ?></label>
+						<label id="firstName<?php echo $employees[$i]["id"]?>"><?php echo $employees[$i]["firstName"] ?></label>
+						<label id="lastName<?php echo $employees[$i]["id"]?>"><?php echo $employees[$i]["lastName"] ?></label>
+					</div>				
 				</td>
 				</tr>
 				<?php
@@ -223,19 +214,14 @@ if( isset($_POST["fullName"]) ){
 <script>
 	$(document).on("click",".edit", function(){
 		var id = $(this).attr("id");
-		var email = $("#email"+id).html();
-		var name = $("#name"+id).html();
-		var mobile = $("#mobile"+id).html();
-		var type = $("#type"+id).html();
-		var shop = $("#shop"+id).html();
-		var logo = $("#logo"+id).html();
-		$("input[name=password]").prop("required",false);
-		$("input[name=email]").val(email);
-		$("input[name=phone]").val(mobile);
 		$("input[name=update]").val(id);
-		$("input[name=fullName]").val(name);
-		$("input[name=fullName]").focus();
-		$("select[name=empType]").val(type);
-		$("select[name=shopId]").val(shop);
+
+		$("input[name=password]").prop("required",false);
+		$("input[name=email]").val($("#email"+id).html());
+		$("input[name=phone]").val($("#mobile"+id).html());
+		$("input[name=firstName]").val($("#firstName"+id).html()).focus();
+		$("input[name=lastName]").val($("#lastName"+id).html());
+		$("select[name=empType]").val($("#type"+id).html());
+		$("select[name=shopId]").val($("#shop"+id).html());
 	})
 </script>
