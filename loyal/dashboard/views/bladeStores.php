@@ -27,6 +27,8 @@ if( isset($_POST["updateRank"]) ){
 if( isset($_POST["arTitle"]) ){
 	$id = $_POST["update"];
 	unset($_POST["update"]);
+	$_POST["enTitle"] = urlencode($_POST["enTitle"]);
+	$_POST["arTitle"] = urlencode($_POST["arTitle"]);
 	$_POST["enDetails"] = urlencode($_POST["enDetails"]);
 	$_POST["arDetails"] = urlencode($_POST["arDetails"]);
 	if ( $id == 0 ){
