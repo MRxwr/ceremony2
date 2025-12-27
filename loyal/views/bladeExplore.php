@@ -1,9 +1,9 @@
 <?php
 // Fetch Categories
-$categories = selectDB("category", "`status` = '0' AND `hidden` = '0' ORDER BY `id` ASC");
+$categories = selectDB("category", "`status` = '0' AND `hidden` = '1' ORDER BY `id` ASC");
 
 // Fetch Stores (with search and category filter)
-$where = "`status` = '0' AND `hidden` = '0'";
+$where = "`status` = '0' AND `hidden` = '1'";
 if (isset($_GET['cat'])) {
     $catId = (int)$_GET['cat'];
     $where .= " AND `categoryId` = '$catId'";
