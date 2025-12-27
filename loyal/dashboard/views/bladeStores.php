@@ -224,8 +224,8 @@ if( isset($_POST["arTitle"]) ){
 				</td>
 				<td><?php echo direction($category[0]["enTitle"], $category[0]["arTitle"]) ?></td>
 				<td><img src="../storage/<?php echo $stores[$i]["logo"] ?>" style="width:50px;height:50px"></td>
-				<td id="enTitle<?php echo $stores[$i]["id"]?>" ><?php echo $stores[$i]["enTitle"] ?></td>
-				<td id="arTitle<?php echo $stores[$i]["id"]?>" ><?php echo $stores[$i]["arTitle"] ?></td>
+				<td id="enTitle<?php echo $stores[$i]["id"]?>" ><?php echo urldecode($stores[$i]["enTitle"]) ?></td>
+				<td id="arTitle<?php echo $stores[$i]["id"]?>" ><?php echo urldecode($stores[$i]["arTitle"]) ?></td>
 				<td class="text-nowrap">
 					<a id="<?php echo $stores[$i]["id"] ?>" class="mr-25 edit" data-toggle="tooltip" data-original-title="<?php echo direction("Edit","تعديل") ?>"> <i class="fa fa-pencil text-inverse m-r-10"></i></a>
 					<a href="<?php echo $link ?>" class="mr-25" data-toggle="tooltip" data-original-title="<?php echo $hide ?>"> <i class="<?php echo $icon ?> text-inverse m-r-10"></i></a>
