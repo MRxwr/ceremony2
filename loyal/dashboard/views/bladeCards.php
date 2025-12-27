@@ -258,7 +258,7 @@ if( isset($_POST["arTitle"]) ){
             "join" => ["card_types","stores"],
             "on" => ["t.cardTypeId = t1.id", "t.storeId = t2.id"]
         );
-		if( $cards = selectJoinDB("cards", $joinData, "`status` = '0' ORDER BY `rank` ASC") ){
+		if( $cards = selectJoinDB("cards", $joinData, " t.status = '0' ORDER BY t.id ASC") ){
 			for( $i = 0; $i < sizeof($cards); $i++ ){
 				$counter = $i + 1;
 			if ( $cards[$i]["hidden"] == 2 ){
