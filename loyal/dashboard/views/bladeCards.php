@@ -145,6 +145,11 @@ if( isset($_POST["arTitle"]) ){
 				<input type="text" name="arTitle" class="form-control" required>
 			</div>
 
+			<div class="col-md-6">
+				<label><?php echo direction("Color","اللون") ?></label>
+				<input type="color" name="color" class="form-control" required>
+			</div>
+
 			<div class="col-md-4 numberOfItems-field">
 				<label><?php echo direction("Number of Items - Level 1","عدد العناصر - مستوى 1") ?></label>
 				<input type="number" name="numberOfItems[0]" class="form-control numberOfItems-input" required value="10">
@@ -292,6 +297,7 @@ if( isset($_POST["arTitle"]) ){
 					<label id="arPolicy<?php echo $cards[$i]["id"]?>"><?php echo urldecode(htmlspecialchars($cards[$i]["arPolicy"])) ?></label>
 					<label id="numberOfItems<?php echo $cards[$i]["id"]?>"><?php echo $cards[$i]["numberOfItems"] ?></label>
 					<label id="totalPoints<?php echo $cards[$i]["id"]?>"><?php echo $cards[$i]["totalPoints"] ?></label>
+					<label id="color<?php echo $cards[$i]["id"]?>"><?php echo $cards[$i]["color"] ?></label>
 				</div>
 				
 				</td>
@@ -367,6 +373,7 @@ if( isset($_POST["arTitle"]) ){
 		$("input[type=file]").prop("required",false);
 		$("input[name=enTitle]").val($("#enTitle"+id).html()).focus();
 		$("input[name=arTitle]").val($("#arTitle"+id).html());
+		$("input[name=color]").val($("#color"+id).html());
 		$("select[name=hidden]").val($("#hidden"+id).html());
 		$("select[name=categoryId]").val($("#categoryId"+id).html());
 		$("select[name=storeId]").val($("#storeId"+id).html());
