@@ -27,7 +27,7 @@
 								<a href="<?php echo $_SERVER['REQUEST_URI'] . getSign() . $languageParam ?>"><i class="fa fa-language"></i><span><?php echo $languageText ?></span></a>
 							</li>
 							<li>
-								<a href="logout.php"><i class="zmdi zmdi-power"></i><span>Log Out</span></a>
+								<a href="logout.php"><i class="zmdi zmdi-power"></i><span><?php echo direction("تسجيل الخروج","Log Out") ?></span></a>
 							</li>
 						</ul>
 					</li>
