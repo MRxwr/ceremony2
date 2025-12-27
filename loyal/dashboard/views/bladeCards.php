@@ -255,7 +255,7 @@ if( isset($_POST["arTitle"]) ){
 		<?php 
         $joinData = array(
             "select" => ["t.*","t1.enTitle as cardTypeEnTitle","t1.arTitle as cardTypeArTitle","t2.enTitle as storeEnTitle","t2.arTitle as storeArTitle"],
-            "from" => ["card_types","stores"],
+            "join" => ["card_types","stores"],
             "on" => ["t.cardTypeId = t1.id", "t.storeId = t2.id"]
         );
 		if( $cards = selectJoinDB("cards", $joinData, "`status` = '0' ORDER BY `rank` ASC") ){
