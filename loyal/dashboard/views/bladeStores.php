@@ -1,25 +1,25 @@
 <?php 
 if( isset($_GET["hide"]) && !empty($_GET["hide"]) ){
-	if( updateDB('categories',array('hidden'=> '2'),"`id` = '{$_GET["hide"]}'") ){
+	if( updateDB('stores',array('hidden'=> '2'),"`id` = '{$_GET["hide"]}'") ){
 		header("LOCATION: ?v=Stores");
 	}
 }
 
 if( isset($_GET["show"]) && !empty($_GET["show"]) ){
-	if( updateDB('categories',array('hidden'=> '1'),"`id` = '{$_GET["show"]}'") ){
+	if( updateDB('stores',array('hidden'=> '1'),"`id` = '{$_GET["show"]}'") ){
 		header("LOCATION: ?v=Stores");
 	}
 }
 
 if( isset($_GET["delId"]) && !empty($_GET["delId"]) ){
-	if( updateDB('categories',array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
+	if( updateDB('stores',array('status'=> '1'),"`id` = '{$_GET["delId"]}'") ){
 		header("LOCATION: ?v=Stores");
 	}
 }
 
 if( isset($_POST["updateRank"]) ){
 	for( $i = 0; $i < sizeof($_POST["rank"]); $i++){
-		updateDB("categories",array("rank"=>$_POST["rank"][$i]),"`id` = '{$_POST["id"][$i]}'");
+		updateDB("stores",array("rank"=>$_POST["rank"][$i]),"`id` = '{$_POST["id"][$i]}'");
 	}
 	header("LOCATION: ?v=Stores");
 }
