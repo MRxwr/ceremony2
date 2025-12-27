@@ -191,11 +191,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_GET['a']) && $_GET['a'] ==
                 break;
             }
             if (verifyWhatsAppCode($input['phone'], $input['code'])) {
-                // Optionally delete the code after successful verification
                 deleteDBNew('verification_code', [$input['phone']], '`phone` = ?');
-                echo outputData(["msg" => "Code verified."]);
+                
+                // Check if user exists
+                $user = selectDBNew('users', [$input['phone']], '`phone` = ?', '');
+                if (!$user) {
+                    // Create new user
+                    $uniqueCode = strtoupper(generateRandomString());
+                    // Ensure uniqueness
+                    while(selectDBNew('users', [$uniqueCode], '`code` = ?', '')){
+                        $uniqueCode = strtoupper(generateRandomString());
+                    }
+                    
+                    $data = [
+                        'phone' => $input['phone'],
+                        'code' => $uniqueCode,
+                        'firstName' => '',
+                        'lastName' => '',
+                        'email' => '',
+                        'password' => '',
+                        'keepMeAlive' => bin2hex(random_bytes(32)),
+                        'status' => '0',
+                        'hidden' => '1'
+                    ];
+                    insertDB('users', $data);
+                    $user = selectDBNew('users', [$input['phone']], '`phone` = ?', '');
+                }
+                
+                $token = $user[0]['keepMeAlive'];
+                if (empty($token)) {
+                    $token = bin2hex(random_bytes(32));
+                    updateDB('users', ['keepMeAlive' => $token], "`id` = '{$user[0]['id']}'");
+                }
+
+                $profileComplete = (!empty($user[0]['firstName']) && !empty($user[0]['lastName']));
+                
+                echo outputData([
+                    "msg" => "Code verified.", 
+                    "token" => $token, 
+                    "profileComplete" => $profileComplete
+                ]);
             } else {
                 echo outputError(["msg" => "Invalid code."]);
+            }
+            break;
+        case 'updateProfile':
+            $headers = getallheaders();
+            $bearer = isset($headers['Authorization']) ? trim(str_replace('Bearer', '', $headers['Authorization'])) : '';
+            $user = checkBearerToken($bearer);
+            if (!$user) {
+                echo outputError(["msg" => "Invalid or missing token."]);
+                break;
+            }
+            if (empty($input['firstName']) || empty($input['lastName'])) {
+                echo outputError(["msg" => "First and Last name are required."]);
+                break;
+            }
+            $data = [
+                'firstName' => $input['firstName'],
+                'lastName' => $input['lastName'],
+                'email' => $input['email'] ?? '',
+                'address' => $input['address'] ?? ''
+            ];
+            if (updateDB('users', $data, "`id` = '{$user['id']}'")) {
+                echo outputData(["msg" => "Profile updated successfully."]);
+            } else {
+                echo outputError(["msg" => "Failed to update profile."]);
             }
             break;
         case 'register':
