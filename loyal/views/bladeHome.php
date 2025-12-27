@@ -1,9 +1,9 @@
 <?php
 // Fetch Banners
-$banners = selectDB("banner", "`status` = '0' AND `hidden` = '0' ORDER BY `rank` ASC");
+$banners = selectDB("banners", "`status` = '0' AND `hidden` = '1' ORDER BY `rank` ASC");
 
 // Fetch Leaderboard (Top 5 users by total points/stamps)
-$leaderboard = selectDB("users_cards", "`status` = '0' GROUP BY `userId` ORDER BY SUM(`collectedPoints` + `collectedStamps`) DESC LIMIT 5");
+$leaderboard = selectDB("users_cards", "`status` = '0' AND `hidden` = '1' GROUP BY `userId` ORDER BY SUM(`collectedPoints` + `collectedStamps`) DESC LIMIT 5");
 // Note: In a real scenario, we'd join with users table to get names.
 ?>
 
@@ -14,9 +14,9 @@ $leaderboard = selectDB("users_cards", "`status` = '0' GROUP BY `userId` ORDER B
             <div class="flex transition-transform duration-500 ease-in-out h-full" id="banner-slider">
                 <?php foreach ($banners as $banner): ?>
                     <div class="min-w-full h-full relative">
-                        <img src="logos/<?php echo $banner['image'] ?>" alt="<?php echo $banner['title'] ?>" class="w-full h-full object-cover">
+                        <img src="storage/<?php echo $banner['image'] ?>" alt="<?php echo urldecode($banner['title']) ?>" class="w-full h-full object-cover">
                         <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent text-white">
-                            <h3 class="font-bold text-lg"><?php echo direction($banner['title'], $banner['title']) ?></h3>
+                            <h3 class="font-bold text-lg"><?php echo urldecode(direction($banner['title'], $banner['title'])) ?></h3>
                         </div>
                     </div>
                 <?php endforeach; ?>

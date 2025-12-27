@@ -4,7 +4,7 @@ $userID = 1; // Dummy
 $user = selectDB("users", "`id` = '$userID'")[0];
 
 // Fetch total scans
-$scansCount = queryDB("SELECT SUM(collectedPoints + collectedStamps) as total FROM users_cards WHERE userId = '$userID'")[0]['total'] ?? 0;
+$scansCount = queryDB("SELECT SUM(collectedPoints + collectedStamps) as total FROM users_cards WHERE userId = '$userID' AND `hidden` = '1'")[0]['total'] ?? 0;
 ?>
 
 <div class="space-y-8">
