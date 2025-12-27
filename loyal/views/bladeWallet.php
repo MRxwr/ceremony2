@@ -2,10 +2,10 @@
 // Fetch User's Cards
 // Assuming $userID is available from session/config
 $userID = 1; // Dummy for now
-$sql = "SELECT uc.*, c.enTitle as cardEn, c.arTitle as cardAr, s.enTitle as storeEn, s.arTitle as storeAr, s.image as storeImage 
+$sql = "SELECT uc.*, c.enTitle as cardEn, c.arTitle as cardAr, s.enTitle as storeEn, s.arTitle as storeAr, s.header as storeImage 
         FROM users_cards uc 
         JOIN cards c ON uc.cardId = c.id 
-        JOIN store s ON c.storeId = s.id 
+        JOIN stores s ON c.storeId = s.id 
         WHERE uc.userId = '$userID' AND uc.status = '0' AND uc.hidden = '0'";
 $userCards = queryDB($sql);
 ?>
