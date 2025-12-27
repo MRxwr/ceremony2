@@ -145,6 +145,36 @@ if( isset($_POST["arTitle"]) ){
 				<input type="text" name="arTitle" class="form-control" required>
 			</div>
 
+			<div class="col-md-4">
+				<label><?php echo direction("Number of Items - Level 1","عدد العناصر - مستوى 1") ?></label>
+				<input type="number" name="numberOfItems[0]" class="form-control" required value="10">
+			</div>
+
+			<div class="col-md-4">
+				<label><?php echo direction("Number of Items - Level 2","عدد العناصر - مستوى 2") ?></label>
+				<input type="number" name="numberOfItems[1]" class="form-control" required value="7">
+			</div>
+
+			<div class="col-md-4">
+				<label><?php echo direction("Number of Items - Level 3","عدد العناصر - مستوى 3") ?></label>
+				<input type="number" name="numberOfItems[2]" class="form-control" required value="5">
+			</div>
+
+			<div class="col-md-4">
+				<label><?php echo direction("Total Points - Level 1","إجمالي النقاط - مستوى 1") ?></label>
+				<input type="number" name="totalPoints[0]" class="form-control" required value="10">
+			</div>
+
+			<div class="col-md-4">
+				<label><?php echo direction("Total Points - Level 2","إجمالي النقاط - مستوى 2") ?></label>
+				<input type="number" name="totalPoints[1]" class="form-control" required value="7">
+			</div>
+
+			<div class="col-md-4">
+				<label><?php echo direction("Total Points - Level 3","إجمالي النقاط - مستوى 3") ?></label>
+				<input type="number" name="totalPoints[2]" class="form-control" required value="5">
+			</div>
+
 			<div class="col-md-6">
 				<label><?php echo direction("English Policy","السياسة بالإنجليزي") ?></label>
 				<textarea id="enDetails" name="enPolicy" class="tinymce"></textarea>
@@ -259,6 +289,8 @@ if( isset($_POST["arTitle"]) ){
 					<label id="cardTypeId<?php echo $cards[$i]["id"]?>"><?php echo $cards[$i]["cardTypeId"] ?></label>
 					<label id="enPolicy<?php echo $cards[$i]["id"]?>"><?php echo urldecode(htmlspecialchars($cards[$i]["enPolicy"])) ?></label>
 					<label id="arPolicy<?php echo $cards[$i]["id"]?>"><?php echo urldecode(htmlspecialchars($cards[$i]["arPolicy"])) ?></label>
+					<label id="numberOfItems<?php echo $cards[$i]["id"]?>"><?php echo $cards[$i]["numberOfItems"] ?></label>
+					<label id="totalPoints<?php echo $cards[$i]["id"]?>"><?php echo $cards[$i]["totalPoints"] ?></label>
 				</div>
 				
 				</td>
@@ -287,10 +319,24 @@ if( isset($_POST["arTitle"]) ){
 		$("input[name=arTitle]").val($("#arTitle"+id).html());
 		$("select[name=hidden]").val($("#hidden"+id).html());
 		$("select[name=categoryId]").val($("#categoryId"+id).html());
+		$("select[name=storeId]").val($("#storeId"+id).html());
+		$("select[name=cardTypeId]").val($("#cardTypeId"+id).html());
 		$("#logoImg").attr("src","../storage/"+$("#logo"+id).html());
 		$("#imageImg").attr("src","../storage/"+$("#image"+id).html());
 		$("#stampedImageImg").attr("src","../storage/"+$("#stampedImage"+id).html());
         
+		// Parse and populate numberOfItems array
+		var numberOfItems = JSON.parse($("#numberOfItems"+id).html() || "[10,7,5]");
+		$("input[name='numberOfItems[0]']").val(numberOfItems[0] || 10);
+		$("input[name='numberOfItems[1]']").val(numberOfItems[1] || 7);
+		$("input[name='numberOfItems[2]']").val(numberOfItems[2] || 5);
+		
+		// Parse and populate totalPoints array
+		var totalPoints = JSON.parse($("#totalPoints"+id).html() || "[10,7,5]");
+		$("input[name='totalPoints[0]']").val(totalPoints[0] || 10);
+		$("input[name='totalPoints[1]']").val(totalPoints[1] || 7);
+		$("input[name='totalPoints[2]']").val(totalPoints[2] || 5);
+		
 		$("#images").attr("style","margin-top:10px;display:block");
 		// Set TinyMCE content with a small delay to ensure editors are ready
 		setTimeout(function() {
