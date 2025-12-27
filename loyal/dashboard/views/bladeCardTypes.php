@@ -130,7 +130,6 @@ if( isset($_POST["arTitle"]) ){
 		<thead>
 		<tr>
 			<th>#</th>
-			<th><?php echo direction("Category","القسم") ?></th>
 			<th><?php echo direction("English Title","العنوان بالإنجليزي") ?></th>
 			<th><?php echo direction("Arabic Title","العنوان بالعربي") ?></th>
 			<th class="text-nowrap"><?php echo direction("Action","الإجراء") ?></th>
@@ -157,7 +156,6 @@ if( isset($_POST["arTitle"]) ){
 					<input name="rank[]" class="form-control" type="number" value="<?php echo $counter ?>">
 					<input name="id[]" class="form-control" type="hidden" value="<?php echo $card_types[$i]["id"] ?>">
 				</td>
-				<td><?php echo direction($category[0]["enTitle"], $category[0]["arTitle"]) ?></td>
 				<td id="enTitle<?php echo $card_types[$i]["id"]?>" ><?php echo urldecode($card_types[$i]["enTitle"]) ?></td>
 				<td id="arTitle<?php echo $card_types[$i]["id"]?>" ><?php echo urldecode($card_types[$i]["arTitle"]) ?></td>
 				<td class="text-nowrap">
